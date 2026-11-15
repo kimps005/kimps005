@@ -1,139 +1,137 @@
-<!-- GitHub profile README | kimps005 -->
-<!-- Student profile: facts and results are separated from ongoing experiments. -->
+<!-- GitHub Profile README | Minsu Choi -->
 
 <div align="center">
-  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=170&color=0:0f172a,100:1e40af&text=Minsu%20Choi&fontColor=ffffff&fontSize=39&fontAlignY=36&desc=AI%20Engineering%20%7C%20From%20Models%20to%20Services&descSize=15&descAlignY=58&animation=fadeIn" alt="Minsu Choi — AI Engineering" />
+  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=165&color=0:0f172a,100:1d4ed8&text=Minsu%20Choi&fontColor=ffffff&fontSize=40&fontAlignY=36&desc=AI%20Engineering%20%7C%20Models%20to%20Services&descSize=17&descAlignY=59" alt="Minsu Choi — AI Engineering" />
 
   <h3>AI / ML Engineering · AI Service Development</h3>
+  <p>협성대학교 컴퓨터공학과 · 2027.02 졸업 예정</p>
+  <p><b>모델의 성능을 검증하고, 추론을 최적화하고, 실제 서비스로 연결합니다.</b></p>
   <p>
-    Computer Engineering Student at Hyupsung University<br/>
-    Expected Graduation: February 2027
-  </p>
-  <p>
-    AI 모델의 학습과 평가부터 실제 서비스에 적용하는 과정까지 관심을 갖고 개발합니다.<br/>
-    <b>Model Evaluation · Multimodal AI · Real-time Systems</b>
-  </p>
-  <p>
-    <a href="mailto:kimps005@gmail.com"><img src="https://img.shields.io/badge/Email-Contact-374151?style=flat-square&logo=gmail&logoColor=white" alt="Email"/></a>
-    <a href="https://github.com/kimps005"><img src="https://img.shields.io/badge/GitHub-kimps005-374151?style=flat-square&logo=github&logoColor=white" alt="GitHub"/></a>
-    <a href="https://github.com/kimps005/CatchSmishing"><img src="https://img.shields.io/badge/Research-CatchSmishing-1d4ed8?style=flat-square" alt="CatchSmishing"/></a>
+    <a href="mailto:kimps005@gmail.com"><img src="https://img.shields.io/badge/Email-374151?style=flat-square&logo=gmail&logoColor=white" alt="Email"/></a>
+    <a href="https://github.com/kimps005"><img src="https://img.shields.io/badge/GitHub-374151?style=flat-square&logo=github&logoColor=white" alt="GitHub"/></a>
+    <a href="https://huggingface.co/kimps005/sms-category-model"><img src="https://img.shields.io/badge/Hugging%20Face-Model-FFD21E?style=flat-square&logo=huggingface&logoColor=black" alt="Hugging Face Model"/></a>
   </p>
 </div>
 
 ---
 
-## About
+## Highlights
 
-- **AI model development:** KLUE BERT 기반 텍스트 분류, OCR 파이프라인, 데이터 누수 검토 및 재평가
-- **AI application engineering:** 이미지·LLM·TTS를 활용한 서비스 프로토타이핑과 실시간 멀티플레이 서비스 개발
-- **Learning by building:** Unity + VLA 데이터 수집·파인튜닝 실험, QR 기반 경유지 최적화 서비스 설계
-- **Currently:** 컴퓨터공학 학부 과정 · AI Agent / LLM Systems / MLOps 학습 및 프로젝트 고도화
+| | |
+| :-- | :-- |
+| **Grand Prize · 1st Place** | 2026년 11월 해커톤 — 생성형 AI 동화 서비스 **Pictory** |
+| **96.18% Accuracy · 96.15% Macro-F1** | KLUE BERT 기반 **7개 문자 유형 분류**, 그룹 분할·3회 학습 시드 평가 |
+| **58% Smaller · 47% Lower p50 Latency** | 문자 분류 모델 **FP32 → INT8 동적 양자화**, 로컬 벤치마크 |
+| **Polling → WebSocket** | EGGG 실시간 통신 전환, 채팅 중복·라운드 타이머 오류 해결 |
+
+## Engineering Experience
+
+### 01. [CatchSmishing](https://github.com/kimps005/CatchSmishing) — Multimodal Smishing Analysis
+
+**AI 모델 개발 · OCR · API · 모델 최적화**
+
+텍스트, 캡처 이미지, QR URL을 종합해 스미싱 위험 신호와 분석 근거를 제공하는 서비스입니다.
+
+- **분석 파이프라인:** PaddleOCR · KLUE BERT 문자 유형 분류 · URL 평판/리다이렉트 검사 · Gemini 문맥·이미지 분석을 통합
+- **모델 평가:** 학습/평가 데이터의 문장 중복을 점검하고, 120개 하위 유형을 기준으로 그룹 분할 및 반복 평가
+- **검증 성능:** 7개 **문자 카테고리 분류**의 Accuracy **96.18 ± 0.21%**, Macro-F1 **96.15 ± 0.21%** (3개 학습 시드)
+- **추론 최적화:** FP32 대비 INT8 동적 양자화 모델 **파일 크기 약 58% 감소**, **단일 문자 p50 지연 약 47% 감소** (생성형 SMS 2,800건 로컬 벤치마크)
+- **서비스 구성:** FastAPI 분석 API · Flutter 클라이언트 · Hugging Face 모델 배포
+
+**Links:** [Repository](https://github.com/kimps005/CatchSmishing) · [Hugging Face Model](https://huggingface.co/kimps005/sms-category-model) · [Service](https://catchsmishing.com)
+
+<sub>분류 정확도는 7개 문자 유형에 대한 결과이며 스미싱 이진 판별 정확도가 아닙니다. 양자화 수치는 지정된 로컬 벤치마크 기준입니다.</sub>
+
+### 02. Pictory — AI Storytelling Service
+
+**2026 Hackathon · Grand Prize (1st Place)**
+
+어린이가 그린 그림을 동화 캐릭터로 활용하고, 자신의 감정과 고민을 이야기로 표현하도록 돕는 생성형 AI 서비스입니다.
+
+- **서비스 설계:** 아이의 그림과 선택지를 바탕으로 사용자 맞춤형 동화 경험 구성
+- **AI 파이프라인:** LLM을 통한 이야기 생성 · 이미지 생성 · 한국어 TTS 음성 낭독
+- **결과:** 2026년 11월 해커톤 **대상(전체 1위)** 수상
+
+### 03. [EGGG](https://github.com/dainyeyo/miniproject) — Real-time AI Multiplayer Game
+
+**Real-time Web · AI Integration · Debugging**
+
+AI 이미지 기능 및 LLM 채점을 활용한 멀티플레이 그림 퀴즈 웹 서비스입니다.
+
+- **서비스 구조:** Next.js 14 / React 18 · Node.js WebSocket 서버 · Neon PostgreSQL
+- **실시간 통신 개선:** 약 1.2초 주기의 상태 Polling을 **WebSocket 이벤트 기반 통신**으로 전환
+- **장애 해결:** 채팅 중복과 타이머 시작·초기화 오류를 원인별로 분리하고 수정
+- **검증:** 여러 브라우저에서 입장, 채팅, 타이머, 라운드 전환을 반복 테스트해 시연 완료
+
+**Link:** [Repository](https://github.com/dainyeyo/miniproject)
+
+### 04. LET'S HIM COOK! — Vision-Language-Action Learning
+
+**VLA · Imitation Learning · Unity Simulation**
+
+Unity 식당 시뮬레이션에서 음식 서빙과 빈 트레이 수거를 다루는 VLA 기반 학습 프로젝트입니다.
+
+- **모델:** X-VLA (\`lerobot/xvla-base\`) 기반 파인튜닝 실험, 약 **30,000 steps**
+- **데이터 파이프라인:** 약 **10Hz** RGB·상태·행동 데이터 수집 (512×288 RGB, 256×256 모델 입력)
+- **학습 데이터:** 초기 **459 episodes / 50,679 frames** 수집 후 서빙 **300**, 수거 **300** episodes로 과업별 데이터 구성
+- **시스템 설계:** 게임 상태·대기 등 규칙 기반 처리를 Unity로 분리하고 모델 학습 범위를 핵심 행동에 집중
+- **검증 경험:** 텔레오퍼레이션 및 데이터 수집·학습 흐름 구현과 실험 기록
+
+### 05. MOAGIL — Multi-stop Route Optimization
+
+**Route Optimization · QR Mobile Web · In-vehicle UX**
+
+동승자가 앱 설치 없이 QR 웹에서 목적지를 지정하고, 운전자는 경유 순서를 확인할 수 있도록 설계한 차량용 앱 공모전 프로젝트입니다.
+
+- **목적지 수집:** QR → 모바일 웹 → Kakao Maps 지도 핀 선택
+- **경로 탐색:** 최대 4개 동승자 목적지에 대해 **24개(4!) 방문 순서** 전수 비교 설계
+- **사용자 흐름:** 목적지 순서 고정·변경, 경유지 건너뛰기, 변경 시 재계산 구조
+- **UX 목표:** 운전 중 입력과 주의 분산 최소화
+
+## Tech Stack
+
+**AI / ML**
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
+![Transformers](https://img.shields.io/badge/Transformers-475569?style=flat-square)
+![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
+![PaddleOCR](https://img.shields.io/badge/PaddleOCR-475569?style=flat-square)
+![X VLA](https://img.shields.io/badge/X--VLA-475569?style=flat-square)
+
+**Applications / Backend**
+
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-149ECA?style=flat-square&logo=react&logoColor=white)
+![WebSocket](https://img.shields.io/badge/WebSocket-475569?style=flat-square)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+
+**Deployment / Tools**
+
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
+![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Unity](https://img.shields.io/badge/Unity-000000?style=flat-square&logo=unity&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
+
+## Education & Awards
+
+| Date | Experience |
+| :-- | :-- |
+| **2026.11** | **Grand Prize (1st Place)** — Hackathon, *Pictory* |
+| **2026.06 – 2026.08** | **Generative AI Bootcamp**, TEAM MECHU |
+| **2021 – 2027.02** | **Computer Engineering**, Hyupsung University (Expected Graduation) |
 
 ## GitHub Activity
 
 <div align="center">
-  <a href="https://github.com/kimps005">
-    <img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=kimps005&bg_color=0d1117&color=8b949e&line=58a6ff&point=79c0ff&area=true&area_color=1f6feb&hide_border=true&custom_title=Contribution%20Activity" alt="GitHub contribution activity graph" />
-  </a>
-  <br/>
-  <img height="165" src="https://github-readme-stats-fast.vercel.app/api?username=kimps005&show_icons=true&theme=github_dark&hide_border=true" alt="GitHub statistics" />
-  <img height="165" src="https://github-readme-stats-fast.vercel.app/api/top-langs/?username=kimps005&layout=compact&theme=github_dark&hide_border=true" alt="Most used languages" />
+  <img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=kimps005&bg_color=0d1117&color=8b949e&line=58a6ff&point=79c0ff&area=true&area_color=1f6feb&hide_border=true&custom_title=Contribution%20Activity" alt="GitHub contribution activity" />
 </div>
 
-<sub>GitHub 통계는 공개 저장소/기여 내역과 통계 제공 서비스의 집계 기준에 영향을 받습니다. 언어 비율은 숙련도 지표가 아닙니다.</sub>
+---
 
-## Tech Stack
-
-**Language**
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![C](https://img.shields.io/badge/C-A8B9CC?style=flat-square&logo=c&logoColor=black)
-
-**AI / Machine Learning**
-
-![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
-![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
-![Transformers](https://img.shields.io/badge/Transformers-475569?style=flat-square)
-![KLUE BERT](https://img.shields.io/badge/KLUE--BERT-475569?style=flat-square)
-![PaddleOCR](https://img.shields.io/badge/PaddleOCR-475569?style=flat-square)
-![X-VLA](https://img.shields.io/badge/X--VLA-475569?style=flat-square)
-
-**Services / Infrastructure**
-
-![WebSocket](https://img.shields.io/badge/WebSocket-475569?style=flat-square)
-![REST API](https://img.shields.io/badge/REST%20API-475569?style=flat-square)
-![Neon](https://img.shields.io/badge/Neon-00E599?style=flat-square&logo=neon&logoColor=black)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
-![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white)
-
-**Development Tools**
-
-![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Unity](https://img.shields.io/badge/Unity-000000?style=flat-square&logo=unity&logoColor=white)
-![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=flat-square)
-
-## Selected Projects
-
-### 01 · Pictory — Generative AI Storytelling
-
-**2026 Hackathon · Grand Prize (1st Place)**
-
-어린이가 그린 그림을 동화 캐릭터로 활용하고, 생성형 AI로 이야기를 만드는 동화 서비스.
-
-- **AI pipeline:** LLM · Image Generation · Korean TTS
-- **Problem:** 감정을 구체적으로 표현하기 어려운 어린이를 위한 이야기 기반 경험
-- **Result:** 2026년 11월 해커톤 대상(1위)
-- **Demo / Source:** 공개 링크 준비 중
-
-### 02 · [CatchSmishing](https://github.com/kimps005/CatchSmishing) — NLP / OCR
-
-문자·이미지·QR 정보를 기반으로 스미싱·큐싱 위험을 분석하는 졸업 프로젝트.
-
-- **Stack:** Python · PyTorch · KLUE BERT · PaddleOCR
-- **Focus:** 데이터 구성, 모델 파인튜닝, 유형 분류 평가 및 데이터 누수 검토
-- **Evaluation:** 7개 *문자 유형 분류*의 그룹 분할 테스트 Accuracy **96.18 ± 0.21%**, Macro-F1 **96.15 ± 0.21%** (3개 시드)
-- **Scope:** 이 수치는 정상/스미싱 **이진 탐지 정확도나 전체 서비스 성능이 아님**
-
-### 03 · [EGGG](https://github.com/dainyeyo/miniproject) — Real-time AI Web Game
-
-AI 이미지 기능과 멀티플레이 상호작용을 결합한 웹게임.
-
-- **Stack:** WebSocket · Neon DB · Vercel · Cloudflare Tunnel
-- **Engineering:** 약 1.2초 간격의 Polling에서 WebSocket 기반 통신으로 전환
-- **Debugging:** 메시지 중복·타이머 오류를 분리해 해결하고 다중 브라우저로 검증
-
-### 04 · LET'S HIM COOK! — VLA / Unity Simulation
-
-Unity 환경에서 서빙과 빈 트레이 수거를 수행하는 VLA 학습 실험.
-
-- **Stack:** Unity · X-VLA · PyTorch
-- **Experiment:** 서빙 300개 + 수거 300개 에피소드의 학습 데이터 수집·실험
-- **Design:** 규칙 기반 게임 로직과 학습 대상 행동을 분리
-- **Validation:** 텔레오퍼레이션 및 데이터 수집 검증. 자율 서빙 성능은 추가 검증 필요
-- **Repository:** 팀 비공개 저장소
-
-### 05 · MOAGIL — Multi-stop Route Optimization
-
-동승자가 QR 모바일 웹으로 목적지를 제출하면 경유 순서를 계산하는 차량용 앱 공모전 프로젝트.
-
-- **Stack:** Kakao Maps JavaScript API · QR Web · Route Optimization
-- **Design:** 최대 4개 목적지에 대한 **24개 순서(4!)** 비교 및 재계산 기능 설계
-- **Focus:** 운전 중 조작 최소화, 동승자 별도 앱 설치 불필요
-- **Scope:** 공모전 시연 중심이며 실차 연동 성능은 별도 확인 필요
-
-## Education & Recognition
-
-| Period | Experience |
-| :-- | :-- |
-| **2026.11** | **Grand Prize (1st Place)** — Hackathon, *Pictory* |
-| **2026.06 – 2026.08** | Generative AI Bootcamp · TEAM MECHU |
-| **2021 – 2027.02 (Expected)** | B.S. Computer Engineering · Hyupsung University |
-| **2026** | Graduation Research · CatchSmishing |
-
-## Contact
-
-- **Email:** [kimps005@gmail.com](mailto:kimps005@gmail.com)
-- **GitHub:** [github.com/kimps005](https://github.com/kimps005)
-
-<!-- Profile sections intentionally avoid employment claims and unverified production outcomes. -->
+<div align="center">
+  <a href="mailto:kimps005@gmail.com">Email</a> · <a href="https://github.com/kimps005">GitHub</a> · <a href="https://huggingface.co/kimps005/sms-category-model">Hugging Face</a>
+</div>
