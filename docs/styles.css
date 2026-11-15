@@ -53,36 +53,50 @@ img,svg{max-width:100%}
 .js-ready .reveal:not(.visible){opacity:0;transform:translateY(21px)}
 .js-ready .reveal.visible{opacity:1;transform:none}
 
-/* Home / About */
-.hero-section{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;padding-top:35px;padding-bottom:30px;border-color:#E5EDF4;position:relative;overflow:hidden}
-.hero-section::before{content:"";position:absolute;right:-220px;top:-260px;width:650px;height:650px;border-radius:50%;background:radial-gradient(circle,rgba(230,219,242,.4),transparent 65%);pointer-events:none}
-.hero-topline,.hero-bottom{position:relative;display:flex;justify-content:space-between;align-items:center;gap:15px;font:800 10px/1.5 var(--display);letter-spacing:.16em;color:#8A99A8}
-.topline-right{color:#6F96B2}
-.hero-body{position:relative;padding:50px 0 38px}
-.avatar-wrap{display:inline-flex;position:relative;align-items:center;justify-content:center;margin:0 0 25px}
-.avatar{height:166px;width:166px;object-fit:cover;border-radius:50%;border:6px solid white;box-shadow:0 10px 40px rgba(16,57,85,.10);background:#EEF6FB;position:relative;z-index:1}
-.avatar-orbit{position:absolute;inset:-9px;border:1px dashed #C0D4E4;border-radius:50%}
-.eyebrow{color:var(--primary);font:800 12px/1.4 var(--display);letter-spacing:.22em;margin:0 0 13px}
-.hero-name{font:800 clamp(73px,9vw,156px)/.94 var(--display);letter-spacing:-.09em;margin:0 0 25px;white-space:nowrap}
+/* Home / About — designed to fit in the initial viewport */
+.hero-section{
+  min-height:100vh;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding-top:clamp(36px,6vh,70px);
+  padding-bottom:clamp(36px,6vh,70px);
+  border-color:#E5EDF4;
+  position:relative;
+  overflow:hidden;
+}
+.hero-section::before{
+  content:"";
+  position:absolute;
+  right:-220px;
+  top:-260px;
+  width:650px;
+  height:650px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(184,217,241,.24),transparent 65%);
+  pointer-events:none;
+}
+.hero-body{position:relative;width:100%;max-width:1200px;padding:0}
+.avatar-wrap{display:inline-flex;position:relative;align-items:center;justify-content:center;margin:0 0 clamp(18px,2.5vh,27px)}
+.avatar{height:clamp(100px,14vh,130px);width:clamp(100px,14vh,130px);object-fit:cover;border-radius:50%;border:5px solid white;box-shadow:0 10px 34px rgba(16,57,85,.10);background:#EEF6FB;position:relative;z-index:1}
+.avatar-orbit{position:absolute;inset:-8px;border:1px dashed #C0D4E4;border-radius:50%}
+.hero-name{font:800 clamp(57px,7.3vw,118px)/1.1 var(--display);letter-spacing:-.078em;margin:0 0 15px;white-space:nowrap}
 .hero-name>span{color:var(--primary)}
 .name-dot{color:var(--ink)}
-.hero-meta{display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;padding-bottom:22px;border-bottom:1px solid #E1EAF2;font:800 11px/1.6 var(--display);letter-spacing:.06em}
-.hero-role{color:#44586B}
-.meta-divider{color:#A8BFCE;margin:0 7px}
-.hero-meta a{color:var(--primary)}
-.hero-meta a:hover,.text-link:hover{opacity:.7}
-.hero-statement{font-size:clamp(21px,2.8vw,32px);font-weight:500;letter-spacing:-.048em;line-height:1.65;margin:30px 0 16px;word-break:keep-all}
+.hero-role{font:800 clamp(11px,1.05vw,14px)/1.6 var(--display);letter-spacing:.065em;color:#44586B;margin:0 0 8px}
+.meta-divider{color:#A8BFCE;margin:0 10px}
+.hero-school{font-size:13px;color:#617184;margin:0 0 clamp(20px,3.5vh,32px);line-height:1.6}
+.hero-statement{font-size:clamp(19px,2.15vw,28px);letter-spacing:-.047em;line-height:1.55;margin:0 0 8px;word-break:keep-all}
 .hero-statement strong{font-weight:800}
-.hero-desc{max-width:700px;color:#617184;font-size:15px;line-height:2;word-break:keep-all;margin:0}
-.hero-actions{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:35px}
-.btn{min-height:49px;display:inline-flex;align-items:center;justify-content:space-between;gap:28px;padding:13px 19px;border:1px solid var(--primary);border-radius:4px;font-weight:700;font-size:13px;transition:transform .2s,background .2s,color .2s}
+.hero-desc{max-width:740px;color:#617184;font-size:14px;line-height:1.8;word-break:keep-all;margin:0}
+.hero-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:clamp(20px,3.5vh,33px)}
+.btn{min-height:46px;display:inline-flex;align-items:center;justify-content:space-between;gap:28px;padding:12px 19px;border:1px solid var(--primary);border-radius:4px;font-weight:700;font-size:13px;transition:transform .2s,background .2s,color .2s}
 .btn:hover{transform:translateY(-2px)}
 .btn-primary{background:var(--primary);color:#fff}
 .btn-primary:hover{background:var(--primary-dark)}
 .btn-secondary{color:var(--primary)}
 .btn-secondary:hover{background:#E9F3FF}
-.hero-bottom{margin-top:auto;align-items:center}
-.scroll-stroke{width:50px;height:1px;background:#B0C8D8;margin-right:auto;margin-left:14px}
 
 /* Education */
 .section-education{background:#fff}
@@ -233,7 +247,7 @@ img,svg{max-width:100%}
   .nav-link{font-size:16px}
   .nav-link.active::before{left:-18px}
   .section{padding-left:45px;padding-right:45px}
-  .hero-name{font-size:clamp(72px,9vw,130px)}
+  .hero-name{font-size:clamp(56px,7.2vw,98px)}
   .project-card{grid-template-columns:minmax(0,1fr) minmax(260px,.78fr)}
 }
 @media(max-width:1020px){
@@ -272,15 +286,17 @@ img,svg{max-width:100%}
 }
 @media(max-width:640px){
   .section{padding:72px 23px 83px}
-  .hero-section{padding-top:20px;padding-bottom:22px;min-height:calc(100svh - 66px)}
-  .topline-right{display:none}
-  .hero-body{padding:55px 0 36px}
-  .avatar,.avatar-wrap{width:122px;height:122px}
-  .avatar{height:122px}
-  .hero-name{font-size:clamp(55px,13vw,86px);letter-spacing:-.078em}
-  .hero-role,.hero-meta a{font-size:10px}
-  .hero-statement{font-size:21px}
-  .hero-desc{font-size:13px}
+  .hero-section{padding-top:24px;padding-bottom:28px;min-height:calc(100svh - 66px)}
+  .hero-body{padding:0}
+  .avatar{width:clamp(78px,15vh,103px);height:clamp(78px,15vh,103px);border-width:4px}
+  .avatar-wrap{margin-bottom:18px}
+  .hero-name{font-size:clamp(58px,13vw,76px);letter-spacing:-.078em;white-space:normal;line-height:1.04;margin-bottom:18px}
+  .hero-name>span{display:block}
+  .hero-role{font-size:10px}
+  .hero-school{font-size:12px;margin-bottom:22px}
+  .hero-statement{font-size:clamp(18px,4.9vw,22px)}
+  .hero-desc{font-size:12px}
+  .hero-actions{margin-top:21px}
   .hero-actions{gap:8px}
   .btn{min-height:45px;font-size:12px;padding:11px 12px;gap:12px}
   .section-heading{margin-bottom:37px}
