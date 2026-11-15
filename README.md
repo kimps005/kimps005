@@ -15,14 +15,36 @@
 
 ---
 
-## Highlights
+## ⚙️ Skill (스킬)
 
-| | |
-| :-- | :-- |
-| **Grand Prize · 1st Place** | 2026년 11월 해커톤 — 생성형 AI 동화 서비스 **Pictory** |
-| **96.18% Accuracy · 96.15% Macro-F1** | KLUE BERT 기반 **7개 문자 유형 분류**, 그룹 분할·3회 학습 시드 평가 |
-| **58% Smaller · 47% Lower p50 Latency** | 문자 분류 모델 **FP32 → INT8 동적 양자화**, 로컬 벤치마크 |
-| **Polling → WebSocket** | EGGG 실시간 통신 전환, 채팅 중복·라운드 타이머 오류 해결 |
+##### ▫️ AI / Machine Learning
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
+![Transformers](https://img.shields.io/badge/Transformers-475569?style=flat-square)
+![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
+![PaddleOCR](https://img.shields.io/badge/PaddleOCR-475569?style=flat-square)
+![X VLA](https://img.shields.io/badge/X--VLA-475569?style=flat-square)
+
+##### ▫️ Backend / Application
+
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-149ECA?style=flat-square&logo=react&logoColor=white)
+![WebSocket](https://img.shields.io/badge/WebSocket-475569?style=flat-square)
+
+##### ▫️ Database
+
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+
+##### ▫️ Deployment / Tools
+
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
+![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Unity](https://img.shields.io/badge/Unity-000000?style=flat-square&logo=unity&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
 
 ## Engineering Experience
 
@@ -87,34 +109,6 @@ Unity 식당 시뮬레이션에서 음식 서빙과 빈 트레이 수거를 다�
 - **경로 탐색:** 최대 4개 동승자 목적지에 대해 **24개(4!) 방문 순서** 전수 비교 설계
 - **사용자 흐름:** 목적지 순서 고정·변경, 경유지 건너뛰기, 변경 시 재계산 구조
 - **UX 목표:** 운전 중 입력과 주의 분산 최소화
-
-## Tech Stack
-
-**AI / ML**
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
-![Transformers](https://img.shields.io/badge/Transformers-475569?style=flat-square)
-![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
-![PaddleOCR](https://img.shields.io/badge/PaddleOCR-475569?style=flat-square)
-![X VLA](https://img.shields.io/badge/X--VLA-475569?style=flat-square)
-
-**Applications / Backend**
-
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
-![React](https://img.shields.io/badge/React-149ECA?style=flat-square&logo=react&logoColor=white)
-![WebSocket](https://img.shields.io/badge/WebSocket-475569?style=flat-square)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-
-**Deployment / Tools**
-
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
-![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Unity](https://img.shields.io/badge/Unity-000000?style=flat-square&logo=unity&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
 
 ## Education & Awards
 
