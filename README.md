@@ -3,9 +3,9 @@
 <div align="center">
   <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=165&color=0:0f172a,100:1d4ed8&text=Minsu%20Choi&fontColor=ffffff&fontSize=40&fontAlignY=36&desc=AI%20Engineering%20%7C%20Models%20to%20Services&descSize=17&descAlignY=59" alt="Minsu Choi — AI Engineering" />
 
-  <h3>AI / ML Engineering · AI Service Development</h3>
+  <h3>AI / AI Service Development · ML Engineering t</h3>
   <p>협성대학교 컴퓨터공학과 · 2027.02 졸업 예정</p>
-  <p><b>모델의 성능을 검증하고, 추론을 최적화하고, 실제 서비스로 연결합니다.</b></p>
+  <p><b>성능 검증, 추론 최적화, 서비스로 연결.</b></p>
   <p>
     <a href="mailto:kimps005@gmail.com"><img src="https://img.shields.io/badge/Email-374151?style=flat-square&logo=gmail&logoColor=white" alt="Email"/></a>
     <a href="https://github.com/kimps005"><img src="https://img.shields.io/badge/GitHub-374151?style=flat-square&logo=github&logoColor=white" alt="GitHub"/></a>
