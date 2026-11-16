@@ -56,7 +56,7 @@
 | 프로젝트 | 무엇을 만들었나 | 핵심 기술 · 성과 |
 | :-- | :-- | :-- |
 | **01 · [CatchSmishing](https://github.com/kimps005/CatchSmishing)**<br/>AI Security / NLP | 문자·캡처 이미지·QR을 분석해 스미싱 위험 정보를 제공하는 서비스 | **7개 문자 유형 분류 96.18%** · INT8 모델 크기 **약 58%↓**, 로컬 p50 지연 **약 47%↓** |
-| **02 · Pictory**<br/>Generative AI | 아이가 그린 그림을 캐릭터로 활용해 동화와 음성을 생성하는 서비스 | LLM · 이미지 생성 · 한국어 TTS<br/>**2026 해커톤 대상(1위)** |
+| **02 · Pictory**<br/>Generative AI<br/>[▶ 시연 영상](https://www.youtube.com/watch?v=YQvHdezsk_4) | 아이가 그린 그림을 캐릭터로 활용해 동화와 음성을 생성하는 서비스 | LLM · 이미지 생성 · 한국어 TTS<br/>**2026 해커톤 대상(1위)** |
 | **03 · [EGGG](https://github.com/dainyeyo/miniproject)**<br/>Real-time Web | AI 그림 퀴즈를 여러 사용자가 함께 즐기는 멀티플레이 웹게임 | **Polling → WebSocket** 전환 · 채팅·타이머 오류 해결 |
 | **04 · LET'S HIM COOK!**<br/>VLA / Simulation | Unity 식당에서 서빙·트레이 수거 동작을 학습하는 VLA 실험 | **X-VLA 파인튜닝** · 서빙 300 + 수거 300 에피소드 수집 |
 | **05 · MOAGIL**<br/>Route Optimization | QR로 동승자 목적지를 모아 하차 순서를 계산하는 차량용 서비스 | 최대 **4개 목적지, 24가지 순서(4!)** 비교 설계 |
@@ -94,6 +94,10 @@
 - **기능:** 아이가 그린 그림을 캐릭터로 활용하고 선택지에 따라 동화 경험 구성
 - **AI 파이프라인:** 이야기 생성 LLM · 동화 장면 이미지 생성 · 한국어 TTS 낭독
 - **성과:** **2026년 11월 해커톤 대상(전체 1위)**
+
+**▶ [픽토리 시연 영상 보기 (YouTube)](https://www.youtube.com/watch?v=YQvHdezsk_4)**
+
+<a href="https://www.youtube.com/watch?v=YQvHdezsk_4" target="_blank" rel="noopener noreferrer"><img src="https://img.youtube.com/vi/YQvHdezsk_4/hqdefault.jpg" width="480" alt="픽토리 시연 영상 썸네일 — 클릭하여 YouTube에서 보기" /></a>
 
 </details>
 
