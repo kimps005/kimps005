@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css?v=addinedu-20261116" />
+  <link rel="stylesheet" href="./styles.css?v=skills-detailed-20261116" />
   <script defer src="./script.js"></script>
 </head>
 <body>
@@ -108,43 +108,241 @@
     </section>
 
     <section class="section section-skills" id="skills" aria-labelledby="skills-title">
-      <div class="section-heading reveal">
-        <h2 id="skills-title">SKILLS<span class="heading-period">.</span></h2>
+      <div class="section-heading reveal"><h2 id="skills-title">SKILLS<span class="heading-period">.</span></h2></div>
+      <div class="skills-badges reveal" aria-label="프로젝트에서 사용한 언어 및 기술">
+        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white" alt="Python" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&amp;logo=typescript&amp;logoColor=white" alt="TypeScript" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&amp;logo=javascript&amp;logoColor=black" alt="JavaScript" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/Dart-0175C2?style=flat-square&amp;logo=dart&amp;logoColor=white" alt="Dart" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&amp;logo=kotlin&amp;logoColor=white" alt="Kotlin" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/SQL-4169E1?style=flat-square&amp;logo=postgresql&amp;logoColor=white" alt="SQL" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&amp;logo=pytorch&amp;logoColor=white" alt="PyTorch" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/PaddleOCR-27649D?style=flat-square&amp;logoColor=white" alt="PaddleOCR" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/Next.js-111111?style=flat-square&amp;logo=nextdotjs&amp;logoColor=white" alt="Next.js" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/React-149ECA?style=flat-square&amp;logo=react&amp;logoColor=white" alt="React" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&amp;logo=fastapi&amp;logoColor=white" alt="FastAPI" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/Flutter-02569B?style=flat-square&amp;logo=flutter&amp;logoColor=white" alt="Flutter" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/WebSocket-264653?style=flat-square&amp;logoColor=white" alt="WebSocket" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&amp;logo=supabase&amp;logoColor=black" alt="Supabase" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&amp;logo=postgresql&amp;logoColor=white" alt="PostgreSQL" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/Azure%20Speech-0078D4?style=flat-square&amp;logo=microsoftazure&amp;logoColor=white" alt="Azure Speech" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&amp;logo=cloudflare&amp;logoColor=white" alt="Cloudflare" height="30" loading="lazy" />
+        <img src="https://img.shields.io/badge/Kakao%20Maps-FEE500?style=flat-square&amp;logoColor=black" alt="Kakao Maps" height="30" loading="lazy" />
       </div>
-      <div class="skill-group reveal">
-        <div class="skill-label"><span>01</span><h3>AI / Machine Learning</h3></div>
-        <div class="skill-badges">
-          <span class="skill-pill"><span class="pill-dot python"></span>Python</span>
-          <span class="skill-pill"><span class="pill-dot torch"></span>PyTorch</span>
-          <span class="skill-pill"><span class="pill-dot hf"></span>Hugging Face</span>
-          <span class="skill-pill">Transformers</span>
-          <span class="skill-pill">KLUE BERT</span>
-          <span class="skill-pill">PaddleOCR</span>
-          <span class="skill-pill">X-VLA</span>
+      <div class="skills-category reveal">
+        <div class="skills-category-heading"><h3>[ Language ]</h3><span>저장소에서 확인된 사용 언어</span></div>
+        <div class="skills-experience-grid">
+          <article class="skill-experience">
+            <h4>Python</h4>
+            <ul>
+              <li>CatchSmishing: FastAPI 분석 서버, OCR·BERT 분류 및 양자화 벤치마크 코드를 구성</li>
+              <li>MOAGIL: Kakao Mobility 이동 시간 행렬을 생성해 하차 순서별 경로 비교</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/CatchSmishing/blob/main/server/main.py" target="_blank" rel="noopener noreferrer">분석 서버 <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/kimps005/MOAGIL/blob/main/backend/routing.py" target="_blank" rel="noopener noreferrer">경로 탐색 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>TypeScript</h4>
+            <ul>
+              <li>Pictory: React 훅으로 동화 장면·선택지 상태를 관리하고 요청·응답 타입 정의</li>
+              <li>Gemini의 JSON 응답을 스키마로 검증하고 실패 시 모델 재시도 로직 구현</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/Pictory/blob/main/app/useStory.ts" target="_blank" rel="noopener noreferrer">동화 상태 관리 <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/kimps005/Pictory/blob/main/lib/story/generate.ts" target="_blank" rel="noopener noreferrer">AI 생성 로직 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>JavaScript</h4>
+            <ul>
+              <li>EGGG: WebSocket 서버에서 방·참가자·그림 상태·라운드 타이머 동기화</li>
+              <li>MOAGIL: Kakao Maps JavaScript API로 지도와 하차 지점 핀 표시</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/dainyeyo/miniproject/blob/main/realtime-server/server.js" target="_blank" rel="noopener noreferrer">실시간 게임 서버 <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/kimps005/MOAGIL/blob/main/web/kakao-map.js" target="_blank" rel="noopener noreferrer">지도 인터페이스 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>Dart</h4>
+            <ul>
+              <li>CatchSmishing: Flutter에서 이미지 선택·QR 스캔·공유 입력과 분석 API 응답 화면 연결</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/CatchSmishing/blob/main/lib/main.dart" target="_blank" rel="noopener noreferrer">Flutter 클라이언트 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>Kotlin</h4>
+            <ul>
+              <li>MOAGIL: Jetpack Compose 기반 Pleos/Android Automotive 차량용 UI 구성</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/MOAGIL/blob/main/vehicle-app/app/src/main/java/kr/moagil/vehicle/MainActivity.kt" target="_blank" rel="noopener noreferrer">차량 앱 코드 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>SQL</h4>
+            <ul>
+              <li>Pictory: Supabase PostgreSQL JSONB 사용자 데이터와 계정별 RLS 정책 정의</li>
+              <li>EGGG: Neon PostgreSQL 제시어 테이블·인덱스·일괄 적재 마이그레이션</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/Pictory/blob/main/supabase/schema.sql" target="_blank" rel="noopener noreferrer">RLS 스키마 <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/dainyeyo/miniproject/blob/main/db_migrate.js" target="_blank" rel="noopener noreferrer">DB 마이그레이션 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>HTML / CSS</h4>
+            <ul>
+              <li>MOAGIL: QR 동승자 참여·운전자 웹 화면의 구조와 스타일, 반응형 지도 인터페이스 구성</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/MOAGIL/tree/main/web" target="_blank" rel="noopener noreferrer">웹 화면 소스 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
         </div>
       </div>
-      <div class="skill-group reveal">
-        <div class="skill-label"><span>02</span><h3>Application / Backend</h3></div>
-        <div class="skill-badges">
-          <span class="skill-pill"><span class="pill-dot fastapi"></span>FastAPI</span>
-          <span class="skill-pill"><span class="pill-dot flutter"></span>Flutter</span>
-          <span class="skill-pill">Next.js</span>
-          <span class="skill-pill"><span class="pill-dot react"></span>React</span>
-          <span class="skill-pill">WebSocket</span>
-          <span class="skill-pill">REST API</span>
+      <div class="skills-category reveal">
+        <div class="skills-category-heading"><h3>[ AI / Machine Learning ]</h3><span>모델 평가 및 멀티모달 AI 구현</span></div>
+        <div class="skills-experience-grid">
+          <article class="skill-experience">
+            <h4>PyTorch / Transformers / KLUE-BERT</h4>
+            <ul>
+              <li>CatchSmishing: 한국어 SMS 7개 카테고리 분류 모델 평가, 그룹 분할과 반복 시드 검증</li>
+              <li>FP32와 INT8 동적 양자화 모델의 파일 크기·추론 지연 비교</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/CatchSmishing/blob/main/server/predictor.py" target="_blank" rel="noopener noreferrer">BERT 추론 <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/kimps005/CatchSmishing/blob/main/benchmark_quantization.py" target="_blank" rel="noopener noreferrer">양자화 비교 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>PaddleOCR / OpenCV / pyzbar</h4>
+            <ul>
+              <li>CatchSmishing: 문자 캡처 OCR, 이미지 처리, QR/URL 추출 결과를 분석 파이프라인에 결합</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/CatchSmishing/blob/main/server/main.py" target="_blank" rel="noopener noreferrer">이미지 분석 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>Gemini API / LLM</h4>
+            <ul>
+              <li>Pictory: 선택에 따라 이어지는 동화와 부모 카드 생성, 구조화된 JSON 검증·재시도</li>
+              <li>CatchSmishing: 규칙·URL 분석과 함께 문자 문맥 판단에 생성형 AI 신호 활용</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/Pictory/blob/main/lib/story/generate.ts" target="_blank" rel="noopener noreferrer">동화 생성 <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/kimps005/CatchSmishing/blob/main/server/main.py" target="_blank" rel="noopener noreferrer">문맥 분석 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>Cloudflare Workers AI / Azure Speech</h4>
+            <ul>
+              <li>Pictory: 동화 장면 이미지 생성과 아이의 그림 참조·합성 요청 처리</li>
+              <li>Azure Neural TTS 서버 API를 통한 한국어 음성 낭독과 음성·속도 설정</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/Pictory/blob/main/app/api/image/route.ts" target="_blank" rel="noopener noreferrer">이미지 API <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/kimps005/Pictory/blob/main/app/api/tts/route.ts" target="_blank" rel="noopener noreferrer">TTS API <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
         </div>
       </div>
-      <div class="skill-group reveal">
-        <div class="skill-label"><span>03</span><h3>Data / Infrastructure</h3></div>
-        <div class="skill-badges">
-          <span class="skill-pill">PostgreSQL / Neon</span>
-          <span class="skill-pill">Vercel</span>
-          <span class="skill-pill">Cloudflare</span>
-          <span class="skill-pill">Docker</span>
-          <span class="skill-pill">Git / GitHub</span>
-          <span class="skill-pill">Unity</span>
+      <div class="skills-category reveal">
+        <div class="skills-category-heading"><h3>[ Framework / Application ]</h3><span>웹·모바일·실시간 서비스 개발</span></div>
+        <div class="skills-experience-grid">
+          <article class="skill-experience">
+            <h4>FastAPI / REST API</h4>
+            <ul>
+              <li>CatchSmishing: 이미지·문자 분석 엔드포인트와 OCR·분류·URL 분석 결과 통합</li>
+              <li>요청 크기·속도 제한 및 보조 API 실패 시 예외 처리</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/CatchSmishing/blob/main/server/main.py" target="_blank" rel="noopener noreferrer">FastAPI 소스 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>Next.js / React</h4>
+            <ul>
+              <li>Pictory: Next.js 16·React 19 기반 이야기 상태 훅과 서버 라우트</li>
+              <li>EGGG: Next.js 14·React 18 기반 멀티플레이 화면과 API 연결</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/Pictory/blob/main/package.json" target="_blank" rel="noopener noreferrer">Pictory 의존성 <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/dainyeyo/miniproject/blob/main/package.json" target="_blank" rel="noopener noreferrer">EGGG 의존성 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>Node.js / WebSocket</h4>
+            <ul>
+              <li>EGGG: 약 1.2초 주기 Polling을 이벤트 기반 실시간 통신으로 전환</li>
+              <li>방별 세션, 채팅·그림 상태, 라운드 타이머 및 상태 전이 관리</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/dainyeyo/miniproject/blob/main/realtime-server/server.js" target="_blank" rel="noopener noreferrer">WebSocket 구현 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>Flutter</h4>
+            <ul>
+              <li>CatchSmishing: Dart 기반 모바일 분석·QR 입력과 API 호출 인터페이스</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/CatchSmishing/blob/main/lib/main.dart" target="_blank" rel="noopener noreferrer">모바일 앱 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>Jetpack Compose / Android</h4>
+            <ul>
+              <li>MOAGIL: 차량용 앱 화면 및 Pleos/AAOS 연동 구성. 실차 주행 성능은 검증 범위에서 제외</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/MOAGIL/tree/main/vehicle-app" target="_blank" rel="noopener noreferrer">차량 앱 소스 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
         </div>
       </div>
+      <div class="skills-category reveal">
+        <div class="skills-category-heading"><h3>[ DBMS / Infrastructure ]</h3><span>데이터 저장·배포·테스트</span></div>
+        <div class="skills-experience-grid">
+          <article class="skill-experience">
+            <h4>PostgreSQL / Neon / Supabase</h4>
+            <ul>
+              <li>EGGG: 제시어 데이터 정제·테이블 생성·인덱스 및 배치 삽입</li>
+              <li>Pictory: 사용자별 데이터 저장과 Row Level Security 접근 제어</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/dainyeyo/miniproject/blob/main/db_migrate.js" target="_blank" rel="noopener noreferrer">Neon 마이그레이션 <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/kimps005/Pictory/blob/main/supabase/schema.sql" target="_blank" rel="noopener noreferrer">Supabase RLS <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>MySQL / PyMySQL</h4>
+            <ul>
+              <li>CatchSmishing: 분석·피드백 관련 DB 연결 설정과 TLS 인증서 처리</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/CatchSmishing/blob/main/server/db_config.py" target="_blank" rel="noopener noreferrer">DB 연결 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="skill-experience">
+            <h4>Vercel / Cloudflare / Testing</h4>
+            <ul>
+              <li>Pictory: Next.js 배포 설정, Cloudflare 이미지 API 연결</li>
+              <li>MOAGIL: 웹 데모 배포와 Python 단위 테스트·브라우저 UI 검증 구성</li>
+            </ul>
+            <div class="skill-evidence">
+              <a href="https://github.com/kimps005/Pictory/blob/main/README.md" target="_blank" rel="noopener noreferrer">배포 구성 <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/kimps005/MOAGIL/tree/main/backend/tests" target="_blank" rel="noopener noreferrer">단위 테스트 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+      <p class="skills-note reveal">공개 저장소의 실제 코드·의존성·README를 기준으로 작성했습니다. Unity / X-VLA 팀 프로젝트는 원본 저장소에 접근되지 않아 언어별 검증 목록에서 제외했습니다.</p>
     </section>
 
     <section class="section section-projects" id="projects" aria-labelledby="projects-title">
