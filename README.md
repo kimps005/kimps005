@@ -3,7 +3,7 @@
 <div align="center">
   <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=290&section=header&color=0:0f172a,100:1d4ed8&text=CHOI%20MINSU&fontColor=ffffff&fontSize=48&fontAlignY=36&desc=AI%20Engineering%20%7C%20Models%20to%20Services&descSize=19&descAlignY=58" alt="CHOI MINSU — AI Engineering" />
 
-  <h3>AI / ML Engineering · AI Service Development</h3>
+  <h3>AI Service Developer · AI / ML Engineer</h3>
   <p>협성대학교 컴퓨터공학과 · 2027.02 졸업 예정</p>
   <p><b>성능 검증, 추론 최적화, 서비스로 연결.</b></p>
   <p>
