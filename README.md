@@ -7,6 +7,9 @@
   <p>협성대학교 컴퓨터공학과 · 2027.02 졸업 예정</p>
   <p><b>성능 검증, 추론 최적화, 서비스로 연결.</b></p>
   <p>
+    <a href="https://kimps005.github.io/kimps005/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/PORTFOLIO-VIEW%20WEBSITE-2563EB?style=for-the-badge&logo=googlechrome&logoColor=white" alt="웹 포트폴리오 바로가기"/></a>
+  </p>
+  <p>
     <a href="mailto:kimps005@gmail.com"><img src="https://img.shields.io/badge/Email-374151?style=flat-square&logo=gmail&logoColor=white" alt="Email"/></a>
     <a href="https://github.com/kimps005"><img src="https://img.shields.io/badge/GitHub-374151?style=flat-square&logo=github&logoColor=white" alt="GitHub"/></a>
     <a href="https://huggingface.co/kimps005/sms-category-model"><img src="https://img.shields.io/badge/Hugging%20Face-Model-FFD21E?style=flat-square&logo=huggingface&logoColor=black" alt="Hugging Face Model"/></a>
