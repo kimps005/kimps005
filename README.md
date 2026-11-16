@@ -151,7 +151,7 @@
 | Date | Experience |
 | :-- | :-- |
 | **2026.11** | **Grand Prize (1st Place)** — Hackathon, *Pictory* |
-| **2026.06 – 2026.08** | **Generative AI Bootcamp**, TEAM MECHU |
+| **2026.06.23 – 2026.08.21** | **애드인에듀 IT 아카데미** — 생성형 AI 활용 서비스 개발 프로젝트 포트폴리오 단기과정 (TEAM MECHU) |
 | **2021 – 2027.02** | **Computer Engineering**, Hyupsung University (Expected Graduation) |
 
 ## GitHub Activity
