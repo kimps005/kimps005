@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css?v=pictory-demo-20261116" />
+  <link rel="stylesheet" href="./styles.css?v=education-clean-20261116" />
   <script defer src="./script.js"></script>
 </head>
 <body>
@@ -26,13 +26,13 @@
     </div>
 
     <nav class="sidebar-nav" aria-label="포트폴리오 섹션">
-      <a href="#about" class="nav-link active" aria-current="location"><span class="nav-num">01</span> ABOUT</a>
-      <a href="#education" class="nav-link"><span class="nav-num">02</span> EDUCATION</a>
-      <a href="#skills" class="nav-link"><span class="nav-num">03</span> SKILLS</a>
-      <a href="#projects" class="nav-link"><span class="nav-num">04</span> PROJECTS</a>
-      <a href="#research" class="nav-link"><span class="nav-num">05</span> AI RESEARCH</a>
-      <a href="#awards" class="nav-link"><span class="nav-num">06</span> AWARDS</a>
-      <a href="#contact" class="nav-link"><span class="nav-num">07</span> CONTACT</a>
+      <a href="#about" class="nav-link active" aria-current="location">ABOUT</a>
+      <a href="#education" class="nav-link">EDUCATION</a>
+      <a href="#skills" class="nav-link">SKILLS</a>
+      <a href="#projects" class="nav-link">PROJECTS</a>
+      <a href="#research" class="nav-link">AI RESEARCH</a>
+      <a href="#awards" class="nav-link">AWARDS</a>
+      <a href="#contact" class="nav-link">CONTACT</a>
     </nav>
 
     <div class="sidebar-foot">
@@ -76,37 +76,43 @@
     </section>
 
     <section class="section section-education" id="education" aria-labelledby="education-title">
-      <div class="section-heading reveal">
-        <p class="section-kicker">02 — BACKGROUND</p>
-        <h2 id="education-title">EDUCATION<span class="heading-period">.</span></h2>
-        <p>배운 것을 프로젝트에 적용하고, 결과를 다시 검증하는 방식으로 성장하고 있습니다.</p>
+      <div class="education-group">
+        <h2 id="education-title" class="education-title reveal">학력사항</h2>
+        <div class="education-list">
+          <article class="education-entry reveal">
+            <div class="education-details">
+              <h3>협성대학교</h3>
+              <p class="education-subtitle">컴퓨터공학과</p>
+              <p class="education-status">졸업 예정</p>
+            </div>
+            <span class="education-date">2021 — 2027.02</span>
+          </article>
+          <article class="education-entry reveal">
+            <div class="education-details">
+              <h3>정왕고등학교</h3>
+              <p class="education-status">졸업</p>
+            </div>
+          </article>
+        </div>
       </div>
-      <div class="timeline">
-        <article class="timeline-entry reveal">
-          <div class="timeline-date">2021 — 2027.02</div>
-          <div class="timeline-content">
-            <span class="tag tag-muted">졸업 예정</span>
-            <h3>협성대학교 <span>컴퓨터공학과</span></h3>
-            <p>컴퓨터공학 학부 과정에서 프로그래밍·컴퓨팅 기초를 학습하고, AI 기반 졸업작품 <strong>CatchSmishing</strong>을 개발했습니다.</p>
-          </div>
-        </article>
-        <article class="timeline-entry reveal">
-          <div class="timeline-date">2026.06 — 2026.08</div>
-          <div class="timeline-content">
-            <span class="tag tag-muted">실습 중심 교육</span>
-            <h3>생성형 AI 부트캠프 <span>TEAM MECHU</span></h3>
-            <p>실시간 멀티플레이 웹 서비스 <strong>EGGG</strong>와 Unity 기반 VLA 학습 프로젝트 <strong>LET'S HIM COOK!</strong>을 진행했습니다.</p>
-          </div>
-        </article>
+      <div class="education-group education-training">
+        <h2 class="education-title reveal">교육이수</h2>
+        <div class="education-list">
+          <article class="education-entry reveal">
+            <div class="education-details">
+              <h3>생성형 AI 부트캠프</h3>
+              <p class="education-subtitle">TEAM MECHU</p>
+              <p class="education-status">프로젝트 실습 · EGGG / LET'S HIM COOK!</p>
+            </div>
+            <span class="education-date">2026.06 — 2026.08</span>
+          </article>
+        </div>
       </div>
-      <div class="education-footnote reveal">EDUCATION → PROJECTS → EXPERIMENTS → EVIDENCE</div>
     </section>
 
     <section class="section section-skills" id="skills" aria-labelledby="skills-title">
       <div class="section-heading reveal">
-        <p class="section-kicker">03 — CAPABILITIES</p>
         <h2 id="skills-title">SKILLS<span class="heading-period">.</span></h2>
-        <p>프로젝트에서 사용한 기술을 실제 적용 영역에 맞춰 정리했습니다.</p>
       </div>
       <div class="skill-group reveal">
         <div class="skill-label"><span>01</span><h3>AI / Machine Learning</h3></div>
@@ -146,9 +152,7 @@
 
     <section class="section section-projects" id="projects" aria-labelledby="projects-title">
       <div class="section-heading reveal">
-        <p class="section-kicker">04 — SELECTED WORK</p>
         <h2 id="projects-title">PROJECTS<span class="heading-period">.</span></h2>
-        <p>모델 연구부터 서비스 개발까지, 실제 문제를 중심으로 진행한 프로젝트입니다.</p>
       </div>
 
       <article class="project-card project-card-featured reveal">
@@ -247,9 +251,7 @@
 
     <section class="section section-research" id="research" aria-labelledby="research-title">
       <div class="section-heading reveal">
-        <p class="section-kicker">05 — AI ENGINEERING</p>
         <h2 id="research-title">RESEARCH<span class="heading-period">.</span></h2>
-        <p>모델 성능을 높이는 일만큼, 무엇을 검증했는지 정확히 설명하는 일을 중요하게 생각합니다.</p>
       </div>
       <div class="research-layout">
         <div class="research-story reveal">
@@ -270,7 +272,6 @@
 
     <section class="section section-awards" id="awards" aria-labelledby="awards-title">
       <div class="section-heading reveal">
-        <p class="section-kicker">06 — RECOGNITION</p>
         <h2 id="awards-title">AWARDS<span class="heading-period">.</span></h2>
       </div>
       <article class="award-feature reveal">
@@ -282,9 +283,7 @@
 
     <section class="section section-contact" id="contact" aria-labelledby="contact-title">
       <div class="contact-inner reveal">
-        <p class="section-kicker">07 — GET IN TOUCH</p>
         <h2 id="contact-title">LET'S<br /><span>CONNECT.</span></h2>
-        <p>AI 모델을 실제 서비스로 구현하는 일에 관심이 있습니다.<br />프로젝트와 개발 경험에 관한 이야기를 나누고 싶습니다.</p>
         <a class="contact-email" href="mailto:kimps005@gmail.com">kimps005@gmail.com <span aria-hidden="true">↗</span></a>
         <div class="contact-actions">
           <a href="https://github.com/kimps005" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
