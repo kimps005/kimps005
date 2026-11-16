@@ -1,9 +1,9 @@
-<!-- GitHub Profile README | Minsu Choi -->
+<!-- GitHub Profile README | CHOI MINSU -->
 
 <div align="center">
-  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=165&color=0:0f172a,100:1d4ed8&text=Minsu%20Choi&fontColor=ffffff&fontSize=40&fontAlignY=36&desc=AI%20Engineering%20%7C%20Models%20to%20Services&descSize=17&descAlignY=59" alt="Minsu Choi — AI Engineering" />
+  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=290&section=header&color=0:0f172a,100:1d4ed8&text=CHOI%20MINSU&fontColor=ffffff&fontSize=48&fontAlignY=36&desc=AI%20Engineering%20%7C%20Models%20to%20Services&descSize=19&descAlignY=58" alt="CHOI MINSU — AI Engineering" />
 
-  <h3>AI / AI Service Development · ML Engineering t</h3>
+  <h3>AI / ML Engineering · AI Service Development</h3>
   <p>협성대학교 컴퓨터공학과 · 2027.02 졸업 예정</p>
   <p><b>성능 검증, 추론 최적화, 서비스로 연결.</b></p>
   <p>
@@ -46,69 +46,98 @@
 ![Unity](https://img.shields.io/badge/Unity-000000?style=flat-square&logo=unity&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
 
-## Engineering Experience
+## 🗂️ Projects (프로젝트)
 
-### 01. [CatchSmishing](https://github.com/kimps005/CatchSmishing) — Multimodal Smishing Analysis
+**문제 → 구현 → 결과** 순서로 핵심만 정리했습니다. 각 프로젝트를 펼치면 기술 구현과 검증 내용을 확인할 수 있습니다.
 
-**AI 모델 개발 · OCR · API · 모델 최적화**
+| 프로젝트 | 무엇을 만들었나 | 핵심 기술 · 성과 |
+| :-- | :-- | :-- |
+| **01 · [CatchSmishing](https://github.com/kimps005/CatchSmishing)**<br/>AI Security / NLP | 문자·캡처 이미지·QR을 분석해 스미싱 위험 정보를 제공하는 서비스 | **7개 문자 유형 분류 96.18%** · INT8 모델 크기 **약 58%↓**, 로컬 p50 지연 **약 47%↓** |
+| **02 · Pictory**<br/>Generative AI | 아이가 그린 그림을 캐릭터로 활용해 동화와 음성을 생성하는 서비스 | LLM · 이미지 생성 · 한국어 TTS<br/>**2026 해커톤 대상(1위)** |
+| **03 · [EGGG](https://github.com/dainyeyo/miniproject)**<br/>Real-time Web | AI 그림 퀴즈를 여러 사용자가 함께 즐기는 멀티플레이 웹게임 | **Polling → WebSocket** 전환 · 채팅·타이머 오류 해결 |
+| **04 · LET'S HIM COOK!**<br/>VLA / Simulation | Unity 식당에서 서빙·트레이 수거 동작을 학습하는 VLA 실험 | **X-VLA 파인튜닝** · 서빙 300 + 수거 300 에피소드 수집 |
+| **05 · MOAGIL**<br/>Route Optimization | QR로 동승자 목적지를 모아 하차 순서를 계산하는 차량용 서비스 | 최대 **4개 목적지, 24가지 순서(4!)** 비교 설계 |
 
-텍스트, 캡처 이미지, QR URL을 종합해 스미싱 위험 신호와 분석 근거를 제공하는 서비스입니다.
+### Implementation & Results (구현·성과 상세)
 
-- **분석 파이프라인:** PaddleOCR · KLUE BERT 문자 유형 분류 · URL 평판/리다이렉트 검사 · Gemini 문맥·이미지 분석을 통합
-- **모델 평가:** 학습/평가 데이터의 문장 중복을 점검하고, 120개 하위 유형을 기준으로 그룹 분할 및 반복 평가
-- **검증 성능:** 7개 **문자 카테고리 분류**의 Accuracy **96.18 ± 0.21%**, Macro-F1 **96.15 ± 0.21%** (3개 학습 시드)
-- **추론 최적화:** FP32 대비 INT8 동적 양자화 모델 **파일 크기 약 58% 감소**, **단일 문자 p50 지연 약 47% 감소** (생성형 SMS 2,800건 로컬 벤치마크)
-- **서비스 구성:** FastAPI 분석 API · Flutter 클라이언트 · Hugging Face 모델 배포
+<details>
+<summary><strong>01 · CatchSmishing — OCR / BERT / 모델 경량화</strong></summary>
 
-**Links:** [Repository](https://github.com/kimps005/CatchSmishing) · [Hugging Face Model](https://huggingface.co/kimps005/sms-category-model) · [Service](https://catchsmishing.com)
+<br/>
 
-<sub>분류 정확도는 7개 문자 유형에 대한 결과이며 스미싱 이진 판별 정확도가 아닙니다. 양자화 수치는 지정된 로컬 벤치마크 기준입니다.</sub>
+**입력 → 분석 → 결과**
 
-### 02. Pictory — AI Storytelling Service
+문자·캡처 이미지·QR URL → PaddleOCR / KLUE BERT / URL 검사 / Gemini 문맥 분석 → 스미싱 위험 신호와 판단 근거 제공
 
-**2026 Hackathon · Grand Prize (1st Place)**
+- **서비스:** FastAPI 분석 API, Flutter 클라이언트, Hugging Face 분류 모델 공개
+- **평가 개선:** 데이터 중복 가능성을 점검하고 120개 하위 유형 기준 그룹 분할 및 3개 학습 시드 재평가
+- **모델 성능:** 7개 *문자 카테고리 분류* Accuracy **96.18 ± 0.21%**, Macro-F1 **96.15 ± 0.21%**
+- **추론 최적화:** FP32 대비 INT8 동적 양자화로 파일 크기 **약 58% 감소**, 단일 문자 p50 지연 **약 47% 감소** (생성형 SMS 2,800건 로컬 벤치마크)
 
-어린이가 그린 그림을 동화 캐릭터로 활용하고, 자신의 감정과 고민을 이야기로 표현하도록 돕는 생성형 AI 서비스입니다.
+[GitHub](https://github.com/kimps005/CatchSmishing) · [서비스](https://catchsmishing.com) · [Hugging Face 모델](https://huggingface.co/kimps005/sms-category-model)
 
-- **서비스 설계:** 아이의 그림과 선택지를 바탕으로 사용자 맞춤형 동화 경험 구성
-- **AI 파이프라인:** LLM을 통한 이야기 생성 · 이미지 생성 · 한국어 TTS 음성 낭독
-- **결과:** 2026년 11월 해커톤 **대상(전체 1위)** 수상
+<sub>문자 유형 분류 정확도는 스미싱 이진 탐지율이 아닙니다. 양자화 수치는 지정된 로컬 벤치마크 조건에 해당합니다.</sub>
 
-### 03. [EGGG](https://github.com/dainyeyo/miniproject) — Real-time AI Multiplayer Game
+</details>
 
-**Real-time Web · AI Integration · Debugging**
+<details>
+<summary><strong>02 · Pictory — LLM / Image Generation / TTS</strong></summary>
 
-AI 이미지 기능 및 LLM 채점을 활용한 멀티플레이 그림 퀴즈 웹 서비스입니다.
+<br/>
 
-- **서비스 구조:** Next.js 14 / React 18 · Node.js WebSocket 서버 · Neon PostgreSQL
-- **실시간 통신 개선:** 약 1.2초 주기의 상태 Polling을 **WebSocket 이벤트 기반 통신**으로 전환
-- **장애 해결:** 채팅 중복과 타이머 시작·초기화 오류를 원인별로 분리하고 수정
+**아이의 그림 → 동화 캐릭터 → 이야기·이미지·음성**
+
+- **문제:** 자신의 고민과 감정을 말로 구체화하기 어려운 어린이
+- **기능:** 아이가 그린 그림을 캐릭터로 활용하고 선택지에 따라 동화 경험 구성
+- **AI 파이프라인:** 이야기 생성 LLM · 동화 장면 이미지 생성 · 한국어 TTS 낭독
+- **성과:** **2026년 11월 해커톤 대상(전체 1위)**
+
+</details>
+
+<details>
+<summary><strong>03 · EGGG — WebSocket 실시간 통신 개선</strong></summary>
+
+<br/>
+
+**AI 그림 퀴즈 + 초대코드 기반 실시간 멀티플레이**
+
+- **구성:** Next.js 14 / React 18 · Node.js WebSocket 서버 · Neon PostgreSQL
+- **문제:** 그림·채팅 업데이트 지연, 채팅 중복, 라운드 타이머 오류
+- **개선:** 약 1.2초 간격의 상태 Polling을 **WebSocket 이벤트 통신으로 전환**, 메시지·타이머 로직 수정
 - **검증:** 여러 브라우저에서 입장, 채팅, 타이머, 라운드 전환을 반복 테스트해 시연 완료
 
-**Link:** [Repository](https://github.com/dainyeyo/miniproject)
+[GitHub](https://github.com/dainyeyo/miniproject)
 
-### 04. LET'S HIM COOK! — Vision-Language-Action Learning
+</details>
 
-**VLA · Imitation Learning · Unity Simulation**
+<details>
+<summary><strong>04 · LET'S HIM COOK! — X-VLA 학습 실험</strong></summary>
 
-Unity 식당 시뮬레이션에서 음식 서빙과 빈 트레이 수거를 다루는 VLA 기반 학습 프로젝트입니다.
+<br/>
 
-- **모델:** X-VLA (`lerobot/xvla-base`) 기반 파인튜닝 실험, 약 **30,000 steps**
-- **데이터 파이프라인:** 약 **10Hz** RGB·상태·행동 데이터 수집 (512×288 RGB, 256×256 모델 입력)
-- **학습 데이터:** 초기 **459 episodes / 50,679 frames** 수집 후 서빙 **300**, 수거 **300** episodes로 과업별 데이터 구성
-- **시스템 설계:** 게임 상태·대기 등 규칙 기반 처리를 Unity로 분리하고 모델 학습 범위를 핵심 행동에 집중
-- **검증 경험:** 텔레오퍼레이션 및 데이터 수집·학습 흐름 구현과 실험 기록
+**Unity 시뮬레이션 → RGB·상태·행동 데이터 → X-VLA 파인튜닝**
 
-### 05. MOAGIL — Multi-stop Route Optimization
+- **모델:** X-VLA (`lerobot/xvla-base`) 기반 약 **30,000 steps** 파인튜닝 실험
+- **데이터:** 약 10Hz RGB·상태·행동 수집. 초기 459개 에피소드 / 50,679프레임 기록
+- **과업 재설계:** 서빙 **300** + 수거 **300** 에피소드로 학습 대상을 분리
+- **시스템 분리:** 대기·게임 상태는 Unity 규칙 로직으로 처리하고 모델 학습을 핵심 행동에 집중
+- **검증:** 텔레오퍼레이션·데이터 수집 및 학습 실험. 자율 동작 성공률은 별도 검증되지 않음
 
-**Route Optimization · QR Mobile Web · In-vehicle UX**
+</details>
 
-동승자가 앱 설치 없이 QR 웹에서 목적지를 지정하고, 운전자는 경유 순서를 확인할 수 있도록 설계한 차량용 앱 공모전 프로젝트입니다.
+<details>
+<summary><strong>05 · MOAGIL — QR 기반 경유지 최적화 설계</strong></summary>
 
-- **목적지 수집:** QR → 모바일 웹 → Kakao Maps 지도 핀 선택
-- **경로 탐색:** 최대 4개 동승자 목적지에 대해 **24개(4!) 방문 순서** 전수 비교 설계
-- **사용자 흐름:** 목적지 순서 고정·변경, 경유지 건너뛰기, 변경 시 재계산 구조
-- **UX 목표:** 운전 중 입력과 주의 분산 최소화
+<br/>
+
+**동승자 QR 접속 → 지도 핀으로 목적지 선택 → 경유 순서 비교**
+
+- **목적지 수집:** 별도 앱 설치 없이 모바일 웹에서 동승자 목적지 수집
+- **탐색:** 최대 4개 동승자 목적지에 대해 **24개(4!) 순서 전수 비교** 설계
+- **사용자 흐름:** 경유 순서 고정·변경, 경유지 건너뛰기, 조건 변경 시 재계산
+- **목표:** 운전 중 입력·주의 분산을 최소화하는 차량용 사용자 경험
+
+</details>
 
 ## Education & Awards
 
