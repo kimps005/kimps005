@@ -3,9 +3,9 @@
 <div align="center">
   <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=290&section=header&color=0:0f172a,100:1d4ed8&text=CHOI%20MINSU&fontColor=ffffff&fontSize=48&fontAlignY=36&desc=AI%20Engineering%20%7C%20Models%20to%20Services&descSize=19&descAlignY=58" alt="CHOI MINSU — AI Engineering" />
 
-  <h3>AI Service Developer · AI / ML Engineer</h3>
   <p>협성대학교 컴퓨터공학과 · 2027.02 졸업 예정</p>
-  <p><b>성능 검증, 추론 최적화, 서비스로 연결.</b></p>
+  <p>데이터 누수 점검과 모델 경량화로 <b>AI 성능을 수치로 검증하고 개선</b>해 왔습니다.<br/>
+     실시간 통신 구조와 오류를 해결하며 <b>모델부터 서비스까지 직접 다루는 개발 경험</b>을 쌓았습니다.</p>
   <p>
     <a href="https://kimps005.github.io/kimps005/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/PORTFOLIO-VIEW%20WEBSITE-2563EB?style=for-the-badge&logo=googlechrome&logoColor=white" alt="웹 포트폴리오 바로가기"/></a>
   </p>
