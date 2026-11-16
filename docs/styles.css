@@ -30,8 +30,6 @@ img,svg{max-width:100%}
 .nav-link:hover{color:#fff;transform:translateX(3px)}
 .nav-link.active{color:var(--accent)}
 .nav-link.active::before{content:"";width:13px;height:3px;background:var(--accent);position:absolute;left:-23px;top:50%}
-.nav-num{font-size:10px;letter-spacing:.05em;font-weight:700;width:15px;color:rgba(255,255,255,.36)}
-.nav-link.active .nav-num{color:var(--accent)}
 .sidebar-foot{margin-top:42px;font-family:var(--display)}
 .sidebar-line{display:block;width:32px;height:2px;background:var(--accent);margin-bottom:13px}
 .sidebar-foot p{font-size:10px;letter-spacing:.13em;font-weight:800;margin:0 0 10px}
@@ -44,11 +42,9 @@ img,svg{max-width:100%}
 /* Layout + reusable sections */
 .main{margin-left:var(--sidebar);min-width:0}
 .section{padding:100px clamp(35px,5.5vw,106px) 112px;border-bottom:1px solid var(--line);scroll-margin-top:0}
-.section-heading{max-width:830px;margin-bottom:66px}
-.section-kicker{font-family:var(--display);font-size:12px;font-weight:800;color:var(--primary);letter-spacing:.15em;margin:0 0 19px}
-.section-heading h2{font-family:var(--display);font-size:clamp(48px,6vw,84px);font-weight:800;line-height:1.05;letter-spacing:-.075em;margin:0 0 20px}
+.section-heading{max-width:830px;margin-bottom:48px}
+.section-heading h2{font-family:var(--display);font-size:clamp(48px,6vw,84px);font-weight:800;line-height:1.05;letter-spacing:-.075em;margin:0}
 .heading-period{color:var(--primary)}
-.section-heading>p:last-child{font-size:16px;line-height:1.9;color:var(--muted);word-break:keep-all;margin:0}
 .reveal{transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
 .js-ready .reveal:not(.visible){opacity:0;transform:translateY(21px)}
 .js-ready .reveal.visible{opacity:1;transform:none}
@@ -100,17 +96,19 @@ img,svg{max-width:100%}
 .btn-secondary{color:var(--primary)}
 .btn-secondary:hover{background:#E9F3FF}
 
-/* Education */
-.section-education{background:#fff}
-.timeline{border-top:1px solid var(--line)}
-.timeline-entry{display:grid;grid-template-columns:minmax(180px,25%) 1fr;border-bottom:1px solid var(--line);padding:31px 0 40px;gap:22px}
-.timeline-date{font:800 13px var(--display);letter-spacing:.045em;color:var(--primary);padding-top:5px}
-.timeline-content .tag{display:inline-block;font:700 11px var(--display);letter-spacing:.03em;margin:0 0 12px}
-.tag-muted{background:#EDF6FD;border:1px solid #D7E8F5;border-radius:2px;padding:5px 9px;color:#24609C}
-.timeline-content h3{font-size:clamp(21px,2.4vw,30px);font-weight:800;letter-spacing:-.055em;margin:0 0 13px}
-.timeline-content h3 span{color:#788CA0;font-weight:500;margin-left:8px;font-size:.75em}
-.timeline-content p{font-size:14px;max-width:710px;color:var(--muted);line-height:1.9;margin:0;word-break:keep-all}
-.education-footnote{font:800 12px var(--display);letter-spacing:.15em;color:#91A5B6;margin-top:45px}
+/* Education — reference-inspired, simplified records */
+.section-education{background:#fff;padding-top:clamp(65px,7vw,100px)}
+.education-group+.education-group{margin-top:clamp(76px,10vw,132px)}
+.education-title{font:800 clamp(45px,5.2vw,72px)/1.14 var(--body);letter-spacing:-.065em;color:var(--ink);margin:0 0 clamp(45px,5.2vw,76px)}
+.education-list{display:flex;flex-direction:column;gap:0}
+.education-entry{display:flex;align-items:flex-start;justify-content:space-between;gap:32px;padding:0 0 clamp(48px,5.5vw,76px);margin-bottom:clamp(43px,5vw,63px);border-bottom:1px solid var(--line)}
+.education-entry:last-child{margin-bottom:0}
+.education-details{flex:1;min-width:0}
+.education-details h3{font:800 clamp(23px,2.5vw,35px)/1.4 var(--body);letter-spacing:-.055em;margin:0 0 7px;color:var(--ink)}
+.education-subtitle{font-size:clamp(17px,1.8vw,24px);line-height:1.55;color:#74889B;font-weight:600;margin:0}
+.education-status{font-size:15px;line-height:1.7;color:#617184;margin:22px 0 0}
+.education-date{flex-shrink:0;white-space:nowrap;font:500 clamp(13px,1.4vw,17px)/1.65 var(--display);letter-spacing:0;color:var(--primary);padding-top:4px}
+.education-training .education-title{margin-bottom:clamp(45px,5.2vw,76px)}
 
 /* Skills */
 .section-skills{background:#F7FAFD}
@@ -311,10 +309,14 @@ img,svg{max-width:100%}
   .btn{min-height:45px;font-size:12px;padding:11px 12px;gap:12px}
   .section-heading{margin-bottom:37px}
   .section-heading h2{font-size:clamp(42px,11vw,62px)}
-  .section-heading>p:last-child{font-size:14px}
-  .timeline-entry,.skill-group{grid-template-columns:1fr;gap:16px}
-  .timeline-content h3{font-size:23px}
-  .timeline-content h3 span{display:block;margin:6px 0 0}
+  .education-title{font-size:clamp(41px,10vw,58px);margin-bottom:42px}
+  .education-entry{flex-direction:column;gap:10px;padding-bottom:40px;margin-bottom:35px}
+  .education-details h3{font-size:25px}
+  .education-subtitle{font-size:18px}
+  .education-status{font-size:13px;margin-top:15px}
+  .education-date{order:-1;padding:0 0 8px;font-size:13px}
+  .education-group+.education-group{margin-top:82px}
+  .skill-group{grid-template-columns:1fr;gap:16px}
   .skill-group{padding:24px 0}
   .project-card{margin-bottom:20px}
   .project-info{padding:25px 20px 30px}
