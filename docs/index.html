@@ -167,17 +167,25 @@
         <div class="project-info">
           <div class="project-head"><span class="project-index">01 / AI SECURITY</span><span class="project-year">GRADUATION PROJECT</span></div>
           <h3>Catch<span>Smishing</span></h3>
-          <p class="project-lead">문자·이미지·QR 입력을 함께 분석하는 멀티모달 스미싱 위험 분석 서비스</p>
-          <p class="project-description">PaddleOCR로 텍스트를 추출하고 KLUE BERT 문자 유형 분류, URL 평판 확인, Gemini 문맥·시각 분석을 결합한 분석 흐름을 구현했습니다. FastAPI API와 Flutter 클라이언트로 서비스를 구성했습니다.</p>
-          <div class="tech-chips"><span>PyTorch</span><span>KLUE BERT</span><span>FastAPI</span><span>Flutter</span><span>OCR</span></div>
-          <div class="project-metrics">
-            <div><strong>96.18%</strong><span>7종 유형 분류 정확도</span></div>
-            <div><strong>−58%</strong><span>INT8 모델 파일 크기</span></div>
-            <div><strong>−47%</strong><span>로컬 p50 추론 지연</span></div>
+          <p class="project-lead">OCR · KLUE BERT INT8 · URL 위협 인텔리전스 · Gemini 결합 멀티모달 스미싱 분석 파이프라인 — CPU 추론 p50 지연 47% 단축, 외부 AI 장애 시에도 응답 유지</p>
+          <dl class="project-meta">
+            <div><dt>기간</dt><dd>2026.05 – 2026.09</dd></div>
+            <div><dt>인원</dt><dd>1명</dd></div>
+            <div><dt>역할</dt><dd>OCR·QR 전처리, KLUE BERT 분류 모델 학습·INT8 양자화, URL 보안 분석기, FastAPI 통합 분석 파이프라인, Flutter 클라이언트 전 구간 구현</dd></div>
+          </dl>
+          <div class="stack-groups">
+            <div class="stack-row"><span class="stack-label">AI / Serving</span><div class="tech-chips"><span>PyTorch</span><span>KLUE BERT</span><span>INT8 Dynamic Quantization</span><span>PaddleOCR</span><span>OpenCV · pyzbar</span><span>Gemini Text · Vision</span><span>Hugging Face Hub</span></div></div>
+            <div class="stack-row"><span class="stack-label">Backend / Data</span><div class="tech-chips"><span>FastAPI</span><span>ThreadPoolExecutor</span><span>MySQL (Aiven, TLS)</span><span>URLhaus · Phishing.Database</span><span>VirusTotal · WHOIS</span></div></div>
+            <div class="stack-row"><span class="stack-label">Infra / Ops</span><div class="tech-chips"><span>HF 모델 캐시 · Revision 고정</span><span>Rate Limit</span><span>Streamlit 운영 UI</span><span>Flutter</span></div></div>
           </div>
-          <p class="metric-note">분류 정확도는 스미싱 이진 탐지율이 아니며, 양자화 개선 수치는 로컬 생성형 SMS 벤치마크 기준입니다.</p>
+          <div class="project-metrics">
+            <div><strong>−58%</strong><span>모델 파일 426.58 → 178.56 MiB</span></div>
+            <div><strong>−47%</strong><span>p50 지연 370.97 → 196.40 ms</span></div>
+            <div><strong>−51%</strong><span>p95 지연 449.58 → 220.32 ms</span></div>
+          </div>
+          <p class="metric-note">FP32 대비 INT8 동적 양자화 로컬 벤치마크(생성형 SMS 2,800건) 기준이며 실사용 탐지 성능과 구분합니다.</p>
           <div class="project-links">
-            <a href="https://github.com/kimps005/CatchSmishing" target="_blank" rel="noopener noreferrer">SOURCE CODE ↗</a>
+            <a href="https://github.com/kimps005/CatchSmishing" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
             <a href="https://catchsmishing.com" target="_blank" rel="noopener noreferrer">SERVICE ↗</a>
             <a href="https://huggingface.co/kimps005/sms-category-model" target="_blank" rel="noopener noreferrer">MODEL ↗</a>
           </div>
@@ -191,69 +199,487 @@
           </div>
           <div class="visual-watermark">CS.</div>
         </div>
+        <details class="project-detail">
+          <summary><span class="detail-title">ENGINEERING DETAILS</span><span class="detail-hint">Architecture · Trade-offs · Troubleshooting · Next Step</span></summary>
+          <div class="detail-body">
+            <section class="detail-block">
+              <h4><b>01</b> System Architecture &amp; Data Flow</h4>
+              <ol class="flow" aria-label="CatchSmishing 데이터 흐름">
+                <li><span>INPUT</span>문자 텍스트 · 캡처 이미지 · QR</li>
+                <li class="is-guard"><span>PRE-PROCESS</span>OCR · QR 디코딩 · URL 정규화<em>GUARDRAIL 입력 한도 · SSRF 차단</em></li>
+                <li class="is-bottleneck"><span>INFERENCE</span>KLUE BERT 7종 분류 · 규칙 NLP · URL 평판<em>BOTTLENECK CPU 추론 · 외부 API</em></li>
+                <li class="is-guard"><span>VERIFY</span>Gemini 문맥 · Vision 보조 신호<em>GUARDRAIL 실패 시 null 처리</em></li>
+                <li><span>SERVE</span>0–10 점수 · 등급 · 탐지 근거 JSON</li>
+              </ol>
+              <ul class="detail-list">
+                <li><strong>Core Pipeline:</strong> 이미지·텍스트·QR 입력을 OCR·QR 디코딩·URL 추출로 단일 텍스트/URL 집합으로 정규화함.</li>
+                <li>INT8 KLUE BERT 카테고리, 규칙 기반 긴박·위협·행동 유도 패턴, URL 피드·VirusTotal·WHOIS·APK 신호를 병렬 산출함.</li>
+                <li>Gemini 문맥·Vision 점수를 가용 시에만 결합해 입력 유형·신호 가용성별 가중치 분기로 최종 등급 산출함.</li>
+              </ul>
+            </section>
+            <section class="detail-block">
+              <h4><b>02</b> Key Engineering Decisions</h4>
+              <div class="decision">
+                <h5>의사결정 1 · 생성형 AI 단일 판정 대신 경량 분류 모델 + 규칙 + URL 평판 하이브리드</h5>
+                <dl class="kv">
+                  <dt>제약 조건</dt><dd>GPU 없는 CPU 추론 서빙, 외부 API(Gemini·VirusTotal) 키 미설정·호출 실패 가능성</dd>
+                  <dt>대안 비교</dt><dd>Gemini 단일 판정 vs 로컬 KLUE BERT 분류 + 규칙 NLP + URL 위협 인텔리전스 + Gemini 보조 신호</dd>
+                  <dt>최종 선택</dt><dd>카테고리 신호는 로컬 INT8 모델로 고정, 생성형 AI는 보조 점수(P_Gemini·P_VLM)로 한정 → Gemini 미가용 시에도 OCR·규칙·URL 결과만으로 응답 반환. INT8 전환 정확도 손실 −0.11%p 수준에서 지연 절반 단축</dd>
+                </dl>
+              </div>
+              <div class="decision">
+                <h5>의사결정 2 · 모델 배포·위협 데이터 갱신 파이프라인</h5>
+                <dl class="kv">
+                  <dt>문제 상황</dt><dd>대용량 가중치 저장소 포함 불가, 위협 피드·악성 URL 상태의 시간 경과에 따른 노후화</dd>
+                  <dt>해결 설계</dt><dd>서버 기동 시 로컬 캐시 확인 후 Hugging Face에서 INT8 가중치·config·tokenizer만 다운로드, revision 커밋 해시 고정으로 재현성 확보. 위협 피드 6시간 주기 갱신, 위험 URL 랭킹 상위 항목 주간 재검사</dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>03</b> Production Bottlenecks &amp; Troubleshooting</h4>
+              <div class="issue">
+                <h5>Issue 1 · CPU 단일 추론 지연 및 모델 용량 병목</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>FP32 BERT 체크포인트 426.58 MiB, 단일 메시지 p50 370.97 ms / p95 449.58 ms로 공개 API 동시 요청 처리 한계</dd>
+                  <dt>Engineering Action</dt><dd>PyTorch INT8 동적 양자화 state_dict 배포, 분석 작업을 최대 4개 ThreadPoolExecutor 워커로 격리, X-Analysis-ID 기반 협력 취소 지원, IP·경로별 요청 제한(이미지 10회/분, 텍스트 30회/분, 피드백 20회/분)</dd>
+                  <dt>Impact</dt><dd><code>모델 크기: 426.58 → 178.56 MiB (−58.14%)</code> <code>p50: 370.97 → 196.40 ms (−47.1%)</code> <code>p95: 449.58 → 220.32 ms (−51.0%)</code></dd>
+                </dl>
+              </div>
+              <div class="issue">
+                <h5>Issue 2 · AI·외부 신호 불확실성 및 악성 입력 방어</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>OCR 인식 실패, Gemini 호출 실패·미설정, 분류 확률 ≠ 스미싱 확률, 악성 URL 추적 시 내부망 요청(SSRF) 위험</dd>
+                  <dt>Engineering Action</dt><dd>텍스트·URL 모두 미추출 시 Unknown + ocr_failed 반환. Gemini 점수 null 처리 후 가용 신호 기반 가중치 분기. URL 강한 의심·정부기관 사칭 조건 시 등급 하한 보정. 리다이렉트 최대 5회, 매 단계 사설·루프백·링크-로컬 IP 및 인증정보 포함 URL 차단. VirusTotal 미등록은 안전이 아닌 정보 부족으로 처리. 이미지 10 MiB·25,000,000 px, 텍스트 20,000자, 요청당 URL 10개 상한 적용</dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>04</b> Retrospective &amp; Next Step</h4>
+              <dl class="kv">
+                <dt>Current Limitation</dt><dd>요청 제한이 메모리 기반·분석 워커 최대 4개로 단일 인스턴스에 종속, 트래픽 급증 시 OCR·추론 대기 적체 가능</dd>
+                <dt>Scalability Plan</dt><dd>Redis 기반 분산 Rate Limit 전환, 분석 요청을 작업 큐로 분리해 OCR·분류 추론 워커 수평 확장, ONNX Runtime 변환 및 배치 추론 적용 검토</dd>
+              </dl>
+            </section>
+          </div>
+        </details>
       </article>
 
       <article class="project-card reveal">
         <div class="project-info">
           <div class="project-head"><span class="project-index">02 / GENERATIVE AI</span><span class="project-year">2026 · GRAND PRIZE</span></div>
           <h3>Pic<span>tory</span></h3>
-          <p class="project-lead">아이의 그림을 동화 캐릭터로 만드는 생성형 AI 스토리텔링 서비스</p>
-          <p class="project-description">아이의 감정을 자연스럽게 표현하도록 돕는 경험을 기획하고 LLM 이야기 생성, 이미지 생성, 한국어 TTS를 결합한 동화 서비스를 제작했습니다. 2026년 11월 해커톤에서 <strong>대상(1위)</strong>을 수상했습니다.</p>
-          <div class="tech-chips"><span>LLM</span><span>Image Generation</span><span>Korean TTS</span><span>AI Service</span></div>
+          <p class="project-lead">Gemini 구조화 출력 · FLUX.2 삽화 · Azure Neural TTS 결합 동화 생성 서비스 — 시간 예산 기반 모델 순환과 다단 Fallback으로 생성형 AI 장애 흡수</p>
+          <dl class="project-meta">
+            <div><dt>기간</dt><dd>2026.11 (해커톤)</dd></div>
+            <div><dt>인원</dt><dd>3명</dd></div>
+            <div><dt>역할</dt><dd>Azure Neural TTS 서버 프록시·낭독 음성 선택, 동화 읽기 화면(페이지네이션·전체화면), FLUX.2 Klein NF4 4bit 로컬 이미지 서버 구현·검증</dd></div>
+          </dl>
+          <div class="stack-groups">
+            <div class="stack-row"><span class="stack-label">AI / Serving</span><div class="tech-chips"><span>Gemini (JSON Schema)</span><span>Gemini Vision 검증</span><span>FLUX.2 Klein 4B</span><span>Azure Speech TTS</span><span>Diffusers · bitsandbytes NF4</span></div></div>
+            <div class="stack-row"><span class="stack-label">Backend / Data</span><div class="tech-chips"><span>Next.js Route Handlers</span><span>Supabase (PostgreSQL, RLS)</span><span>sharp</span></div></div>
+            <div class="stack-row"><span class="stack-label">Infra / Ops</span><div class="tech-chips"><span>Vercel</span><span>Cloudflare Workers AI</span><span>AbortSignal Timeout</span><span>Server-only Secret</span></div></div>
+          </div>
           <div class="project-accent">GRAND PRIZE <span>1ST PLACE / NOV 2026</span></div>
-          <div class="project-links pictory-demo-links"><a class="pictory-demo-link" href="https://www.youtube.com/watch?v=YQvHdezsk_4" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">▶</span> 시연 영상 보기 <span aria-hidden="true">↗</span></a></div>
+          <div class="project-links pictory-demo-links"><a class="pictory-demo-link" href="https://www.youtube.com/watch?v=YQvHdezsk_4" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">▶</span> 시연 영상 보기 <span aria-hidden="true">↗</span></a><a href="https://github.com/kimps005/Pictory" target="_blank" rel="noopener noreferrer">GITHUB ↗</a></div>
         </div>
         <div class="project-visual visual-pictory">
           <div class="story-book"><span class="book-star star-one">✦</span><span class="book-star star-two">✳</span><div class="book-illustration"><span></span><i></i><b></b></div><div class="book-name">PICTORY<span>.</span></div><p>IMAGINATION TO STORY</p></div>
           <div class="story-circle" aria-hidden="true"></div>
           <a class="pictory-video-overlay" href="https://www.youtube.com/watch?v=YQvHdezsk_4" target="_blank" rel="noopener noreferrer" aria-label="픽토리 시연 영상 YouTube에서 보기"><span class="pictory-play" aria-hidden="true">▶</span><span>WATCH DEMO</span><span aria-hidden="true">↗</span></a>
         </div>
+        <details class="project-detail">
+          <summary><span class="detail-title">ENGINEERING DETAILS</span><span class="detail-hint">Architecture · Trade-offs · Troubleshooting · Next Step</span></summary>
+          <div class="detail-body">
+            <section class="detail-block">
+              <h4><b>01</b> System Architecture &amp; Data Flow</h4>
+              <ol class="flow" aria-label="Pictory 데이터 흐름">
+                <li><span>INPUT</span>연령 · 고민 상황 · 아이 그림</li>
+                <li class="is-guard"><span>ROUTING</span>요청 검증 · 프리셋 매칭<em>GUARDRAIL 입력 검증</em></li>
+                <li class="is-bottleneck"><span>INFERENCE</span>Gemini 스토리 · FLUX.2 삽화 · Azure TTS<em>BOTTLENECK 모델 과부하 · 지연</em></li>
+                <li class="is-guard"><span>VERIFY</span>JSON 스키마 가드 · 주인공 Vision 검증<em>GUARDRAIL 재시도 · Fallback</em></li>
+                <li><span>SERVE</span>무상태 API → 클라이언트 · Supabase 저장</li>
+              </ol>
+              <ul class="detail-list">
+                <li><strong>Core Pipeline:</strong> 서버 무상태 설계, 지금까지의 장면·아이 선택을 클라이언트가 보유하고 매 요청에 동봉함.</li>
+                <li>Gemini JSON Schema 응답을 타입 가드로 검증 후 장면별 영어 imagePrompt로 FLUX.2 삽화 생성, 아이 그림 주인공 반영 여부를 Vision 모델로 재검증함.</li>
+                <li>낭독은 브라우저 → 서버 TTS 프록시 → Azure Speech 경로로 처리, 키는 서버에만 보관함.</li>
+              </ul>
+            </section>
+            <section class="detail-block">
+              <h4><b>02</b> Key Engineering Decisions</h4>
+              <div class="decision">
+                <h5>의사결정 1 · 고품질 단일 모델 대신 경량 모델 기본 + 대체 모델 순환</h5>
+                <dl class="kv">
+                  <dt>제약 조건</dt><dd>API 라우트 최대 실행 60초, 상위 모델은 혼잡 시 수십 초 응답, 기획 모델(gemini-2.5-flash) 신규 사용자 차단</dd>
+                  <dt>대안 비교</dt><dd>상위 품질 모델 단일 호출 vs 2초대 응답 lite 모델 기본 + 과부하(503)·시간 초과 시 대체 모델 순환</dd>
+                  <dt>최종 선택</dt><dd>시도당 20초·전체 45초 시간 예산 내 최대 8회 모델 순환 재시도(백오프 500 ms × n, 최대 2.5초), 잔여 예산 3초 미만 시 중단. thinkingLevel LOW로 추론 시간 축소, 60초 라우트 한도 내 응답 보장</dd>
+                </dl>
+              </div>
+              <div class="decision">
+                <h5>의사결정 2 · 이미지 생성 로컬 4bit 서빙 검증 (본인 구현)</h5>
+                <dl class="kv">
+                  <dt>제약 조건</dt><dd>8 GB VRAM 노트북 GPU(RTX 5060 Laptop) 단일 환경</dd>
+                  <dt>해결 설계</dt><dd>FLUX.2 Klein 4B 트랜스포머 커뮤니티 NF4 가중치 사용, 누락된 Qwen 텍스트 인코더는 공식 가중치를 로드 시점 NF4 양자화로 보완. VAE tiling, 512 px·4 step 고정, 모델 GPU 상주, CUDA OOM 시 empty_cache 후 503 반환. 생성 중 VRAM 약 6 GB 점유 확인 후 서비스 경로는 Cloudflare Workers AI로 유지</dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>03</b> Production Bottlenecks &amp; Troubleshooting</h4>
+              <div class="issue">
+                <h5>Issue 1 · 이미지 생성 업스트림 장애 및 과금 중복 위험</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>Cloudflare Workers AI 429·5xx 일시 장애, 타임아웃·연결 끊김 요청의 맹목 재전송 시 과금 이미지 중복 생성 가능</dd>
+                  <dt>Engineering Action</dt><dd>요청당 45초 타임아웃. 명시적 일시 거부(429·5xx)만 최대 2회 시도, Retry-After 5초 초과 시 즉시 실패. 타임아웃·네트워크 오류는 재전송 금지. 안전 필터·쿼터·인증 오류를 에러 코드별 분류해 사용자 메시지 분리</dd>
+                </dl>
+              </div>
+              <div class="issue">
+                <h5>Issue 2 · 생성형 AI 불확실성 통제 (주인공 누락 · JSON 파싱 실패)</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>이미지 모델의 참조 그림 무시 및 임의 주인공 생성, LLM 출력 스키마 불일치, 시연 중 Gemini 차단</dd>
+                  <dt>Engineering Action</dt><dd>Gemini Vision 주인공 판별(temperature 0, 10초 타임아웃, 검증기 장애 시 unchecked fail-open) → 1회 재생성 → 재실패 시 배경 plate 생성 후 원본 그림 합성 → 업스트림 장애 시 로컬 Fallback 배경. 스토리 스키마 가드 실패 시 재시도, 최종 실패 시 프리셋 4종 사전 생성 분기 동화(프리셋당 7구간) 반환, 부모 카드는 템플릿으로 항상 응답, 응답에 fallback 플래그 부착</dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>04</b> Retrospective &amp; Next Step</h4>
+              <dl class="kv">
+                <dt>Current Limitation</dt><dd>사전 생성 동화 Fallback이 프리셋·특정 키워드 입력에만 적용, 그 외 자유 입력은 AI 전면 실패 시 500 반환. 생성 전 과정이 60초 동기 요청에 묶임</dd>
+                <dt>Scalability Plan</dt><dd>생성 요청을 비동기 작업 큐로 분리하고 작업 ID 기반 SSE 진행 상태 스트리밍, 동일 입력 스토리·TTS 결과 캐싱으로 Azure F0 한도(60초당 20건) 대응, 사용자별 이미지 생성 쿼터 적용</dd>
+              </dl>
+            </section>
+          </div>
+        </details>
       </article>
 
       <article class="project-card reveal">
         <div class="project-info">
           <div class="project-head"><span class="project-index">03 / REAL-TIME WEB</span><span class="project-year">TEAM PROJECT</span></div>
           <h3>EG<span>GG</span></h3>
-          <p class="project-lead">AI 그림 퀴즈와 실시간 멀티플레이를 결합한 웹게임</p>
-          <p class="project-description">Next.js·React, Node.js WebSocket 서버, Neon PostgreSQL 기반으로 구성했습니다. 약 1.2초 주기의 Polling을 WebSocket으로 전환하고, 메시지 중복과 라운드 타이머 오류를 원인별로 분리해 수정했습니다.</p>
-          <div class="tech-chips"><span>Next.js</span><span>React</span><span>WebSocket</span><span>PostgreSQL</span></div>
-          <div class="project-links"><a href="https://github.com/dainyeyo/miniproject" target="_blank" rel="noopener noreferrer">SOURCE CODE ↗</a></div>
+          <p class="project-lead">WebSocket 룸 서버 · 로컬 GPU SD-Turbo 실시간 이미지 생성 결합 멀티플레이 드로잉 퀴즈 — Base64 → URL 전환으로 Vercel 413 페이로드 병목 해소</p>
+          <dl class="project-meta">
+            <div><dt>기간</dt><dd>2026.06 – 2026.07</dd></div>
+            <div><dt>인원</dt><dd>3명</dd></div>
+            <div><dt>역할</dt><dd>SD-Turbo FastAPI 이미지 생성 백엔드 구축, AI 생성 모드 Next.js 포팅 및 내부 API 라우트 전환, 게임 상태 동기화 로직 수정</dd></div>
+          </dl>
+          <div class="stack-groups">
+            <div class="stack-row"><span class="stack-label">AI / Serving</span><div class="tech-chips"><span>SD-Turbo (Diffusers)</span><span>PyTorch CUDA fp16</span><span>Attention Slicing</span><span>LLM 채점</span></div></div>
+            <div class="stack-row"><span class="stack-label">Backend / Data</span><div class="tech-chips"><span>Next.js API Routes</span><span>Node.js ws</span><span>FastAPI</span><span>Neon PostgreSQL</span></div></div>
+            <div class="stack-row"><span class="stack-label">Infra / Ops</span><div class="tech-chips"><span>Vercel</span><span>Cloudflare Tunnel</span><span>로컬 단일 GPU</span></div></div>
+          </div>
+          <div class="project-links"><a href="https://github.com/dainyeyo/miniproject" target="_blank" rel="noopener noreferrer">GITHUB ↗</a></div>
         </div>
         <div class="project-visual visual-eggg" aria-hidden="true">
           <div class="live-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <div class="live-caption"><span class="pulse-dot"></span> REAL-TIME CONNECTION</div>
           <div class="live-title">EGGG<span>!</span></div>
         </div>
+        <details class="project-detail">
+          <summary><span class="detail-title">ENGINEERING DETAILS</span><span class="detail-hint">Architecture · Trade-offs · Troubleshooting · Next Step</span></summary>
+          <div class="detail-body">
+            <section class="detail-block">
+              <h4><b>01</b> System Architecture &amp; Data Flow</h4>
+              <ol class="flow" aria-label="EGGG 데이터 흐름">
+                <li><span>INPUT</span>드로잉 · 채팅 · 정답 입력</li>
+                <li class="is-guard"><span>ROUTING</span>Next.js API · ws 룸 서버 상태 전이<em>GUARDRAIL 중도 입장 차단</em></li>
+                <li class="is-bottleneck"><span>INFERENCE</span>SD-Turbo 로컬 GPU 추론<em>BOTTLENECK 단일 GPU · 페이로드</em></li>
+                <li class="is-guard"><span>POST-PROCESS</span>정적 파일 저장 · URL 반환<em>GUARDRAIL 단일 in-flight 요청</em></li>
+                <li><span>SERVE</span>Neon DB 갱신 → 1.2초 Polling · WS 브로드캐스트</li>
+              </ol>
+              <ul class="detail-list">
+                <li><strong>Core Pipeline:</strong> ws 실시간 서버가 방 코드별 인메모리 세션으로 대기실 → 게임 → 결과 상태 전이를 관리함.</li>
+                <li>AI 모드 프롬프트를 Cloudflare Tunnel 경유 로컬 GPU FastAPI 서버로 중계해 SD-Turbo 512×512 이미지 생성함.</li>
+                <li>생성 이미지는 파일로 저장 후 URL만 DB에 기록, 클라이언트는 1.2초 주기 상태 Polling과 WebSocket 이벤트로 동기화함.</li>
+              </ul>
+            </section>
+            <section class="detail-block">
+              <h4><b>02</b> Key Engineering Decisions</h4>
+              <div class="decision">
+                <h5>의사결정 1 · 다단계 고품질 Diffusion 대신 SD-Turbo 1-step 실시간 생성</h5>
+                <dl class="kv">
+                  <dt>제약 조건</dt><dd>로컬 단일 GPU, 드로잉 퀴즈 라운드(45초) 내 실시간 인터랙션 필요</dd>
+                  <dt>대안 비교</dt><dd>다단계 샘플링 고품질 모델 vs SD-Turbo 1~4 step 저지연 생성</dd>
+                  <dt>최종 선택</dt><dd>SD-Turbo 512×512 기본 1 step, CUDA fp16 + attention slicing으로 VRAM 약 2 GB 점유. CUDA 커널 호환성 테스트 실패 시 CPU fp32 자동 전환, 모델 로드는 별도 스레드 실행으로 이벤트 루프 블로킹 방지. 연속 입력 Debounce 700 ms</dd>
+                </dl>
+              </div>
+              <div class="decision">
+                <h5>의사결정 2 · 실시간 채널과 영속 데이터 분리</h5>
+                <dl class="kv">
+                  <dt>문제 상황</dt><dd>Vercel 서버리스 환경의 상시 연결 불가, 플레이어 점수·방 상태·채팅의 영속 저장 필요</dd>
+                  <dt>해결 설계</dt><dd>별도 Node.js ws 서버(룸 단위 인메모리 세션·게임 루프)와 Neon PostgreSQL(점수·방 상태·채팅) 분리, 최종 라운드 종료 시 활성 휴먼 유저 중 최고 득점자 1인 방장 결정론적 위임(score DESC, nickname ASC)</dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>03</b> Production Bottlenecks &amp; Troubleshooting</h4>
+              <div class="issue">
+                <h5>Issue 1 · 이미지 페이로드 초과로 플레이어 간 이미지 미동기화</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>수백 KB~수 MB Base64 이미지를 DB 컬럼에 직접 기록 → Vercel 서버리스 바디 제한(HTTP 413) 초과, ai_image_url 갱신 실패</dd>
+                  <dt>Engineering Action</dt><dd>AI 백엔드에서 이미지를 정적 파일로 저장 후 URL만 반환하도록 응답 포맷 변경, 프론트 재배포 없이 백엔드 단독 적용. 룸 단위 aiStatus 'generating' 가드로 중복 생성 요청 차단, 실패 시 idle 복귀 및 시스템 메시지 안내</dd>
+                  <dt>Impact</dt><dd><code>DB 기록 페이로드: 수백 KB~수 MB → 약 70 B</code> <code>HTTP 413 → 정상 갱신</code></dd>
+                </dl>
+              </div>
+              <div class="issue">
+                <h5>Issue 2 · 이중 채널 경합으로 인한 중복 이벤트 및 트랜잭션 롤백</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>타이머 만료 시 WS 브로드캐스트와 DB 기록 이중 발송, React 인터벌 재생성으로 방장 클라이언트 reveal-answer API 2회 이상 호출, SQL 바인딩 파라미터 누락으로 500 및 정답 처리 롤백</dd>
+                  <dt>Engineering Action</dt><dd>정답 공개 메시지를 DB Polling 단일 채널로 통합, timerEndTriggeredRef 게이트로 1차 호출 후 잠금·라운드 변경 시 해제, 서버 timerBlocker 배리어로 중복 타이머 실행 차단, 누락 파라미터 바인딩 보완</dd>
+                  <dt>Impact</dt><dd><code>라운드 종료 정답 메시지: 2회 → 1회</code></dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>04</b> Retrospective &amp; Next Step</h4>
+              <dl class="kv">
+                <dt>Current Limitation</dt><dd>룸 상태가 단일 ws 프로세스 메모리에 존재하고 이미지 추론이 Tunnel 경유 단일 로컬 GPU에 집중, 동시 방 증가 시 생성 대기 및 프로세스 재시작 시 진행 상태 유실</dd>
+                <dt>Scalability Plan</dt><dd>Redis Pub/Sub 기반 룸 상태 공유로 ws 서버 수평 확장, Polling 제거 후 WebSocket 단일 채널화, GPU 추론 큐와 배치 처리 도입, 생성 이미지 오브젝트 스토리지 이전</dd>
+              </dl>
+            </section>
+          </div>
+        </details>
       </article>
 
       <article class="project-card reveal">
         <div class="project-info">
           <div class="project-head"><span class="project-index">04 / VLA SYSTEMS</span><span class="project-year">TEAM MECHU</span></div>
           <h3>LET'S HIM <span>COOK!</span></h3>
-          <p class="project-lead">Unity 시뮬레이션에서 음식 서빙·수거 작업을 학습시키는 Vision-Language-Action 프로젝트</p>
-          <p class="project-description">10Hz RGB·상태·행동 데이터 수집과 X-VLA 파인튜닝을 실험했습니다. 서빙과 수거 작업을 각각 300개 에피소드로 나누고, 규칙으로 처리할 수 있는 게임 로직과 모델 학습 대상을 분리했습니다.</p>
-          <div class="tech-chips"><span>Unity</span><span>X-VLA</span><span>PyTorch</span><span>Imitation Learning</span></div>
+          <p class="project-lead">Unity 시뮬레이션 10 Hz RGB·상태·행동 데이터 수집 및 X-VLA 파인튜닝 — 규칙 처리 로직과 모델 학습 대상 분리</p>
+          <dl class="project-meta">
+            <div><dt>기간</dt><dd>2026.06 – 2026.08 (K-Digital Training)</dd></div>
+            <div><dt>인원</dt><dd>TEAM MECHU</dd></div>
+            <div><dt>역할</dt><dd>10 Hz 데이터 수집 파이프라인, X-VLA 파인튜닝 실험</dd></div>
+          </dl>
+          <div class="stack-groups">
+            <div class="stack-row"><span class="stack-label">AI / Serving</span><div class="tech-chips"><span>X-VLA</span><span>PyTorch</span><span>Imitation Learning</span></div></div>
+            <div class="stack-row"><span class="stack-label">Data / Sim</span><div class="tech-chips"><span>Unity</span><span>10 Hz RGB · State · Action</span></div></div>
+          </div>
         </div>
         <div class="project-visual visual-vla" aria-hidden="true">
           <div class="vla-label">PERCEPTION → ACTION</div>
           <div class="vla-nodes"><span>RGB<br />INPUT</span><i></i><span>VLA<br />MODEL</span><i></i><span>ACTION<br />OUTPUT</span></div>
           <div class="vla-bottom">VISION · LANGUAGE · ACTION</div>
         </div>
+        <details class="project-detail">
+          <summary><span class="detail-title">ENGINEERING DETAILS</span><span class="detail-hint">Architecture · Trade-offs</span></summary>
+          <div class="detail-body">
+            <section class="detail-block">
+              <h4><b>01</b> System Architecture &amp; Data Flow</h4>
+              <ol class="flow" aria-label="LET'S HIM COOK 데이터 흐름">
+                <li><span>INPUT</span>Unity 시뮬레이션 RGB · 상태</li>
+                <li><span>COLLECT</span>10 Hz RGB · 상태 · 행동 동기 수집</li>
+                <li class="is-guard"><span>ROUTING</span>규칙 처리 게임 로직 / 학습 대상 분리<em>GUARDRAIL 규칙 기반 처리</em></li>
+                <li><span>INFERENCE</span>X-VLA 파인튜닝 모델</li>
+                <li><span>OUTPUT</span>서빙 · 수거 행동</li>
+              </ol>
+              <ul class="detail-list">
+                <li><strong>Core Pipeline:</strong> Unity 시뮬레이션에서 RGB·상태·행동을 10 Hz로 동기 수집함.</li>
+                <li>서빙·수거 작업별 300개 에피소드 데이터셋으로 X-VLA 파인튜닝함.</li>
+              </ul>
+            </section>
+            <section class="detail-block">
+              <h4><b>02</b> Key Engineering Decisions</h4>
+              <div class="decision">
+                <h5>의사결정 1 · 전 과정 End-to-End 학습 대신 규칙 로직 + VLA 학습 대상 분리</h5>
+                <dl class="kv">
+                  <dt>대안 비교</dt><dd>게임 로직 전체를 VLA 모델로 학습 vs 규칙으로 처리 가능한 게임 로직과 모델 학습 대상 분리</dd>
+                  <dt>최종 선택</dt><dd>규칙 처리 가능 로직을 모델 외부로 분리해 학습 범위를 서빙·수거 행동으로 축소, 작업별 300개 에피소드로 데이터셋 분할</dd>
+                </dl>
+              </div>
+            </section>
+          </div>
+        </details>
       </article>
 
       <article class="project-card reveal">
         <div class="project-info">
           <div class="project-head"><span class="project-index">05 / ROUTE OPTIMIZATION</span><span class="project-year">IN-VEHICLE APP CONTEST</span></div>
           <h3>MOA<span>GIL</span></h3>
-          <p class="project-lead">QR로 동승자의 목적지를 모아 경유 순서를 비교하는 차량용 서비스</p>
-          <p class="project-description">동승자는 설치 없는 모바일 웹에서 지도 핀으로 목적지를 지정합니다. 최대 4개 목적지에 대해 24가지 방문 순서를 비교하고, 순서 고정·재계산·경유지 건너뛰기를 고려해 운전자 조작을 줄이는 경험을 설계했습니다.</p>
-          <div class="tech-chips"><span>Kakao Maps API</span><span>QR Web</span><span>Routing</span><span>UX</span></div>
+          <p class="project-lead">Kakao Mobility 실시간 시간·거리 행렬 기반 동승자 하차 순서 최적화 — 24개 순서 비교를 행렬 1회 조회 후 로컬 연산으로 처리해 외부 API 호출 축소</p>
+          <dl class="project-meta">
+            <div><dt>기간</dt><dd>2026.10 – 2026.11</dd></div>
+            <div><dt>인원</dt><dd>1명</dd></div>
+            <div><dt>역할</dt><dd>Python 세션·경로 API, 순열 경로 엔진, QR 모바일 웹, Kotlin/Compose Pleos 차량 앱 전 구간 구현</dd></div>
+          </dl>
+          <div class="stack-groups">
+            <div class="stack-row"><span class="stack-label">Routing / Vehicle</span><div class="tech-chips"><span>Kakao Mobility API</span><span>Permutation Engine</span><span>Pleos NaviHelper</span><span>AAOS CarPropertyManager</span></div></div>
+            <div class="stack-row"><span class="stack-label">Backend / Data</span><div class="tech-chips"><span>Python 3.12 HTTP API</span><span>SQLite</span><span>Supabase PostgreSQL</span><span>Advisory Lock</span></div></div>
+            <div class="stack-row"><span class="stack-label">Infra / Ops</span><div class="tech-chips"><span>Vercel (Static + Python Functions)</span><span>Android Keystore AES-GCM</span><span>Gradle Mock / Pleos Flavor</span><span>Kotlin / Compose</span></div></div>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/kimps005/MOAGIL" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
+            <a href="https://moagil-eta.vercel.app/" target="_blank" rel="noopener noreferrer">WEB DEMO ↗</a>
+            <a href="https://youtu.be/u-7vw_0MuKI" target="_blank" rel="noopener noreferrer">DEMO VIDEO ↗</a>
+          </div>
         </div>
         <div class="project-visual visual-route" aria-hidden="true">
           <div class="route-grid"></div>
           <svg class="route-svg" viewBox="0 0 440 270" role="presentation" focusable="false"><path d="M53 206 C92 206 83 90 154 101 S213 216 266 169 S331 65 381 76" fill="none" stroke="#B0E3EA" stroke-width="5" stroke-linecap="round" stroke-dasharray="10 12"/><circle cx="53" cy="206" r="13" fill="#91E8D9"/><circle cx="154" cy="101" r="13" fill="#91E8D9"/><circle cx="266" cy="169" r="13" fill="#91E8D9"/><circle cx="381" cy="76" r="13" fill="#91E8D9"/></svg>
           <div class="route-counter"><b>4!</b><span>24 ROUTES</span></div>
         </div>
+        <details class="project-detail">
+          <summary><span class="detail-title">ENGINEERING DETAILS</span><span class="detail-hint">Architecture · Trade-offs · Troubleshooting · Next Step</span></summary>
+          <div class="detail-body">
+            <section class="detail-block">
+              <h4><b>01</b> System Architecture &amp; Data Flow</h4>
+              <ol class="flow" aria-label="MOAGIL 데이터 흐름">
+                <li><span>INPUT</span>QR 모바일 웹 이름 · 하차 지점 등록</li>
+                <li class="is-guard"><span>ROUTING</span>토큰 해시 인증 · 정원 4명 트랜잭션<em>GUARDRAIL version 충돌 409</em></li>
+                <li class="is-bottleneck"><span>INFERENCE</span>Kakao 시간·거리 행렬 → 순열 비교<em>BOTTLENECK 외부 API 호출</em></li>
+                <li class="is-guard"><span>VERIFY</span>통행료 0원 검증 · route snapshot<em>GUARDRAIL 미확인 시 저장 거부</em></li>
+                <li><span>SERVE</span>Pleos NaviHelper 구간별 목적지 전달</li>
+              </ol>
+              <ul class="detail-list">
+                <li><strong>Core Pipeline:</strong> 동승자가 설치 없는 QR 웹에서 목적지 등록, 서버는 SQLite/Supabase에 세션 상태(COLLECTING → PLANNED → ACTIVE → COMPLETED) 관리함.</li>
+                <li>Kakao 다중 출발지 API로 실시간 시간·거리 행렬 구성 후 전체 하차 순서를 로컬 합산 비교, 선택 경로만 상세 형상 조회함.</li>
+                <li>차량 앱이 최적 순서대로 다음 목적지를 Pleos NaviHelper에 전달, 하차 확인마다 현재 위치 기준 다음 구간 재요청함.</li>
+              </ul>
+            </section>
+            <section class="detail-block">
+              <h4><b>02</b> Key Engineering Decisions</h4>
+              <div class="decision">
+                <h5>의사결정 1 · 순서별 전체 길찾기 호출 대신 시간·거리 행렬 1회 구성 후 로컬 순열 비교</h5>
+                <dl class="kv">
+                  <dt>제약 조건</dt><dd>Kakao Mobility API 사용 한도 및 초과 요금, 동승자 최대 4명 → 하차 순서 4! = 24개</dd>
+                  <dt>대안 비교</dt><dd>24개 순서 각각 전체 길찾기 요청 vs 목적지당 다중 출발지 1회 요청으로 행렬 구성 후 itertools.permutations 로컬 합산</dd>
+                  <dt>최종 선택</dt><dd>출발지 포함 5개 지점 기준 행렬 요청 5회로 전 순서 평가, 10 km 반경 밖 누락 셀만 전체 길찾기로 보완. 우선 승객 지정 시 첫 순서 고정으로 비교 대상 24 → 6 축소. Kakao 실패 시 타 제공자 전환 없이 오류 반환(OSRM·Naver 분기 제거)</dd>
+                </dl>
+              </div>
+              <div class="decision">
+                <h5>의사결정 2 · 동시 등록·동시 수정 정합성 확보</h5>
+                <dl class="kv">
+                  <dt>문제 상황</dt><dd>여러 동승자 동시 QR 등록 시 정원(4명) 초과·중복 등록, 운전자·동승자 동시 변경에 의한 경로 스냅샷 불일치</dd>
+                  <dt>해결 설계</dt><dd>SQLite 트랜잭션 / PostgreSQL pg_advisory_xact_lock 내 정원 검사, idempotency key + payload 해시 재시도 처리, 세션 version 비교 후 stale 요청 409 + 스냅샷 재조회. 초대·운전자 토큰 secrets.token_urlsafe(32) 생성 후 SHA-256 해시만 저장, 운전자 토큰은 Android Keystore AES-GCM 암호화 보관</dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>03</b> Production Bottlenecks &amp; Troubleshooting</h4>
+              <div class="issue">
+                <h5>Issue 1 · 다중 경로 비교 외부 API 호출량 및 계산 지연</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>순서별 전체 경로 조회 시 순서 수에 비례한 외부 호출 발생, 다중 출발지 API의 10 km 반경 제한으로 일부 구간 누락</dd>
+                  <dt>Engineering Action</dt><dd>목적지 단위 행렬 조회로 호출 수를 지점 수에 비례하도록 변경, 누락 셀만 선택적 보완 호출, 요청당 12초 타임아웃 적용</dd>
+                  <dt>Impact</dt><dd><code>순서 비교 외부 호출: 순서 24개 개별 조회 → 행렬 요청 5회 (4명 기준)</code> <code>4명 24개 순서 + 선택 경로 계산: 18.87초 (실 API 1회 측정)</code></dd>
+                </dl>
+              </div>
+              <div class="issue">
+                <h5>Issue 2 · 외부 API 명세 불일치 및 주행 중 조작 방어</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>다중 경유지 API에 avoid 필드를 배열이 아닌 문자열로 전송해 HTTP 500 발생, 주행 중 운전자 화면 조작 위험</dd>
+                  <dt>Engineering Action</dt><dd>avoid 필드 배열 형식으로 수정, Kakao가 통행료 0원을 확인하지 않으면 무료 경로 저장 거부. 차량 속도·기어 1초 주기 조회, 속도 0.3 m/s 미만 + P 기어일 때만 운전자 조작 허용, 신호 미수신 시 조작 잠금. 이동 중 동승자 수정·삭제 차단, 초대·참가 요청 IP당 분당 30회 제한(429 + Retry-After)</dd>
+                  <dt>Impact</dt><dd><code>무료 도로 경로 요청: HTTP 500 → 성공 (통행료 0원)</code> <code>Python 회귀 테스트 39개 통과</code></dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>04</b> Retrospective &amp; Next Step</h4>
+              <dl class="kv">
+                <dt>Current Limitation</dt><dd>행렬 구성 요청을 목적지별 순차 실행해 4명 기준 계산에 18.87초 소요, 요청 제한이 단일 프로세스 메모리 카운터로 다중 서버 환경 미지원</dd>
+                <dt>Scalability Plan</dt><dd>목적지별 행렬 요청 병렬화, 좌표·시간대 키 기반 행렬 TTL 캐시(Redis) 도입으로 재계산 호출 제거, 분산 Rate Limit 전환, 5명 이상 확장 시 순열 전수 비교 대신 DP·휴리스틱 탐색 적용</dd>
+              </dl>
+            </section>
+          </div>
+        </details>
+      </article>
+
+      <article class="project-card reveal">
+        <div class="project-info">
+          <div class="project-head"><span class="project-index">06 / FINANCIAL AI AGENT</span><span class="project-year">PERSONAL PROJECT</span></div>
+          <h3>FinGuard <span>AI</span></h3>
+          <p class="project-lead">LangGraph · pgvector 하이브리드 RAG · Decimal 엔진 기반 주식 계좌 진단 — 8GB VRAM 단일 GPU에 bge-m3·reranker FP16 상주, LLM·데이터 소스 장애 시에도 SSE 정상 종료</p>
+          <dl class="project-meta">
+            <div><dt>기간</dt><dd>2026.11</dd></div>
+            <div><dt>인원</dt><dd>1명</dd></div>
+            <div><dt>역할</dt><dd>LangGraph 진단 그래프, DART 공시 ETL·하이브리드 검색, GPU 임베딩·리랭킹 서빙, Decimal 계산 엔진, DOC-N 인용 가드레일, FastAPI SSE·Next.js PIN 프록시 전 구간 구현</dd></div>
+          </dl>
+          <div class="stack-groups">
+            <div class="stack-row"><span class="stack-label">AI / Serving</span><div class="tech-chips"><span>LangGraph</span><span>BGE-M3</span><span>bge-reranker-v2-m3</span><span>FP16 · gpu_semaphore(1)</span><span>Qwen · Gemini Fallback</span><span>Kiwi</span></div></div>
+            <div class="stack-row"><span class="stack-label">Backend / Data</span><div class="tech-chips"><span>FastAPI SSE</span><span>PostgreSQL 15 (pgvector · GIN)</span><span>Redis 7 (캐시 · 분산 락)</span><span>psycopg Pool</span><span>Decimal Engine</span><span>Next.js 14</span></div></div>
+            <div class="stack-row"><span class="stack-label">Infra / Ops</span><div class="tech-chips"><span>Docker Compose (GPU)</span><span>CUDA 12.8 · torch 2.8</span><span>BuildKit pip Cache</span><span>pytest 202개</span></div></div>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/kimps005/finguard-ai" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
+            <a href="https://github.com/kimps005/finguard-ai/blob/main/docs/finguard_ai_prd_v3.8.md" target="_blank" rel="noopener noreferrer">PRD ↗</a>
+          </div>
+        </div>
+        <div class="project-visual visual-finguard" aria-hidden="true">
+          <div class="fg-graph">
+            <div class="fg-top">LANGGRAPH DIAGNOSIS</div>
+            <div class="fg-nodes"><span>ROUTER</span><span>MARKET DATA</span><span>QUANT · DECIMAL</span><span class="fg-fan">WORKER ×3</span><span class="fg-guard">GUARDRAIL</span><span>SYNTHESIZER</span></div>
+            <div class="fg-foot"><span>SSE</span><b>DOC-N VERIFIED</b></div>
+          </div>
+          <div class="visual-watermark">FG.</div>
+        </div>
+        <details class="project-detail">
+          <summary><span class="detail-title">ENGINEERING DETAILS</span><span class="detail-hint">Architecture · Trade-offs · Troubleshooting · Next Step</span></summary>
+          <div class="detail-body">
+            <section class="detail-block">
+              <h4><b>01</b> System Architecture &amp; Data Flow</h4>
+              <ol class="flow" aria-label="FinGuard AI 데이터 흐름">
+                <li><span>INPUT</span>계좌 잔고 · 사용자 질의 (PIN 프록시)</li>
+                <li class="is-guard"><span>ROUTING</span>Router 의도 분류 · Fast Path<em>GUARDRAIL 250ms 초과 시 정규식 분류</em></li>
+                <li class="is-bottleneck"><span>INFERENCE</span>DART ETL · 하이브리드 RAG · 종목 Worker ×3<em>BOTTLENECK 단일 GPU 직렬화</em></li>
+                <li class="is-guard"><span>VERIFY</span>DOC-N 인용 검증 · Decimal 수치<em>GUARDRAIL 미등록 인용 문장 제거</em></li>
+                <li><span>SERVE</span>SSE status · token · done</li>
+              </ol>
+              <ul class="detail-list">
+                <li><strong>Core Pipeline:</strong> Router가 fast_lookup / deep_diagnosis / simulation 분기, 시장 데이터·ECOS·DART를 소스별 장애 격리 상태로 병렬 수집함.</li>
+                <li>Decimal 엔진이 스코어카드·희석률·시뮬레이션 산출 후 비중 상위 3종목에 Send로 Worker 병렬 Fan-Out, Worker는 마스킹된 공시 청크만 해석함.</li>
+                <li>가드레일 노드가 인용을 문장 단위로 검증·기록하고 Synthesizer가 로컬 정량 리포트와 결합해 SSE done 프레임으로 반환함.</li>
+              </ul>
+            </section>
+            <section class="detail-block">
+              <h4><b>02</b> Key Engineering Decisions</h4>
+              <div class="decision">
+                <h5>의사결정 1 · LLM 수치 생성 대신 결정론적 Decimal 엔진 + LLM은 공시 해석 전담</h5>
+                <dl class="kv">
+                  <dt>제약 조건</dt><dd>금융 진단에서 수치 오류 탐지 불가 시 리포트 전체 신뢰 상실, 계좌 금액·수량의 외부 LLM 전송 불가</dd>
+                  <dt>대안 비교</dt><dd>LLM 수치 생성 / float 연산 vs I/O 없는 순수 함수 Decimal(prec=64, ROUND_HALF_UP) 엔진</dd>
+                  <dt>최종 선택</dt><dd>스코어카드·오버행 희석률·4분기 역산·PER/PBR·매수 시뮬레이션을 Decimal 엔진으로 고정, 단일 인코더로 API·SSE·Redis·프롬프트 전 경로 문자열 직렬화. LLM 입력은 종목명·비중·수익률·점수·마스킹 공시로 제한, 입력 미확정 항목은 추정 없이 None 처리</dd>
+                </dl>
+              </div>
+              <div class="decision">
+                <h5>의사결정 2 · 전역 HNSW 사후 필터 대신 기업 범위 Exact Scan + 하이브리드 랭킹</h5>
+                <dl class="kv">
+                  <dt>문제 상황</dt><dd>전역 ANN 상위 k개 절단 후 corp_code 필터 적용 시 해당 기업 청크 누락(재현율 손실), 벡터 단독 검색의 CB·BW·보호예수 등 정확 용어 누락</dd>
+                  <dt>해결 설계</dt><dd>B-tree로 기업·기간 청크를 MATERIALIZED CTE에 선고정 후 코사인 유사도 전수 계산, Kiwi 형태소 tsvector GIN 랭킹을 LEFT JOIN 합산해 후보 32개 → CrossEncoder 리랭킹 상위 5개 반환. EXPLAIN 기반 테스트로 실행계획 고정</dd>
+                </dl>
+              </div>
+              <div class="decision">
+                <h5>의사결정 3 · 단일 LLM 대신 역할별 다중 공급자 단계적 대체</h5>
+                <dl class="kv">
+                  <dt>해결 설계</dt><dd>Router(Qwen, 15초) / Worker(Qwen, 45초, 시간초과 1회 재시도, 403·429·할당량 시 Gemini 즉시 전환) / Synthesizer(Gemini, 60초, 503·504 시 1.5 → 3 → 6초 지터 백오프 후 DashScope 대체). 안전 필터 차단·빈 응답·스키마 불일치는 LLMUnavailable로 일원화, 로그 기록 전 API 키 REDACTED 치환</dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>03</b> Production Bottlenecks &amp; Troubleshooting</h4>
+              <div class="issue">
+                <h5>Issue 1 · 8GB VRAM 단일 GPU 모델 상주 및 GPU 대기 중 DB 연결 풀 고갈</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>요청마다 신규 DB 연결 수립으로 연결 수 무상한. 풀 도입(max 8) 후 트랜잭션 내부에서 gpu_semaphore(1) 임베딩 대기 → 연결이 idle in transaction 상태로 점유되어 짧은 요청까지 5초 획득 제한 초과. asyncio 취소 시 실행 중 GPU 스레드와 무관하게 permit 조기 반환</dd>
+                  <dt>Engineering Action</dt><dd>bge-m3·bge-reranker-v2-m3 FP16 직접 로드, workers=1 고정으로 프로세스별 중복 적재 방지, 리랭킹 batch_size=8 분할. 임베딩·토큰화를 트랜잭션 밖에서 선완료 후 executemany 단일 트랜잭션 적재. GPU 호출을 asyncio.shield로 감싸고 스레드 종료 시점 콜백에서 permit 반환</dd>
+                  <dt>Impact</dt><dd><code>FP16 두 모델 VRAM 상한: 2.5 GB 초과 시 스모크 테스트 실패 처리</code> <code>임베딩 호출 시점 열린 DB 연결: 0개 (회귀 테스트 고정)</code></dd>
+                </dl>
+              </div>
+              <div class="issue">
+                <h5>Issue 2 · 데이터 소스 단일 실패 시 심층 진단 전체 중단 및 LLM 환각 인용</h5>
+                <dl class="kv">
+                  <dt>Root Cause</dt><dd>전 종목 수집을 asyncio.TaskGroup 하나로 묶어 작업 하나 예외 시 전체 취소, DART 적재 시간 제한 부재. LLM의 존재하지 않는 공시번호 인용 및 가격 추정</dd>
+                  <dt>Engineering Action</dt><dd>optional() 헬퍼로 소스별 실패 격리 후 해당 점수만 미산정·경고 기록, 잔고·종목 마스터 실패만 치명 오류 처리, DART 적재 15초 타임아웃(공시 단위 커밋으로 부분 적재 보존). LLM에는 14자리 공시번호 대신 DOC-N 별칭만 노출, Kiwi 문장 분리 후 미등록 별칭·원시 공시번호 포함 문장만 제거, 가격 밴드 근거는 원·주·% 수치 포함 문장 폐기. LLM 전면 장애 시에도 결정론적 리포트로 SSE 정상 종료</dd>
+                  <dt>Impact</dt><dd><code>수급·DART·재무 동시 실패: 진단 중단 → done(ok=true) + 정상 종목만 Fan-Out</code> <code>PyKRX 첫 로그인 약 8초 대기: 요청 경로 → 300초 주기 백그라운드 세션 갱신</code></dd>
+                </dl>
+              </div>
+            </section>
+            <section class="detail-block">
+              <h4><b>04</b> Retrospective &amp; Next Step</h4>
+              <dl class="kv">
+                <dt>Current Limitation</dt><dd>workers=1 + gpu_semaphore(1) 단일 사용자 전제 설계, 동시 사용자 증가 시 임베딩·리랭킹 대기열이 병목. RAGAS·지연시간 지표는 오프라인 dry-run만 확보</dd>
+                <dt>Scalability Plan</dt><dd>임베딩·리랭커를 Triton Inference Server 등 별도 추론 서버로 분리해 Dynamic Batching 적용, API 프로세스 수평 확장, 공시 인제스트를 Redis 큐 기반 비동기 워커로 이전, 종목 마스터 일 단위 스케줄 동기화</dd>
+              </dl>
+            </section>
+          </div>
+        </details>
       </article>
     </section>
 
