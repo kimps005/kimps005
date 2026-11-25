@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#163956" />
+  <meta name="description" content="Unity 시뮬레이션 데이터로 학습한 서빙·수거 VLA 에이전트 — Unity로 만든 시뮬레이션 환경에서 에이전트가 화면과 상태를 보고 음식 서빙·수거 행동을 스스로 수행하도록 학습시키는 VLA(Vision-Language-Act…" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="LET&#x27;S HIM COOK! | CHOI MINSU Portfolio" />
+  <meta property="og:description" content="Unity 시뮬레이션 데이터로 학습한 서빙·수거 VLA 에이전트" />
+  <title>LET&#x27;S HIM COOK! | CHOI MINSU Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=navy-20261115" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css?v=detail-20261125" />
+  <link rel="stylesheet" href="../../project.css?v=detail-20261125" />
+  <script defer src="../../project.js?v=detail-20261125"></script>
+</head>
+<body class="pd-page">
+  <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+  <header class="pd-topbar">
+    <a class="pd-back" href="../../#project-lets-him-cook"><span aria-hidden="true">←</span> 프로젝트 목록으로</a>
+    <a class="pd-brand" href="../../">MC<span>.</span></a>
+  </header>
+
+  <main class="pd-main">
+    <section class="pd-hero">
+      <div class="pd-hero-text">
+        <p class="pd-tagline">Unity 시뮬레이션 데이터로 학습한 서빙·수거 VLA 에이전트</p>
+        <h1>LET'S HIM <span>COOK!</span></h1>
+        <p class="pd-desc">Unity로 만든 시뮬레이션 환경에서 에이전트가 화면과 상태를 보고 음식 서빙·수거 행동을 스스로 수행하도록 학습시키는 VLA(Vision-Language-Action) 프로젝트입니다. 시뮬레이션에서 직접 학습 데이터를 모으고, 이를 바탕으로 행동 모델을 파인튜닝했습니다.</p>
+        
+        <div class="pd-cta"></div>
+      </div>
+      <div class="pd-hero-visual">
+        <div class="project-visual visual-vla" aria-hidden="true">
+          <div class="vla-label">PERCEPTION → ACTION</div>
+          <div class="vla-nodes"><span>RGB<br />INPUT</span><i></i><span>VLA<br />MODEL</span><i></i><span>ACTION<br />OUTPUT</span></div>
+          <div class="vla-bottom">VISION · LANGUAGE · ACTION</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pd-layout">
+      <nav class="pd-toc" aria-label="목차">
+        <p>CONTENTS</p>
+        <ol><li><a href="#summary"><b>01</b>한눈에 보기</a></li><li><a href="#overview"><b>02</b>프로젝트 개요</a></li><li><a href="#architecture"><b>03</b>시스템 아키텍처</a></li><li><a href="#features"><b>04</b>주요 기능 개발</a></li><li><a href="#decisions"><b>05</b>기술적 의사결정</a></li></ol>
+      </nav>
+      <div class="pd-content">
+        <section class="pd-section" id="summary" aria-labelledby="summary-title">
+          <h2 id="summary-title"><span>01</span>한눈에 보기</h2>
+          <dl class="pd-tldr"><div class="pd-tldr-row is-problem"><dt>문제</dt><dd>게임 로직 전체를 VLA 모델로 학습시키면 학습 범위가 지나치게 넓어지고, 규칙으로 충분한 부분까지 모델이 떠안게 됩니다.</dd></div><div class="pd-tldr-row is-solution"><dt>해결</dt><dd>규칙으로 처리할 수 있는 게임 로직은 모델 밖으로 분리하고, 학습 대상을 서빙·수거 행동으로 좁혔습니다.</dd></div><div class="pd-tldr-row is-result"><dt>결과</dt><dd>Unity에서 RGB·상태·행동을 10 Hz로 동기 수집하는 파이프라인을 만들고, 작업별 300개 에피소드로 X-VLA를 파인튜닝했습니다.</dd></div></dl><div class="pd-metrics"><div class="pd-metric"><strong>10 Hz</strong><span>RGB · 상태 · 행동 동기 수집</span><small>Unity 시뮬레이션</small></div><div class="pd-metric"><strong>300</strong><span>작업별 학습 에피소드</span><small>서빙 · 수거</small></div></div>
+        </section>
+        <section class="pd-section" id="overview" aria-labelledby="overview-title">
+          <h2 id="overview-title"><span>02</span>프로젝트 개요</h2>
+          <dl class="pd-info">
+            <div><dt>기간</dt><dd>2026.06 – 2026.08 (K-Digital Training)</dd></div>
+            <div><dt>인원</dt><dd>TEAM MECHU</dd></div>
+            <div class="is-wide"><dt>내 역할</dt><dd>10 Hz 데이터 수집 파이프라인, X-VLA 파인튜닝 실험</dd></div>
+          </dl>
+          <h3 class="pd-subtitle">기술 스택</h3>
+          <div class="stack-groups">
+            <div class="stack-row"><span class="stack-label">AI / Serving</span><div class="tech-chips"><span>X-VLA</span><span>PyTorch</span><span>Imitation Learning</span></div></div>
+            <div class="stack-row"><span class="stack-label">Data / Sim</span><div class="tech-chips"><span>Unity</span><span>10 Hz RGB · State · Action</span></div></div>
+          </div>
+        </section>
+        <section class="pd-section" id="architecture" aria-labelledby="architecture-title">
+          <h2 id="architecture-title"><span>03</span>시스템 아키텍처</h2>
+          <div class="pd-flow"><ol class="flow" aria-label="LET'S HIM COOK 데이터 흐름">
+                <li><span>INPUT</span>Unity 시뮬레이션 RGB · 상태</li>
+                <li><span>COLLECT</span>10 Hz RGB · 상태 · 행동 동기 수집</li>
+                <li class="is-guard"><span>ROUTING</span>규칙 처리 게임 로직 / 학습 대상 분리<em>GUARDRAIL 규칙 기반 처리</em></li>
+                <li><span>INFERENCE</span>X-VLA 파인튜닝 모델</li>
+                <li><span>OUTPUT</span>서빙 · 수거 행동</li>
+              </ol></div>
+          <div class="pd-legend"><span class="is-guard">GUARDRAIL 안정성 장치</span><span class="is-bottleneck">BOTTLENECK 성능 병목 지점</span></div>
+          <ul class="pd-points"><li>Unity 시뮬레이션에서 RGB·상태·행동을 10 Hz로 동기 수집합니다.</li><li>규칙으로 처리 가능한 게임 로직과 모델 학습 대상을 분리합니다.</li><li>서빙·수거 작업별 300개 에피소드 데이터셋으로 X-VLA를 파인튜닝합니다.</li></ul>
+        </section>
+        <section class="pd-section" id="features" aria-labelledby="features-title">
+          <h2 id="features-title"><span>04</span>주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
+          <div class="pd-features"><article class="pd-feature"><h3><span class="pd-num">01</span>10 Hz 데이터 수집 파이프라인</h3><ul><li>Unity 시뮬레이션에서 RGB 이미지·상태·행동을 10 Hz로 동기화해 수집</li><li>서빙·수거 작업별로 에피소드 데이터셋 분할</li></ul></article><article class="pd-feature"><h3><span class="pd-num">02</span>X-VLA 파인튜닝 실험</h3><ul><li>작업별 300개 에피소드로 X-VLA 모방 학습(Imitation Learning) 파인튜닝</li></ul></article></div>
+        </section>
+        <section class="pd-section" id="decisions" aria-labelledby="decisions-title">
+          <h2 id="decisions-title"><span>05</span>기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
+          <article class="pd-decision"><p class="pd-kicker">DECISION 01</p><h3>전 과정 End-to-End 학습 대신, 규칙 로직과 VLA 학습 대상을 분리</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>선택지</dt><dd>A. 게임 로직 전체를 VLA 모델로 학습<br>B. 규칙으로 처리 가능한 로직은 분리하고 행동만 학습</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd><b>B.</b> 학습 범위를 서빙·수거 행동으로 축소하고, 작업별 300개 에피소드로 데이터셋 분할</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>모델이 학습할 범위를 핵심 행동으로 좁힘</dd></div></dl></article>
+        </section>
+      </div>
+    </div>
+
+    <nav class="pd-pager" aria-label="다른 프로젝트"><a class="pd-pager-link is-prev" href="../eggg/"><small>← 이전 프로젝트</small><b>EGGG</b></a><a class="pd-pager-link is-next" href="../moagil/"><small>다음 프로젝트 →</small><b>MOAGIL</b></a></nav>
+  </main>
+
+  <footer class="pd-footer"><span>© 2026 CHOI MINSU</span><a href="../../#projects">전체 프로젝트 보기 ↑</a></footer>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#163956" />
+  <meta name="description" content="동승자 하차 순서를 최적화해 차량 내비게이션으로 안내하는 차량용 앱 — 여러 사람이 한 차에 타고 각자 다른 곳에서 내릴 때, 가장 효율적인 하차 순서를 계산해 차량 내비게이션으로 안내해 주는 동승 경로 최적화 서비스입니다. 동승자는…" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="MOAGIL | CHOI MINSU Portfolio" />
+  <meta property="og:description" content="동승자 하차 순서를 최적화해 차량 내비게이션으로 안내하는 차량용 앱" />
+  <title>MOAGIL | CHOI MINSU Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=navy-20261115" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css?v=detail-20261125" />
+  <link rel="stylesheet" href="../../project.css?v=detail-20261125" />
+  <script defer src="../../project.js?v=detail-20261125"></script>
+</head>
+<body class="pd-page">
+  <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+  <header class="pd-topbar">
+    <a class="pd-back" href="../../#project-moagil"><span aria-hidden="true">←</span> 프로젝트 목록으로</a>
+    <a class="pd-brand" href="../../">MC<span>.</span></a>
+  </header>
+
+  <main class="pd-main">
+    <section class="pd-hero">
+      <div class="pd-hero-text">
+        <p class="pd-tagline">동승자 하차 순서를 최적화해 차량 내비게이션으로 안내하는 차량용 앱</p>
+        <h1>MOA<span>GIL</span></h1>
+        <p class="pd-desc">여러 사람이 한 차에 타고 각자 다른 곳에서 내릴 때, 가장 효율적인 하차 순서를 계산해 차량 내비게이션으로 안내해 주는 동승 경로 최적화 서비스입니다. 동승자는 QR 코드로 앱 설치 없이 목적지를 등록하고, 운전자는 차량 화면에 안내되는 순서대로 이동하면 됩니다.</p>
+        
+        <div class="pd-cta"><a class="pd-btn pd-btn-primary" href="https://moagil-eta.vercel.app/" target="_blank" rel="noopener noreferrer">웹 데모 <span aria-hidden="true">↗</span></a><a class="pd-btn" href="https://youtu.be/u-7vw_0MuKI" target="_blank" rel="noopener noreferrer">시연 영상 <span aria-hidden="true">↗</span></a><a class="pd-btn" href="https://github.com/kimps005/MOAGIL" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="pd-hero-visual">
+        <div class="project-visual visual-route" aria-hidden="true">
+          <div class="route-grid"></div>
+          <svg class="route-svg" viewBox="0 0 440 270" role="presentation" focusable="false"><path d="M53 206 C92 206 83 90 154 101 S213 216 266 169 S331 65 381 76" fill="none" stroke="#B0E3EA" stroke-width="5" stroke-linecap="round" stroke-dasharray="10 12"/><circle cx="53" cy="206" r="13" fill="#91E8D9"/><circle cx="154" cy="101" r="13" fill="#91E8D9"/><circle cx="266" cy="169" r="13" fill="#91E8D9"/><circle cx="381" cy="76" r="13" fill="#91E8D9"/></svg>
+          <div class="route-counter"><b>4!</b><span>24 ROUTES</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pd-layout">
+      <nav class="pd-toc" aria-label="목차">
+        <p>CONTENTS</p>
+        <ol><li><a href="#summary"><b>01</b>한눈에 보기</a></li><li><a href="#overview"><b>02</b>프로젝트 개요</a></li><li><a href="#architecture"><b>03</b>시스템 아키텍처</a></li><li><a href="#features"><b>04</b>주요 기능 개발</a></li><li><a href="#decisions"><b>05</b>기술적 의사결정</a></li><li><a href="#troubleshooting"><b>06</b>트러블슈팅</a></li><li><a href="#retrospective"><b>07</b>회고 · 개선 방향</a></li></ol>
+      </nav>
+      <div class="pd-content">
+        <section class="pd-section" id="summary" aria-labelledby="summary-title">
+          <h2 id="summary-title"><span>01</span>한눈에 보기</h2>
+          <dl class="pd-tldr"><div class="pd-tldr-row is-problem"><dt>문제</dt><dd>동승자가 최대 4명이면 하차 순서가 24가지입니다. 순서마다 길찾기 API를 부르면 호출량과 비용이 커지고, 여러 동승자가 동시에 등록하면 정원·경로가 꼬일 수 있었습니다.</dd></div><div class="pd-tldr-row is-solution"><dt>해결</dt><dd>시간·거리 행렬을 지점 수만큼만 조회해 로컬에서 순열을 비교하고, 트랜잭션 락·버전 비교로 동시 등록·수정 정합성을 보장했습니다.</dd></div><div class="pd-tldr-row is-result"><dt>결과</dt><dd>순서 비교 외부 호출을 24회에서 행렬 요청 5회로 줄였고, 웹·서버·차량 앱 전 구간을 혼자 구현해 Python 회귀 테스트 39개를 통과했습니다.</dd></div></dl><div class="pd-metrics"><div class="pd-metric"><strong>24 → 5</strong><span>순서 비교 외부 API 호출</span><small>동승자 4명 기준</small></div><div class="pd-metric"><strong>39</strong><span>Python 회귀 테스트 통과</span><small>경로 · 세션 · 동시성</small></div><div class="pd-metric"><strong>1인</strong><span>웹 · 서버 · 차량 앱</span><small>전 구간 단독 구현</small></div></div>
+        </section>
+        <section class="pd-section" id="overview" aria-labelledby="overview-title">
+          <h2 id="overview-title"><span>02</span>프로젝트 개요</h2>
+          <dl class="pd-info">
+            <div><dt>기간</dt><dd>2026.10 – 2026.11</dd></div>
+            <div><dt>인원</dt><dd>1명</dd></div>
+            <div class="is-wide"><dt>내 역할</dt><dd>Python 세션·경로 API, 순열 경로 엔진, QR 모바일 웹, Kotlin/Compose Pleos 차량 앱 전 구간</dd></div>
+          </dl>
+          <h3 class="pd-subtitle">기술 스택</h3>
+          <div class="stack-groups">
+            <div class="stack-row"><span class="stack-label">Routing / Vehicle</span><div class="tech-chips"><span>Kakao Mobility API</span><span>Permutation Engine</span><span>Pleos NaviHelper</span><span>AAOS CarPropertyManager</span></div></div>
+            <div class="stack-row"><span class="stack-label">Backend / Data</span><div class="tech-chips"><span>Python 3.12 HTTP API</span><span>SQLite</span><span>Supabase PostgreSQL</span><span>Advisory Lock</span></div></div>
+            <div class="stack-row"><span class="stack-label">Infra / Ops</span><div class="tech-chips"><span>Vercel (Static + Python Functions)</span><span>Android Keystore AES-GCM</span><span>Gradle Mock / Pleos Flavor</span><span>Kotlin / Compose</span></div></div>
+          </div>
+        </section>
+        <section class="pd-section" id="architecture" aria-labelledby="architecture-title">
+          <h2 id="architecture-title"><span>03</span>시스템 아키텍처</h2>
+          <div class="pd-flow"><ol class="flow" aria-label="MOAGIL 데이터 흐름">
+                <li><span>INPUT</span>QR 모바일 웹 이름 · 하차 지점 등록</li>
+                <li class="is-guard"><span>ROUTING</span>토큰 해시 인증 · 정원 4명 트랜잭션<em>GUARDRAIL version 충돌 409</em></li>
+                <li class="is-bottleneck"><span>INFERENCE</span>Kakao 시간·거리 행렬 → 순열 비교<em>BOTTLENECK 외부 API 호출</em></li>
+                <li class="is-guard"><span>VERIFY</span>통행료 0원 검증 · route snapshot<em>GUARDRAIL 미확인 시 저장 거부</em></li>
+                <li><span>SERVE</span>Pleos NaviHelper 구간별 목적지 전달</li>
+              </ol></div>
+          <div class="pd-legend"><span class="is-guard">GUARDRAIL 안정성 장치</span><span class="is-bottleneck">BOTTLENECK 성능 병목 지점</span></div>
+          <ul class="pd-points"><li>동승자는 설치 없는 QR 웹에서 목적지를 등록하고, 서버는 SQLite/Supabase에 세션 상태(COLLECTING → PLANNED → ACTIVE → COMPLETED)를 관리합니다.</li><li>Kakao 다중 출발지 API로 실시간 시간·거리 행렬을 만든 뒤 모든 하차 순서를 로컬에서 합산 비교하고, 선택된 경로만 상세 형상을 조회합니다.</li><li>차량 앱이 최적 순서대로 다음 목적지를 Pleos NaviHelper에 전달하고, 하차를 확인할 때마다 현재 위치 기준으로 다음 구간을 다시 요청합니다.</li></ul>
+        </section>
+        <section class="pd-section" id="features" aria-labelledby="features-title">
+          <h2 id="features-title"><span>04</span>주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
+          <div class="pd-features"><article class="pd-feature"><h3><span class="pd-num">01</span>하차 순서 최적화 엔진</h3><ul><li>Kakao Mobility 다중 출발지 API로 시간·거리 행렬 구성 후 itertools.permutations로 전 순서 로컬 비교</li><li>10 km 반경 밖 누락 셀만 전체 길찾기로 보완</li><li>우선 승객 지정 시 첫 순서를 고정해 비교 대상 24 → 6으로 축소</li></ul></article><article class="pd-feature"><h3><span class="pd-num">02</span>세션 · 경로 API (Python)</h3><ul><li>정원 4명 검사를 SQLite 트랜잭션 / PostgreSQL pg_advisory_xact_lock 안에서 수행</li><li>idempotency key + payload 해시로 재시도 요청 처리, 세션 version 비교로 오래된 요청은 409 + 스냅샷 재조회</li><li>초대·운전자 토큰은 token_urlsafe(32)로 만들고 SHA-256 해시만 저장</li></ul></article><article class="pd-feature"><h3><span class="pd-num">03</span>QR 모바일 웹</h3><ul><li>동승자가 앱 설치 없이 QR로 이름·하차 지점 등록</li><li>초대·참가 요청 IP당 분당 30회 제한 (429 + Retry-After)</li></ul></article><article class="pd-feature"><h3><span class="pd-num">04</span>Pleos 차량 앱 (Kotlin / Compose)</h3><ul><li>최적 순서에 따라 다음 목적지를 Pleos NaviHelper로 전달</li><li>차량 속도·기어를 1초마다 조회해 정차(0.3 m/s 미만 + P 기어) 시에만 운전자 조작 허용, 신호 미수신 시 잠금</li><li>운전자 토큰은 Android Keystore AES-GCM으로 암호화 보관, Gradle Mock / Pleos Flavor 분리</li></ul></article></div>
+        </section>
+        <section class="pd-section" id="decisions" aria-labelledby="decisions-title">
+          <h2 id="decisions-title"><span>05</span>기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
+          <article class="pd-decision"><p class="pd-kicker">DECISION 01</p><h3>순서마다 길찾기를 부르지 않고, 시간·거리 행렬을 한 번 만들어 로컬에서 비교</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>Kakao Mobility API 사용 한도와 초과 요금. 동승자 최대 4명 → 하차 순서 4! = 24가지</dd></div><div class="pd-kv-row is-x"><dt>선택지</dt><dd>A. 24개 순서마다 전체 길찾기 요청<br>B. 목적지당 다중 출발지 요청 1회로 행렬 구성 후 로컬 합산</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd><b>B.</b> 출발지 포함 5개 지점 기준 행렬 요청 5회로 전 순서 평가. Kakao 실패 시 다른 제공자로 넘기지 않고 오류 반환(OSRM·Naver 분기 제거)</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>외부 호출 수가 순서 수가 아닌 지점 수에 비례 → 24회 → 5회</dd></div></dl></article><article class="pd-decision"><p class="pd-kicker">DECISION 02</p><h3>여러 동승자의 동시 등록·동시 수정 정합성 확보</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>여러 명이 동시에 QR 등록하면 정원(4명) 초과·중복 등록, 운전자·동승자 동시 변경 시 경로 스냅샷 불일치 가능</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd>트랜잭션/advisory lock 안에서 정원 검사, idempotency key로 재시도 처리, 세션 version 비교 후 stale 요청은 409</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>동시 요청에서도 정원·경로 상태가 일관되게 유지</dd></div></dl></article>
+        </section>
+        <section class="pd-section" id="troubleshooting" aria-labelledby="troubleshooting-title">
+          <h2 id="troubleshooting-title"><span>06</span>트러블슈팅</h2><p class="pd-sec-lead">문제 → 원인 → 해결 → 결과 순서로 정리했습니다.</p>
+          <article class="pd-issue">
+          <h3><span class="pd-num">01</span>하차 순서를 비교할 때마다 외부 API 호출이 폭증하던 문제</h3>
+          <p class="pd-issue-lead">순서별로 전체 경로를 조회하면 순서 수만큼 외부 호출이 발생했습니다.</p>
+          <div class="pd-steps">
+            <div class="pd-step is-cause"><h4>원인</h4><ul><li>순서 수(24)에 비례한 외부 호출</li><li>다중 출발지 API의 10 km 반경 제한으로 일부 구간 누락</li></ul></div>
+            <div class="pd-step is-fix"><h4>해결</h4><ul><li>목적지 단위 행렬 조회로 호출 수를 지점 수에 비례하도록 변경</li><li>누락 셀만 선택적으로 보완 호출</li><li>요청당 12초 타임아웃</li></ul></div>
+            <div class="pd-step is-result"><h4>결과</h4><ul><li>순서 비교 외부 호출: 24회 개별 조회 → 행렬 요청 5회 (4명 기준)</li></ul></div>
+          </div>
+        </article><article class="pd-issue">
+          <h3><span class="pd-num">02</span>무료 도로 경로 요청이 HTTP 500으로 실패하고, 주행 중 조작 위험이 있던 문제</h3>
+          <p class="pd-issue-lead">통행료 없는 경로를 요청하면 서버 오류가 났고, 운전자가 주행 중 화면을 조작할 수 있는 구조였습니다.</p>
+          <div class="pd-steps">
+            <div class="pd-step is-cause"><h4>원인</h4><ul><li>다중 경유지 API의 avoid 필드를 배열이 아닌 문자열로 전송</li><li>주행 상태와 무관하게 운전자 화면 조작 가능</li></ul></div>
+            <div class="pd-step is-fix"><h4>해결</h4><ul><li>avoid 필드를 배열 형식으로 수정, Kakao가 통행료 0원을 확인하지 않으면 무료 경로로 저장하지 않음</li><li>차량 속도·기어 1초 주기 조회, 정차 + P 기어일 때만 조작 허용, 이동 중 동승자 수정·삭제 차단</li></ul></div>
+            <div class="pd-step is-result"><h4>결과</h4><ul><li>무료 도로 경로 요청 HTTP 500 → 성공 (통행료 0원)</li><li>Python 회귀 테스트 39개 통과</li></ul></div>
+          </div>
+        </article>
+        </section>
+        <section class="pd-section" id="retrospective" aria-labelledby="retrospective-title">
+          <h2 id="retrospective-title"><span>07</span>회고 · 개선 방향</h2>
+          <div class="pd-retro">
+            <div><h3>현재 한계</h3><p>행렬 요청을 목적지별로 순차 실행해 4명 기준 계산에 18.87초가 걸립니다(실 API 1회 측정). 요청 제한이 단일 프로세스 메모리 카운터라 다중 서버 환경을 지원하지 않습니다.</p></div>
+            <div><h3>다음 단계</h3><p>목적지별 행렬 요청 병렬화, 좌표·시간대 키 기반 행렬 TTL 캐시(Redis)로 재계산 호출 제거, 분산 Rate Limit 전환, 5명 이상 확장 시 순열 전수 비교 대신 DP·휴리스틱 탐색</p></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <nav class="pd-pager" aria-label="다른 프로젝트"><a class="pd-pager-link is-prev" href="../lets-him-cook/"><small>← 이전 프로젝트</small><b>LET&#x27;S HIM COOK!</b></a><a class="pd-pager-link is-next" href="../finguard-ai/"><small>다음 프로젝트 →</small><b>FinGuard AI</b></a></nav>
+  </main>
+
+  <footer class="pd-footer"><span>© 2026 CHOI MINSU</span><a href="../../#projects">전체 프로젝트 보기 ↑</a></footer>
+</body>
+</html>

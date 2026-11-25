@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#163956" />
+  <meta name="description" content="문자 · 이미지 · QR을 한 번에 분석하는 멀티모달 스미싱 탐지 AI 서비스 — 의심스러운 문자 메시지, 문자 캡처 이미지, QR 코드를 올리면 스미싱(문자 사기) 여부를 분석해 위험 점수와 판단 근거를 알려주는 AI 보안 서비스입니다. 문자…" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="CatchSmishing | CHOI MINSU Portfolio" />
+  <meta property="og:description" content="문자 · 이미지 · QR을 한 번에 분석하는 멀티모달 스미싱 탐지 AI 서비스" />
+  <title>CatchSmishing | CHOI MINSU Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=navy-20261115" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css?v=detail-20261125" />
+  <link rel="stylesheet" href="../../project.css?v=detail-20261125" />
+  <script defer src="../../project.js?v=detail-20261125"></script>
+</head>
+<body class="pd-page">
+  <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+  <header class="pd-topbar">
+    <a class="pd-back" href="../../#project-catchsmishing"><span aria-hidden="true">←</span> 프로젝트 목록으로</a>
+    <a class="pd-brand" href="../../">MC<span>.</span></a>
+  </header>
+
+  <main class="pd-main">
+    <section class="pd-hero">
+      <div class="pd-hero-text">
+        <p class="pd-tagline">문자 · 이미지 · QR을 한 번에 분석하는 멀티모달 스미싱 탐지 AI 서비스</p>
+        <h1>Catch<span>Smishing</span></h1>
+        <p class="pd-desc">의심스러운 문자 메시지, 문자 캡처 이미지, QR 코드를 올리면 스미싱(문자 사기) 여부를 분석해 위험 점수와 판단 근거를 알려주는 AI 보안 서비스입니다. 문자 내용과 포함된 링크를 함께 살펴 사기 유형을 분류하고, 누구나 이해하기 쉬운 결과로 보여줍니다.</p>
+        
+        <div class="pd-cta"><a class="pd-btn pd-btn-primary" href="https://catchsmishing.com" target="_blank" rel="noopener noreferrer">서비스 바로가기 <span aria-hidden="true">↗</span></a><a class="pd-btn" href="https://github.com/kimps005/CatchSmishing" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a><a class="pd-btn" href="https://huggingface.co/kimps005/sms-category-model" target="_blank" rel="noopener noreferrer">Hugging Face 모델 <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="pd-hero-visual">
+        <div class="project-visual visual-security" aria-hidden="true">
+          <div class="security-console">
+            <div class="console-top"><span class="console-lights"><i></i><i></i><i></i></span> AI THREAT ANALYSIS</div>
+            <div class="console-main"><span>INPUT SIGNALS</span><div class="signal">SMS <i></i> IMAGE <i></i> QR</div></div>
+            <div class="console-flow"><span>OCR</span><span>CLASSIFIER</span><span>URL / CONTEXT</span></div>
+            <div class="console-result"><span>ANALYSIS PIPELINE</span><b>7 CATEGORIES</b></div>
+          </div>
+          <div class="visual-watermark">CS.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pd-layout">
+      <nav class="pd-toc" aria-label="목차">
+        <p>CONTENTS</p>
+        <ol><li><a href="#summary"><b>01</b>한눈에 보기</a></li><li><a href="#overview"><b>02</b>프로젝트 개요</a></li><li><a href="#architecture"><b>03</b>시스템 아키텍처</a></li><li><a href="#features"><b>04</b>주요 기능 개발</a></li><li><a href="#decisions"><b>05</b>기술적 의사결정</a></li><li><a href="#troubleshooting"><b>06</b>트러블슈팅</a></li><li><a href="#retrospective"><b>07</b>회고 · 개선 방향</a></li></ol>
+      </nav>
+      <div class="pd-content">
+        <section class="pd-section" id="summary" aria-labelledby="summary-title">
+          <h2 id="summary-title"><span>01</span>한눈에 보기</h2>
+          <dl class="pd-tldr"><div class="pd-tldr-row is-problem"><dt>문제</dt><dd>스미싱은 텍스트·캡처 이미지·QR 등 형태가 다양하고, GPU 없는 서버에서 빠르게 판정해야 했습니다. 외부 AI(Gemini) API가 실패하거나 키가 없어도 결과는 반드시 돌려줘야 했습니다.</dd></div><div class="pd-tldr-row is-solution"><dt>해결</dt><dd>OCR·QR 전처리 → INT8 양자화 KLUE BERT 분류 + 규칙 NLP + URL 위협 인텔리전스를 결합하고, 생성형 AI는 ‘보조 신호’로만 쓰는 하이브리드 파이프라인을 설계했습니다.</dd></div><div class="pd-tldr-row is-result"><dt>결과</dt><dd>모델 크기 58% 감소, CPU 추론 p50 지연 47% 단축. 데이터 누수를 막은 그룹 분할 평가에서 7개 유형 분류 정확도 96.18%를 기록했고, 외부 AI 장애 시에도 응답을 유지합니다.</dd></div></dl><div class="pd-metrics"><div class="pd-metric"><strong>−58%</strong><span>모델 파일 크기</span><small>426.58 → 178.56 MiB</small></div><div class="pd-metric"><strong>−47%</strong><span>p50 추론 지연</span><small>370.97 → 196.40 ms</small></div><div class="pd-metric"><strong>−51%</strong><span>p95 추론 지연</span><small>449.58 → 220.32 ms</small></div><div class="pd-metric"><strong>96.18%</strong><span>7개 유형 분류 정확도</span><small>그룹 분할 · 3 seed 평균</small></div></div><p class="pd-note">지연·크기는 FP32 대비 INT8 동적 양자화 로컬 벤치마크(생성형 SMS 2,800건) 기준, 정확도는 120개 하위 유형 그룹 분할 평가 기준이며 실사용 탐지 성능과 구분합니다.</p>
+        </section>
+        <section class="pd-section" id="overview" aria-labelledby="overview-title">
+          <h2 id="overview-title"><span>02</span>프로젝트 개요</h2>
+          <dl class="pd-info">
+            <div><dt>기간</dt><dd>2026.05 – 2026.09</dd></div>
+            <div><dt>인원</dt><dd>3명 (팀 프로젝트)</dd></div>
+            <div class="is-wide"><dt>내 역할</dt><dd>OCR·QR 전처리, KLUE BERT 분류 모델 학습·INT8 양자화, URL 보안 분석기, FastAPI 통합 분석 파이프라인, Flutter 클라이언트</dd></div>
+          </dl>
+          <h3 class="pd-subtitle">기술 스택</h3>
+          <div class="stack-groups">
+            <div class="stack-row"><span class="stack-label">AI / Serving</span><div class="tech-chips"><span>PyTorch</span><span>KLUE BERT</span><span>INT8 Dynamic Quantization</span><span>PaddleOCR</span><span>OpenCV · pyzbar</span><span>Gemini Text · Vision</span><span>Hugging Face Hub</span></div></div>
+            <div class="stack-row"><span class="stack-label">Backend / Data</span><div class="tech-chips"><span>FastAPI</span><span>ThreadPoolExecutor</span><span>MySQL (Aiven, TLS)</span><span>URLhaus · Phishing.Database</span><span>VirusTotal · WHOIS</span></div></div>
+            <div class="stack-row"><span class="stack-label">Infra / Ops</span><div class="tech-chips"><span>HF 모델 캐시 · Revision 고정</span><span>Rate Limit</span><span>Streamlit 운영 UI</span><span>Flutter</span></div></div>
+          </div>
+        </section>
+        <section class="pd-section" id="architecture" aria-labelledby="architecture-title">
+          <h2 id="architecture-title"><span>03</span>시스템 아키텍처</h2>
+          <div class="pd-flow"><ol class="flow" aria-label="CatchSmishing 데이터 흐름">
+                <li><span>INPUT</span>문자 텍스트 · 캡처 이미지 · QR</li>
+                <li class="is-guard"><span>PRE-PROCESS</span>OCR · QR 디코딩 · URL 정규화<em>GUARDRAIL 입력 한도 · SSRF 차단</em></li>
+                <li class="is-bottleneck"><span>INFERENCE</span>KLUE BERT 7종 분류 · 규칙 NLP · URL 평판<em>BOTTLENECK CPU 추론 · 외부 API</em></li>
+                <li class="is-guard"><span>VERIFY</span>Gemini 문맥 · Vision 보조 신호<em>GUARDRAIL 실패 시 null 처리</em></li>
+                <li><span>SERVE</span>0–10 점수 · 등급 · 탐지 근거 JSON</li>
+              </ol></div>
+          <div class="pd-legend"><span class="is-guard">GUARDRAIL 안정성 장치</span><span class="is-bottleneck">BOTTLENECK 성능 병목 지점</span></div>
+          <ul class="pd-points"><li>이미지·텍스트·QR 입력을 OCR·QR 디코딩·URL 추출로 하나의 텍스트/URL 집합으로 정규화합니다.</li><li>INT8 KLUE BERT 카테고리, 규칙 기반 긴박·위협·행동 유도 패턴, URL 피드·VirusTotal·WHOIS·APK 신호를 병렬로 계산합니다.</li><li>Gemini 문맥·Vision 점수는 사용 가능할 때만 결합하고, 입력 유형과 신호 가용성에 따라 가중치를 분기해 최종 등급(0–10점)을 산출합니다.</li></ul>
+        </section>
+        <section class="pd-section" id="features" aria-labelledby="features-title">
+          <h2 id="features-title"><span>04</span>주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
+          <div class="pd-features"><article class="pd-feature"><h3><span class="pd-num">01</span>입력 전처리 (OCR · QR)</h3><ul><li>PaddleOCR·OpenCV·pyzbar로 캡처 이미지와 QR을 텍스트·URL로 변환</li><li>텍스트와 URL이 모두 추출되지 않으면 추측하지 않고 <b>Unknown + ocr_failed</b>로 명시적으로 반환</li><li>이미지 10 MiB·25,000,000 px, 텍스트 20,000자, 요청당 URL 10개로 입력 상한을 둬 악성·과대 입력 차단</li></ul></article><article class="pd-feature"><h3><span class="pd-num">02</span>문자 유형 분류 모델 (KLUE BERT)</h3><ul><li>스미싱 문자를 7개 유형으로 분류하는 KLUE BERT 모델 학습</li><li>무작위 분할에서 같은 문장이 학습·평가에 동시에 들어갈 수 있는 <b>데이터 누수</b>를 발견 → 120개 하위 유형 기준 그룹 분할, 증강 데이터는 학습에만 사용</li><li>3회 시드 평균 정확도 <b>96.18%</b>, Macro-F1 <b>96.15%</b></li><li>INT8 동적 양자화 후 Hugging Face Hub에 배포 (정확도 손실 −0.11%p)</li></ul></article><article class="pd-feature"><h3><span class="pd-num">03</span>URL 보안 분석기</h3><ul><li>URLhaus·Phishing.Database 피드, VirusTotal, WHOIS, APK 신호를 종합해 URL 평판 산출</li><li>리다이렉트를 최대 5회까지 따라가며 단계마다 사설·루프백·링크-로컬 IP와 인증정보 포함 URL을 차단 (SSRF 방어)</li><li>VirusTotal 미등록 URL은 ‘안전’이 아닌 ‘정보 부족’으로 처리</li><li>위협 피드 6시간 주기 갱신, 위험 URL 상위 항목은 주간 재검사</li></ul></article><article class="pd-feature"><h3><span class="pd-num">04</span>통합 분석 API · 클라이언트</h3><ul><li>FastAPI 파이프라인에서 모든 신호를 모아 점수·등급·탐지 근거를 JSON으로 반환</li><li>분석 작업을 최대 4개 ThreadPoolExecutor 워커로 격리하고, X-Analysis-ID로 진행 중인 분석의 협력 취소 지원</li><li>Flutter 클라이언트에서 문자·이미지·QR 입력과 결과 화면 구현</li></ul></article></div>
+        </section>
+        <section class="pd-section" id="decisions" aria-labelledby="decisions-title">
+          <h2 id="decisions-title"><span>05</span>기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
+          <article class="pd-decision"><p class="pd-kicker">DECISION 01</p><h3>생성형 AI 하나에 판정을 맡기지 않고, 경량 분류 모델 + 규칙 + URL 평판을 결합</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>GPU 없이 CPU로 서빙해야 하고, Gemini·VirusTotal은 키 미설정이나 호출 실패가 언제든 발생할 수 있음</dd></div><div class="pd-kv-row is-x"><dt>선택지</dt><dd>A. Gemini 단일 판정<br>B. 로컬 KLUE BERT + 규칙 NLP + URL 위협 인텔리전스 + Gemini 보조 신호</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd><b>B.</b> 카테고리 판단은 로컬 INT8 모델로 고정하고, 생성형 AI는 보조 점수(P_Gemini·P_VLM)로만 결합</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>Gemini가 없어도 OCR·규칙·URL 결과만으로 응답 가능. INT8 전환의 정확도 손실은 −0.11%p에 그치면서 지연은 절반으로 감소</dd></div></dl></article><article class="pd-decision"><p class="pd-kicker">DECISION 02</p><h3>대용량 가중치는 저장소 밖에 두고, 버전을 고정해 내려받기</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>대용량 모델 가중치를 Git 저장소에 넣을 수 없고, 위협 피드·악성 URL 정보는 시간이 지나면 낡음</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd>서버 기동 시 로컬 캐시를 먼저 확인하고, 없으면 Hugging Face에서 INT8 가중치·config·tokenizer만 다운로드. revision을 커밋 해시로 고정해 재현성 확보</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>배포 환경마다 같은 모델 버전 보장. 위협 피드는 6시간 주기로 갱신하고 위험 URL 랭킹 상위 항목은 주간 재검사</dd></div></dl></article>
+        </section>
+        <section class="pd-section" id="troubleshooting" aria-labelledby="troubleshooting-title">
+          <h2 id="troubleshooting-title"><span>06</span>트러블슈팅</h2><p class="pd-sec-lead">문제 → 원인 → 해결 → 결과 순서로 정리했습니다.</p>
+          <article class="pd-issue">
+          <h3><span class="pd-num">01</span>CPU 서버에서 문자 1건 분석에 0.37초가 걸려 동시 요청을 버티기 어려웠던 문제</h3>
+          <p class="pd-issue-lead">공개 API로 서비스할 때 여러 요청이 몰리면 응답이 크게 지연될 수 있었습니다.</p>
+          <div class="pd-steps">
+            <div class="pd-step is-cause"><h4>원인</h4><ul><li>FP32 BERT 체크포인트가 426.58 MiB로 무겁고, 단일 메시지 추론이 p50 370.97 ms / p95 449.58 ms</li></ul></div>
+            <div class="pd-step is-fix"><h4>해결</h4><ul><li>PyTorch INT8 동적 양자화 state_dict로 배포</li><li>분석 작업을 최대 4개 ThreadPoolExecutor 워커로 격리하고 X-Analysis-ID 기반 협력 취소 지원</li><li>IP·경로별 요청 제한 적용 (이미지 10회/분, 텍스트 30회/분, 피드백 20회/분)</li></ul></div>
+            <div class="pd-step is-result"><h4>결과</h4><ul><li>모델 크기 426.58 → 178.56 MiB (−58.14%)</li><li>p50 370.97 → 196.40 ms (−47.1%)</li><li>p95 449.58 → 220.32 ms (−51.0%)</li></ul></div>
+          </div>
+        </article><article class="pd-issue">
+          <h3><span class="pd-num">02</span>외부 AI·OCR이 실패하거나, 악성 URL이 내부망을 노릴 수 있던 문제</h3>
+          <p class="pd-issue-lead">여러 외부 신호에 의존하는 구조라, 하나라도 실패하면 판정이 틀어지거나 서버가 공격 경로가 될 수 있었습니다.</p>
+          <div class="pd-steps">
+            <div class="pd-step is-cause"><h4>원인</h4><ul><li>OCR 인식 실패, Gemini 호출 실패·미설정</li><li>분류 모델의 확률이 곧 ‘스미싱일 확률’은 아님</li><li>악성 URL을 추적하다 서버가 내부망으로 요청을 보낼 위험(SSRF)</li></ul></div>
+            <div class="pd-step is-fix"><h4>해결</h4><ul><li>텍스트·URL 모두 추출 실패 시 Unknown + ocr_failed 반환</li><li>Gemini 점수는 null로 처리하고 사용 가능한 신호만으로 가중치 분기</li><li>URL 강한 의심·정부기관 사칭 조건이면 등급 하한 보정</li><li>리다이렉트 최대 5회, 매 단계 사설·루프백·링크-로컬 IP 및 인증정보 포함 URL 차단</li></ul></div>
+            <div class="pd-step is-result"><h4>결과</h4><ul><li>외부 AI 장애 시에도 OCR·규칙·URL 결과로 응답 유지</li><li>URL 추적 경로의 SSRF 차단</li></ul></div>
+          </div>
+        </article>
+        </section>
+        <section class="pd-section" id="retrospective" aria-labelledby="retrospective-title">
+          <h2 id="retrospective-title"><span>07</span>회고 · 개선 방향</h2>
+          <div class="pd-retro">
+            <div><h3>현재 한계</h3><p>요청 제한이 메모리 기반이고 분석 워커가 최대 4개라 단일 인스턴스에 묶여 있습니다. 트래픽이 급증하면 OCR·추론 대기가 쌓일 수 있습니다.</p></div>
+            <div><h3>다음 단계</h3><p>Redis 기반 분산 Rate Limit 전환, 분석 요청을 작업 큐로 분리해 OCR·분류 워커를 수평 확장, ONNX Runtime 변환과 배치 추론 적용 검토</p></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <nav class="pd-pager" aria-label="다른 프로젝트"><span></span><a class="pd-pager-link is-next" href="../pictory/"><small>다음 프로젝트 →</small><b>Pictory</b></a></nav>
+  </main>
+
+  <footer class="pd-footer"><span>© 2026 CHOI MINSU</span><a href="../../#projects">전체 프로젝트 보기 ↑</a></footer>
+</body>
+</html>
