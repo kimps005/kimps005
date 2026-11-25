@@ -457,3 +457,24 @@ img,svg{max-width:100%}
 .project-card{overflow:hidden}
 @media(max-width:1020px){.project-visual-link{order:-1}}
 @media(max-width:640px){.project-detail-btn{font-size:14px;padding:12px 18px}.section-note{font-size:14px}}
+/* ===== Projects list: box-free, typographic ===== */
+.section-projects .project-card{border:0;border-radius:0;box-shadow:none;background:none;overflow:visible;min-height:0;margin:0;padding:clamp(48px,6vw,72px) 0;border-top:1px solid #E8EDF1;gap:clamp(28px,4vw,56px);align-items:center}
+.section-projects .project-card:first-of-type{border-top:0;padding-top:8px}
+.section-projects .project-info{padding:0}
+.section-projects .project-visual{border-radius:16px;min-height:340px}
+.section-projects .project-visual-link{border-radius:16px;overflow:hidden}
+.section-projects .project-lead{font-size:16px;color:#5A6672}
+.section-projects .project-meta{font-size:14px;gap:6px}
+.section-projects .project-meta>div{grid-template-columns:48px 1fr}
+.section-projects .project-meta dt{font:700 13px/1.7 "Noto Sans KR",var(--body);letter-spacing:0;color:#8A96A3}
+.section-projects .project-meta dd{color:#2B333B}
+.section-projects .tech-chips{display:block;margin:0 0 26px;font-size:13.5px;line-height:1.8;color:#5A6672}
+.section-projects .tech-chips span{display:inline;padding:0;background:none;border-radius:0;font:inherit;color:inherit}
+.section-projects .tech-chips span+span::before{content:"/";margin:0 9px;color:#C3CCD5}
+.section-projects .project-award{padding:0;background:none;font-size:14px;color:#A86A00}
+.section-projects .project-links{gap:20px}
+.section-projects .project-links a{font:600 14px "Noto Sans KR",var(--body);letter-spacing:0;color:#2B333B;border-bottom-color:#C9D3DC;padding-bottom:3px}
+.section-projects .project-links a:hover{color:var(--primary);border-bottom-color:var(--primary)}
+.section-projects .project-detail-btn{box-shadow:none}
+@media(max-width:1020px){.section-projects .project-card{padding:48px 0}.section-projects .project-visual{min-height:260px}}
+@media(max-width:640px){.section-projects .project-card{padding:40px 0;margin:0}.section-projects .project-visual{min-height:220px}.section-projects .project-lead{font-size:15px}}
