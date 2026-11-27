@@ -49,11 +49,11 @@
       </nav>
       <div class="pd-content">
         <section class="pd-section" id="summary" aria-labelledby="summary-title">
-          <h2 id="summary-title"><span>01</span>한눈에 보기</h2>
+          <h2 id="summary-title">한눈에 보기</h2>
           <dl class="pd-tldr"><div class="pd-tldr-row is-problem"><dt>문제</dt><dd>동승자가 최대 4명이면 하차 순서가 24가지입니다. 순서마다 길찾기 API를 부르면 호출량과 비용이 커지고, 여러 동승자가 동시에 등록하면 정원·경로가 꼬일 수 있었습니다.</dd></div><div class="pd-tldr-row is-solution"><dt>해결</dt><dd>시간·거리 행렬을 지점 수만큼만 조회해 로컬에서 순열을 비교하고, 트랜잭션 락·버전 비교로 동시 등록·수정 정합성을 보장했습니다.</dd></div><div class="pd-tldr-row is-result"><dt>결과</dt><dd>순서 비교 외부 호출을 24회에서 행렬 요청 5회로 줄였고, 웹·서버·차량 앱 전 구간을 혼자 구현해 Python 회귀 테스트 39개를 통과했습니다.</dd></div></dl><div class="pd-metrics"><div class="pd-metric"><strong>24 → 5</strong><span>순서 비교 외부 API 호출</span><small>동승자 4명 기준</small></div><div class="pd-metric"><strong>39</strong><span>Python 회귀 테스트 통과</span><small>경로 · 세션 · 동시성</small></div><div class="pd-metric"><strong>1인</strong><span>웹 · 서버 · 차량 앱</span><small>전 구간 단독 구현</small></div></div>
         </section>
         <section class="pd-section" id="overview" aria-labelledby="overview-title">
-          <h2 id="overview-title"><span>02</span>프로젝트 개요</h2>
+          <h2 id="overview-title">프로젝트 개요</h2>
           <dl class="pd-info">
             <div><dt>기간</dt><dd>2026.10 – 2026.11</dd></div>
             <div><dt>인원</dt><dd>1명</dd></div>
@@ -67,7 +67,7 @@
           </div>
         </section>
         <section class="pd-section" id="architecture" aria-labelledby="architecture-title">
-          <h2 id="architecture-title"><span>03</span>시스템 아키텍처</h2>
+          <h2 id="architecture-title">시스템 아키텍처</h2>
           <div class="pd-flow"><ol class="flow" aria-label="MOAGIL 데이터 흐름">
                 <li><span>INPUT</span>QR 모바일 웹 이름 · 하차 지점 등록</li>
                 <li class="is-guard"><span>ROUTING</span>토큰 해시 인증 · 정원 4명 트랜잭션<em>GUARDRAIL version 충돌 409</em></li>
@@ -79,15 +79,15 @@
           <ul class="pd-points"><li>동승자는 설치 없는 QR 웹에서 목적지를 등록하고, 서버는 SQLite/Supabase에 세션 상태(COLLECTING → PLANNED → ACTIVE → COMPLETED)를 관리합니다.</li><li>Kakao 다중 출발지 API로 실시간 시간·거리 행렬을 만든 뒤 모든 하차 순서를 로컬에서 합산 비교하고, 선택된 경로만 상세 형상을 조회합니다.</li><li>차량 앱이 최적 순서대로 다음 목적지를 Pleos NaviHelper에 전달하고, 하차를 확인할 때마다 현재 위치 기준으로 다음 구간을 다시 요청합니다.</li></ul>
         </section>
         <section class="pd-section" id="features" aria-labelledby="features-title">
-          <h2 id="features-title"><span>04</span>주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
+          <h2 id="features-title">주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
           <div class="pd-features"><article class="pd-feature"><h3><span class="pd-num">01</span>하차 순서 최적화 엔진</h3><ul><li>Kakao Mobility 다중 출발지 API로 시간·거리 행렬 구성 후 itertools.permutations로 전 순서 로컬 비교</li><li>10 km 반경 밖 누락 셀만 전체 길찾기로 보완</li><li>우선 승객 지정 시 첫 순서를 고정해 비교 대상 24 → 6으로 축소</li></ul></article><article class="pd-feature"><h3><span class="pd-num">02</span>세션 · 경로 API (Python)</h3><ul><li>정원 4명 검사를 SQLite 트랜잭션 / PostgreSQL pg_advisory_xact_lock 안에서 수행</li><li>idempotency key + payload 해시로 재시도 요청 처리, 세션 version 비교로 오래된 요청은 409 + 스냅샷 재조회</li><li>초대·운전자 토큰은 token_urlsafe(32)로 만들고 SHA-256 해시만 저장</li></ul></article><article class="pd-feature"><h3><span class="pd-num">03</span>QR 모바일 웹</h3><ul><li>동승자가 앱 설치 없이 QR로 이름·하차 지점 등록</li><li>초대·참가 요청 IP당 분당 30회 제한 (429 + Retry-After)</li></ul></article><article class="pd-feature"><h3><span class="pd-num">04</span>Pleos 차량 앱 (Kotlin / Compose)</h3><ul><li>최적 순서에 따라 다음 목적지를 Pleos NaviHelper로 전달</li><li>차량 속도·기어를 1초마다 조회해 정차(0.3 m/s 미만 + P 기어) 시에만 운전자 조작 허용, 신호 미수신 시 잠금</li><li>운전자 토큰은 Android Keystore AES-GCM으로 암호화 보관, Gradle Mock / Pleos Flavor 분리</li></ul></article></div>
         </section>
         <section class="pd-section" id="decisions" aria-labelledby="decisions-title">
-          <h2 id="decisions-title"><span>05</span>기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
+          <h2 id="decisions-title">기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
           <article class="pd-decision"><p class="pd-kicker">DECISION 01</p><h3>순서마다 길찾기를 부르지 않고, 시간·거리 행렬을 한 번 만들어 로컬에서 비교</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>Kakao Mobility API 사용 한도와 초과 요금. 동승자 최대 4명 → 하차 순서 4! = 24가지</dd></div><div class="pd-kv-row is-x"><dt>선택지</dt><dd>A. 24개 순서마다 전체 길찾기 요청<br>B. 목적지당 다중 출발지 요청 1회로 행렬 구성 후 로컬 합산</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd><b>B.</b> 출발지 포함 5개 지점 기준 행렬 요청 5회로 전 순서 평가. Kakao 실패 시 다른 제공자로 넘기지 않고 오류 반환(OSRM·Naver 분기 제거)</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>외부 호출 수가 순서 수가 아닌 지점 수에 비례 → 24회 → 5회</dd></div></dl></article><article class="pd-decision"><p class="pd-kicker">DECISION 02</p><h3>여러 동승자의 동시 등록·동시 수정 정합성 확보</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>여러 명이 동시에 QR 등록하면 정원(4명) 초과·중복 등록, 운전자·동승자 동시 변경 시 경로 스냅샷 불일치 가능</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd>트랜잭션/advisory lock 안에서 정원 검사, idempotency key로 재시도 처리, 세션 version 비교 후 stale 요청은 409</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>동시 요청에서도 정원·경로 상태가 일관되게 유지</dd></div></dl></article>
         </section>
         <section class="pd-section" id="troubleshooting" aria-labelledby="troubleshooting-title">
-          <h2 id="troubleshooting-title"><span>06</span>트러블슈팅</h2><p class="pd-sec-lead">문제 → 원인 → 해결 → 결과 순서로 정리했습니다.</p>
+          <h2 id="troubleshooting-title">트러블슈팅</h2><p class="pd-sec-lead">문제 → 원인 → 해결 → 결과 순서로 정리했습니다.</p>
           <article class="pd-issue">
           <h3><span class="pd-num">01</span>하차 순서를 비교할 때마다 외부 API 호출이 폭증하던 문제</h3>
           <p class="pd-issue-lead">순서별로 전체 경로를 조회하면 순서 수만큼 외부 호출이 발생했습니다.</p>
@@ -107,7 +107,7 @@
         </article>
         </section>
         <section class="pd-section" id="retrospective" aria-labelledby="retrospective-title">
-          <h2 id="retrospective-title"><span>07</span>회고 · 개선 방향</h2>
+          <h2 id="retrospective-title">회고 · 개선 방향</h2>
           <div class="pd-retro">
             <div><h3>현재 한계</h3><p>행렬 요청을 목적지별로 순차 실행해 4명 기준 계산에 18.87초가 걸립니다(실 API 1회 측정). 요청 제한이 단일 프로세스 메모리 카운터라 다중 서버 환경을 지원하지 않습니다.</p></div>
             <div><h3>다음 단계</h3><p>목적지별 행렬 요청 병렬화, 좌표·시간대 키 기반 행렬 TTL 캐시(Redis)로 재계산 호출 제거, 분산 Rate Limit 전환, 5명 이상 확장 시 순열 전수 비교 대신 DP·휴리스틱 탐색</p></div>

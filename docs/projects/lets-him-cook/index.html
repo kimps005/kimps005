@@ -49,11 +49,11 @@
       </nav>
       <div class="pd-content">
         <section class="pd-section" id="summary" aria-labelledby="summary-title">
-          <h2 id="summary-title"><span>01</span>한눈에 보기</h2>
+          <h2 id="summary-title">한눈에 보기</h2>
           <dl class="pd-tldr"><div class="pd-tldr-row is-problem"><dt>문제</dt><dd>X-VLA v1은 정답 트레이를 10/10 집었지만 서빙은 0/10이었습니다. 학습이 안 된 건지, 인지가 문제인지, 제어가 문제인지 구분할 근거가 없었고, 통과할 때까지 배치를 반복하는 평가 구조 자체도 성공률을 부풀리고 있었습니다.</dd></div><div class="pd-tldr-row is-solution"><dt>해결</dt><dd>거리 구간별 interact(a4) 확률을 계측해 병목을 '인지'가 아닌 '근접 발화 포화'로 확정하고, 스무딩 타깃에 pos_weight가 잘못 걸리는 손실 버그를 바로잡은 가중 라벨 스무딩으로 v2를 재학습했습니다. 평가 리포트는 누적 집계·재현 범위 명시로 고쳤습니다.</dd></div><div class="pd-tldr-row is-result"><dt>결과</dt><dd>같은 데이터(459편)로 서빙 0–2/10 → 3/10, 1.2 m 도달 1–2/10 → 5/10, 발화 거리 중앙값 8.88 m → 4.11 m. 단일 지표는 유의하지 않아(Fisher p≈0.16) '방향은 맞고 강도가 부족하다'로 보고했습니다.</dd></div></dl><div class="pd-metrics"><div class="pd-metric"><strong>3/10</strong><span>v2 서빙 성공 (v1 0–2/10)</span><small>oracle 힌트 · 동일 데이터</small></div><div class="pd-metric"><strong>4.11 m</strong><span>v2 발화 거리 중앙값 (v1 8.88 m)</span><small>사람 시연 2.53–3.10 m</small></div><div class="pd-metric"><strong>459편</strong><span>텔레옵 학습 에피소드</span><small>50,679프레임 · 10 Hz</small></div><div class="pd-metric"><strong>0</strong><span>녹화 프레임 누락</span><small>SHA-256 무결성 · 리플레이 오차 0</small></div></div><p class="pd-note">수치는 Unity 실환경 롤아웃 기준이며, 서빙 10회 결과는 방향 정보(oracle 힌트)를 준 조건의 상한선 진단입니다. 힌트 없는 실제 게임 조건은 회고에 따로 적었습니다.</p>
         </section>
         <section class="pd-section" id="overview" aria-labelledby="overview-title">
-          <h2 id="overview-title"><span>02</span>프로젝트 개요</h2>
+          <h2 id="overview-title">프로젝트 개요</h2>
           <dl class="pd-info">
             <div><dt>기간</dt><dd>2026.06 – 2026.08 (K-Digital Training)</dd></div>
             <div><dt>인원</dt><dd>4명 (TEAM MECHU)</dd></div>
@@ -67,7 +67,7 @@
           </div>
         </section>
         <section class="pd-section" id="architecture" aria-labelledby="architecture-title">
-          <h2 id="architecture-title"><span>03</span>시스템 아키텍처</h2>
+          <h2 id="architecture-title">시스템 아키텍처</h2>
           <div class="pd-flow"><ol class="flow" aria-label="LET'S HIM COOK 데이터 흐름">
                 <li><span>COLLECT</span>사람 텔레옵 → RGB · 상태 · 5채널 행동 10 Hz 녹화</li>
                 <li class="is-guard"><span>VALIDATE</span>프레임 누락 · SHA-256 · 결정론적 리플레이<em>GUARDRAIL 실패 에피소드 학습 제외</em></li>
@@ -79,15 +79,15 @@
           <ul class="pd-points"><li>사람이 Unity ServeMode에서 직원을 조작하면 RGB(512×288)·5차원 상태·[strafe, forward, yaw, pitch, interact] 행동이 단일 10 Hz 제어 시계로 정렬 저장됩니다.</li><li>무결성 검사와 리플레이 검증을 통과한 성공 에피소드만 LeRobot 형식으로 변환해 학습에 쓰고, 오배달·타임아웃 에피소드는 <code>valid_for_bc=false</code>로 남깁니다.</li><li>추론 서버가 WebSocket으로 action chunk를 돌려주면 Unity가 이중 버퍼로 소비하고, 성공은 interact 발화가 아니라 실제 게임의 주문 완료 이벤트로만 판정합니다.</li></ul>
         </section>
         <section class="pd-section" id="features" aria-labelledby="features-title">
-          <h2 id="features-title"><span>04</span>주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
+          <h2 id="features-title">주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
           <div class="pd-features"><article class="pd-feature"><h3><span class="pd-num">01</span>텔레옵 모방학습 데이터 파이프라인</h3><ul><li>10 Hz 단일 제어 시계, 이동 ZOH, 상승 에지 interact로 녹화·리플레이 조건 일치</li><li>비동기 RGB24 + bounded writer, terminal observation, manifest·파일 길이·SHA-256 전수 검증</li><li>정상 서빙 245 step·수거 299 step 실측 에피소드에서 프레임 누락 0, 리플레이 위치·yaw·pitch 오차 0</li><li>오배달·타임아웃은 독립 이벤트로 기록해 학습에서 자동 제외, EditMode 테스트 25개</li></ul></article><article class="pd-feature"><h3><span class="pd-num">02</span>평가 하네스 · 진단 계측</h3><ul><li>거리 구간별 a4(interact) 확률 분포, 발화 거리, 최소 접근 거리를 롤아웃 리포트에 기록</li><li>통과할 때까지 배치를 반복하던 구조에 누적 성공률·<code>reportingCaveat</code> 추가 (실력 50%여도 평균 18묶음이면 8/10 '통과')</li><li>추론 지연(stale·underflow 틱)과 seed 재현 범위를 리포트에 명시</li></ul></article><article class="pd-feature"><h3><span class="pd-num">03</span>X-VLA v2 손실 설계 · 재학습</h3><ul><li>interact 손실을 요소별 BCE × 하드 라벨 기반 class weight로 재구성 (ε=0.05 라벨 스무딩)</li><li><code>LABEL_SMOOTHING=0</code>이면 기존 손실과 수치 차이 0.00e+00 → 값 하나로 회귀 가능</li><li>RTX PRO 6000 · 30,000 step · 1시간 55분, interact_loss 2.53 → 1.77</li><li>서빙·수거 작업별 300편 데이터셋으로도 파인튜닝 수행</li></ul></article><article class="pd-feature"><h3><span class="pd-num">04</span>독립 과제 평가 · 데이터셋 검수</h3><ul><li>서빙과 분리한 COLLECT_EMPTY_TRAY 롤아웃 구현 (실제 손님 5명·방해 물체 유지, 힌트 유무 각 50회)</li><li>최종 FSM 데이터셋 1,110편의 프레임·행동 형상·중복·NaN/Inf 검수, 고정 리비전·추론 계약 점검</li></ul></article></div>
         </section>
         <section class="pd-section" id="decisions" aria-labelledby="decisions-title">
-          <h2 id="decisions-title"><span>05</span>기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
+          <h2 id="decisions-title">기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
           <article class="pd-decision"><p class="pd-kicker">DECISION 01</p><h3>모델에 기억을 넣지 않고, 매 프레임 방향 정보를 공급해 상한선부터 측정</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>배지 인지(약 8 m)부터 서빙(약 2.8 m)까지 약 70프레임이 필요한데 관측 이력은 최대 2프레임. 1인칭 60° 화각 기준 힌트는 81.7%가 not_visible이라 정보량이 거의 없었음</dd></div><div class="pd-kv-row is-x"><dt>선택지</dt><dd>A. 관측 이력·메모리 구조 추가 후 재학습<br>B. 모델 입력은 그대로 두고, 힌트 판정용 카메라만 광각(100°)으로 바꿔 '방향을 알 때의 상한선' 측정</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd><b>B.</b> 렌더링하지 않는 판정 전용 카메라를 1인칭 카메라 자식으로 붙이고, 결과는 제품 성능이 아닌 상한선 진단으로만 해석하도록 리포트 라벨을 분리</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>not_visible 81.7% → 67.2%에도 서빙은 0/10 그대로 → 병목이 탐색이 아니라 근접 발화라는 것을 재학습 없이 확정</dd></div></dl></article><article class="pd-decision"><p class="pd-kicker">DECISION 02</p><h3>pos_weight만 낮추지 않고, 스무딩은 타깃이·불균형 보정은 샘플 가중치가 맡도록 분리</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>a4 출력이 0.0000 / 1.0000으로만 관측되는 포화. 팀 제안은 pos_weight 51.46 → 25 하향</dd></div><div class="pd-kv-row is-x"><dt>선택지</dt><dd>A. pos_weight 하향 (발화 확신 기준만 1.9% → 3.8%로 엄격해지고, 정확히 0인 구간은 못 올림)<br>B. 스무딩 타깃을 BCE pos_weight에 그대로 전달 (음성 프레임 최적값이 0.7304로 임계 0.5 초과)<br>C. 요소별 BCE × (1 + (w−1)·hard_target)</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd><b>C.</b> 음성 최적 0.05·양성 0.95, 로짓 −2/0/+2 전 구간 그래디언트 방향을 CPU에서 수치 검증한 뒤 본학습</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>학습 분포에서 a4가 0.042–0.952로 완화. 단, 실환경에서는 여전히 포화 → 관측 분포 문제라는 다음 가설로 연결</dd></div></dl></article><article class="pd-decision"><p class="pd-kicker">DECISION 03</p><h3>체크포인트를 정적 재현율이 아니라 실환경 롤아웃으로 선정</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>학습 분포 재생 검사에서는 v1(99/100)이 v2(96/100)보다 높았지만 Unity 실환경 성능은 반대</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd>정적 지표는 손실 구현 검증용으로만 쓰고, 선정은 고정 seed 실환경 롤아웃 + 누적 집계로 판단. 20k·25k 정적 검사는 생략</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>오프라인 지표와 실환경 성능이 어긋나는 지점을 근거로 남겨, 학습 크레딧을 실환경 평가에 집중</dd></div></dl></article>
         </section>
         <section class="pd-section" id="troubleshooting" aria-labelledby="troubleshooting-title">
-          <h2 id="troubleshooting-title"><span>06</span>트러블슈팅</h2><p class="pd-sec-lead">문제 → 원인 → 해결 → 결과 순서로 정리했습니다.</p>
+          <h2 id="troubleshooting-title">트러블슈팅</h2><p class="pd-sec-lead">문제 → 원인 → 해결 → 결과 순서로 정리했습니다.</p>
           <article class="pd-issue">
           <h3><span class="pd-num">01</span>트레이는 10/10 집는데 서빙은 0/10이던 문제</h3>
           <p class="pd-issue-lead">처음 리포트는 '목표 탐색·운반 불안정'을 원인으로 지목했지만, 방향 힌트를 줘도 결과가 같았습니다.</p>
@@ -107,7 +107,7 @@
         </article>
         </section>
         <section class="pd-section" id="retrospective" aria-labelledby="retrospective-title">
-          <h2 id="retrospective-title"><span>07</span>회고 · 개선 방향</h2>
+          <h2 id="retrospective-title">회고 · 개선 방향</h2>
           <div class="pd-retro">
             <div><h3>현재 한계</h3><p>방향 힌트 없는 실제 게임 10회에서는 서빙 1/10, 오배달 2/10으로 번호 인식을 기능으로 믿을 수준이 아니었습니다. 독립 수거 50회는 대상 트레이 집기 24%, 반납 4%였습니다. 라벨 스무딩은 학습 분포에서만 효과가 있었고 실환경 관측에서는 여전히 포화해, 손실 함수가 아니라 관측 분포를 손봐야 한다는 결론에 도달했습니다.</p></div>
             <div><h3>다음 단계</h3><p>한 번에 한 변인만 바꾸는 ablation으로 스무딩·힌트 비율 효과 분리, 근접 서빙 발화 시연과 수거 데이터 비중 증량, 3인칭 관측 추가 후 재학습, 학습·비학습 체크포인트만 교체하는 고정 seed 100회 A/B 평가</p></div>

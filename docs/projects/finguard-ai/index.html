@@ -52,11 +52,11 @@
       </nav>
       <div class="pd-content">
         <section class="pd-section" id="summary" aria-labelledby="summary-title">
-          <h2 id="summary-title"><span>01</span>한눈에 보기</h2>
+          <h2 id="summary-title">한눈에 보기</h2>
           <dl class="pd-tldr"><div class="pd-tldr-row is-problem"><dt>문제</dt><dd>금융 진단은 숫자 하나만 틀려도 리포트 전체의 신뢰를 잃습니다. LLM은 존재하지 않는 공시를 인용하거나 가격을 추정했고, 8 GB GPU 한 장으로 임베딩·리랭커를 서빙해야 했습니다.</dd></div><div class="pd-tldr-row is-solution"><dt>해결</dt><dd>수치는 결정론적 Decimal 엔진이, LLM은 공시 해석만 맡도록 역할을 나누고, DOC-N 인용 검증·기업 범위 하이브리드 검색·데이터 소스별 장애 격리를 설계했습니다.</dd></div><div class="pd-tldr-row is-result"><dt>결과</dt><dd>LLM·데이터 소스가 전부 실패해도 결정론적 리포트로 SSE가 정상 종료됩니다. 단일 GPU에서 두 모델을 FP16으로 상주시키고, pytest 202개로 동작을 고정했습니다.</dd></div></dl><div class="pd-metrics"><div class="pd-metric"><strong>202</strong><span>pytest 테스트</span><small>실행계획 · 연결 수 · 가드레일 회귀</small></div><div class="pd-metric"><strong>32 → 5</strong><span>하이브리드 검색 후보 → 리랭킹</span><small>벡터 + 형태소 랭킹</small></div><div class="pd-metric"><strong>≤ 2.5 GB</strong><span>임베딩·리랭커 FP16 VRAM 상한</span><small>초과 시 스모크 테스트 실패</small></div><div class="pd-metric"><strong>0개</strong><span>임베딩 중 열린 DB 연결</span><small>GPU 대기 중 풀 고갈 해결</small></div></div><p class="pd-note">RAGAS·지연시간 지표는 오프라인 dry-run 결과만 확보한 상태입니다.</p>
         </section>
         <section class="pd-section" id="overview" aria-labelledby="overview-title">
-          <h2 id="overview-title"><span>02</span>프로젝트 개요</h2>
+          <h2 id="overview-title">프로젝트 개요</h2>
           <dl class="pd-info">
             <div><dt>기간</dt><dd>2026.11</dd></div>
             <div><dt>인원</dt><dd>1명</dd></div>
@@ -70,7 +70,7 @@
           </div>
         </section>
         <section class="pd-section" id="architecture" aria-labelledby="architecture-title">
-          <h2 id="architecture-title"><span>03</span>시스템 아키텍처</h2>
+          <h2 id="architecture-title">시스템 아키텍처</h2>
           <div class="pd-flow"><ol class="flow" aria-label="FinGuard AI 데이터 흐름">
                 <li><span>INPUT</span>계좌 잔고 · 사용자 질의 (PIN 프록시)</li>
                 <li class="is-guard"><span>ROUTING</span>Router 의도 분류 · Fast Path<em>GUARDRAIL 250ms 초과 시 정규식 분류</em></li>
@@ -82,15 +82,15 @@
           <ul class="pd-points"><li>Router가 질의를 fast_lookup / deep_diagnosis / simulation으로 분기하고, 시장 데이터·ECOS·DART를 소스별로 장애를 격리한 채 병렬 수집합니다.</li><li>Decimal 엔진이 스코어카드·희석률·시뮬레이션을 계산한 뒤 비중 상위 3종목에 Worker를 병렬 Fan-Out하고, Worker는 마스킹된 공시 청크만 해석합니다.</li><li>가드레일 노드가 인용을 문장 단위로 검증하고, Synthesizer가 정량 리포트와 결합해 SSE done 프레임으로 반환합니다.</li></ul>
         </section>
         <section class="pd-section" id="features" aria-labelledby="features-title">
-          <h2 id="features-title"><span>04</span>주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
+          <h2 id="features-title">주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
           <div class="pd-features"><article class="pd-feature"><h3><span class="pd-num">01</span>LangGraph 진단 그래프</h3><ul><li>Router → 시장 데이터 → Decimal 계산 → 종목 Worker ×3 (Send Fan-Out) → 가드레일 → Synthesizer 구조</li><li>Router 250 ms 초과 시 정규식 분류로 Fast Path</li><li>역할별 다중 LLM 공급자 단계적 대체 (Qwen ↔ Gemini ↔ DashScope)</li></ul></article><article class="pd-feature"><h3><span class="pd-num">02</span>DART 공시 ETL · 하이브리드 검색</h3><ul><li>기업·기간 청크를 먼저 고정한 뒤 코사인 유사도를 전수 계산하고, Kiwi 형태소 GIN 랭킹과 합산</li><li>후보 32개 → CrossEncoder 리랭킹 → 상위 5개</li><li>EXPLAIN 기반 테스트로 실행계획 고정</li></ul></article><article class="pd-feature"><h3><span class="pd-num">03</span>GPU 임베딩 · 리랭킹 서빙</h3><ul><li>bge-m3·bge-reranker-v2-m3를 FP16으로 단일 8 GB GPU에 상주, workers=1로 중복 적재 방지</li><li>gpu_semaphore(1)로 GPU 호출 직렬화, 리랭킹 batch_size=8 분할</li></ul></article><article class="pd-feature"><h3><span class="pd-num">04</span>Decimal 계산 엔진 · 인용 가드레일</h3><ul><li>스코어카드·오버행 희석률·4분기 역산·PER/PBR·매수 시뮬레이션을 Decimal(prec=64, ROUND_HALF_UP) 순수 함수로 구현</li><li>LLM에는 14자리 공시번호 대신 DOC-N 별칭만 노출, 미등록 별칭이 든 문장은 제거</li><li>LLM 입력은 종목명·비중·수익률·점수·마스킹 공시로 제한 (계좌 금액·수량 외부 전송 금지)</li></ul></article><article class="pd-feature"><h3><span class="pd-num">05</span>FastAPI SSE · Next.js PIN 프록시</h3><ul><li>status · token · done 프레임으로 진단 진행 상황 스트리밍</li><li>Next.js 14 프론트엔드와 PIN 프록시 구현</li></ul></article></div>
         </section>
         <section class="pd-section" id="decisions" aria-labelledby="decisions-title">
-          <h2 id="decisions-title"><span>05</span>기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
+          <h2 id="decisions-title">기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
           <article class="pd-decision"><p class="pd-kicker">DECISION 01</p><h3>LLM에게 숫자를 만들게 하지 않고, 결정론적 Decimal 엔진 + LLM은 공시 해석만</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>수치 오류를 잡아낼 수 없으면 리포트 전체가 신뢰를 잃음. 계좌 금액·수량은 외부 LLM으로 보낼 수 없음</dd></div><div class="pd-kv-row is-x"><dt>선택지</dt><dd>A. LLM 수치 생성 / float 연산<br>B. I/O 없는 순수 함수 Decimal(prec=64, ROUND_HALF_UP) 엔진</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd><b>B.</b> 모든 수치를 Decimal 엔진으로 고정하고 API·SSE·Redis·프롬프트 전 경로를 단일 인코더로 문자열 직렬화. 확정되지 않은 값은 추정 없이 None</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>수치는 항상 재현 가능하고, LLM 장애와 무관하게 정량 리포트 생성</dd></div></dl></article><article class="pd-decision"><p class="pd-kicker">DECISION 02</p><h3>전역 벡터 검색 후 필터링 대신, 기업 범위 Exact Scan + 하이브리드 랭킹</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>전역 ANN으로 상위 k개를 자른 뒤 기업 필터를 걸면 해당 기업 청크가 누락됨. 벡터 검색만으로는 CB·BW·보호예수 같은 정확한 용어를 놓침</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd>B-tree로 기업·기간 청크를 MATERIALIZED CTE에 먼저 고정 → 코사인 유사도 전수 계산 + Kiwi tsvector GIN 랭킹 합산 → 후보 32개 → 리랭킹 상위 5개</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>기업 단위 재현율 손실 제거, 정확 용어 검색 보완</dd></div></dl></article><article class="pd-decision"><p class="pd-kicker">DECISION 03</p><h3>LLM 하나에 의존하지 않고, 역할별 다중 공급자 단계적 대체</h3><dl class="pd-kv"><div class="pd-kv-row is-choice"><dt>결정</dt><dd>Router(Qwen, 15초) / Worker(Qwen, 45초, 시간초과 1회 재시도, 403·429·할당량 시 Gemini 전환) / Synthesizer(Gemini, 60초, 503·504 시 지터 백오프 후 DashScope 대체)</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>안전 필터 차단·빈 응답·스키마 불일치를 LLMUnavailable로 일원화, 로그 기록 전 API 키 마스킹</dd></div></dl></article>
         </section>
         <section class="pd-section" id="troubleshooting" aria-labelledby="troubleshooting-title">
-          <h2 id="troubleshooting-title"><span>06</span>트러블슈팅</h2><p class="pd-sec-lead">문제 → 원인 → 해결 → 결과 순서로 정리했습니다.</p>
+          <h2 id="troubleshooting-title">트러블슈팅</h2><p class="pd-sec-lead">문제 → 원인 → 해결 → 결과 순서로 정리했습니다.</p>
           <article class="pd-issue">
           <h3><span class="pd-num">01</span>GPU를 기다리는 동안 DB 연결을 붙잡고 있어 연결 풀이 고갈되던 문제</h3>
           <p class="pd-issue-lead">짧은 요청까지 DB 연결을 얻지 못해 5초 획득 제한을 넘기며 실패했습니다.</p>
@@ -110,7 +110,7 @@
         </article>
         </section>
         <section class="pd-section" id="retrospective" aria-labelledby="retrospective-title">
-          <h2 id="retrospective-title"><span>07</span>회고 · 개선 방향</h2>
+          <h2 id="retrospective-title">회고 · 개선 방향</h2>
           <div class="pd-retro">
             <div><h3>현재 한계</h3><p>workers=1 + gpu_semaphore(1)로 단일 사용자를 전제로 설계해, 동시 사용자가 늘면 임베딩·리랭킹 대기열이 병목이 됩니다. RAGAS·지연시간 지표는 오프라인 dry-run만 확보했습니다.</p></div>
             <div><h3>다음 단계</h3><p>임베딩·리랭커를 Triton 등 별도 추론 서버로 분리해 Dynamic Batching 적용, API 프로세스 수평 확장, 공시 인제스트를 Redis 큐 기반 비동기 워커로 이전</p></div>

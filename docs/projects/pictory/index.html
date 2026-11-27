@@ -49,11 +49,11 @@
       </nav>
       <div class="pd-content">
         <section class="pd-section" id="summary" aria-labelledby="summary-title">
-          <h2 id="summary-title"><span>01</span>한눈에 보기</h2>
+          <h2 id="summary-title">한눈에 보기</h2>
           <dl class="pd-tldr"><div class="pd-tldr-row is-problem"><dt>문제</dt><dd>생성형 AI 세 종류(스토리·삽화·음성)를 엮는 서비스라, 모델 과부하·차단·출력 형식 오류가 시연 중에도 일어날 수 있었습니다. 그런데 API 라우트는 60초 안에 끝나야 했습니다.</dd></div><div class="pd-tldr-row is-solution"><dt>해결</dt><dd>시간 예산 안에서 대체 모델을 순환 재시도하고, JSON 스키마 가드·Vision 주인공 검증·사전 생성 동화까지 이어지는 다단 Fallback을 설계했습니다. 저는 TTS 낭독, 읽기 화면, 로컬 4bit 이미지 서버를 맡았습니다.</dd></div><div class="pd-tldr-row is-result"><dt>결과</dt><dd>해커톤 대상(전체 1위). 8 GB 노트북 GPU에서 FLUX.2 4bit 로컬 서빙(생성 중 VRAM 약 6 GB)을 검증했습니다.</dd></div></dl><div class="pd-metrics"><div class="pd-metric"><strong>1위</strong><span>해커톤 대상</span><small>2026.11</small></div><div class="pd-metric"><strong>45초</strong><span>스토리 생성 전체 시간 예산</span><small>라우트 한도 60초 내 응답</small></div><div class="pd-metric"><strong>≈6 GB</strong><span>FLUX.2 4bit 생성 VRAM</span><small>8 GB 노트북 GPU에서 검증</small></div></div>
         </section>
         <section class="pd-section" id="overview" aria-labelledby="overview-title">
-          <h2 id="overview-title"><span>02</span>프로젝트 개요</h2>
+          <h2 id="overview-title">프로젝트 개요</h2>
           <dl class="pd-info">
             <div><dt>기간</dt><dd>2026.11 (해커톤)</dd></div>
             <div><dt>인원</dt><dd>3명</dd></div>
@@ -67,7 +67,7 @@
           </div>
         </section>
         <section class="pd-section" id="architecture" aria-labelledby="architecture-title">
-          <h2 id="architecture-title"><span>03</span>시스템 아키텍처</h2>
+          <h2 id="architecture-title">시스템 아키텍처</h2>
           <div class="pd-flow"><ol class="flow" aria-label="Pictory 데이터 흐름">
                 <li><span>INPUT</span>연령 · 고민 상황 · 아이 그림</li>
                 <li class="is-guard"><span>ROUTING</span>요청 검증 · 프리셋 매칭<em>GUARDRAIL 입력 검증</em></li>
@@ -79,15 +79,15 @@
           <ul class="pd-points"><li>서버는 상태를 갖지 않고, 지금까지의 장면과 아이의 선택은 클라이언트가 보관해 매 요청에 함께 보냅니다.</li><li>Gemini JSON Schema 응답을 타입 가드로 검증한 뒤 장면별 영어 imagePrompt로 FLUX.2 삽화를 만들고, 아이 그림의 주인공이 반영됐는지 Vision 모델로 다시 확인합니다.</li><li>낭독은 브라우저 → 서버 TTS 프록시 → Azure Speech 경로로 처리해 API 키를 서버에만 둡니다.</li></ul>
         </section>
         <section class="pd-section" id="features" aria-labelledby="features-title">
-          <h2 id="features-title"><span>04</span>주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
+          <h2 id="features-title">주요 기능 개발</h2><p class="pd-sec-lead">제가 직접 설계·구현한 부분입니다.</p>
           <div class="pd-features"><article class="pd-feature"><h3><span class="pd-num">01</span>동화 낭독 (Azure Neural TTS)</h3><ul><li>브라우저 → 서버 TTS 프록시 → Azure Speech 경로를 구현해 키를 클라이언트에 노출하지 않음</li><li>사용자가 낭독 음성을 고를 수 있는 음성 선택 기능</li></ul></article><article class="pd-feature"><h3><span class="pd-num">02</span>동화 읽기 화면</h3><ul><li>장면 단위 페이지네이션과 전체화면 읽기 모드 구현</li></ul></article><article class="pd-feature"><h3><span class="pd-num">03</span>FLUX.2 로컬 4bit 이미지 서버 (구현·검증)</h3><ul><li>8 GB VRAM 노트북 GPU(RTX 5060 Laptop) 한 대에서 FLUX.2 Klein 4B를 돌리기 위해 커뮤니티 NF4 가중치 사용</li><li>누락된 Qwen 텍스트 인코더는 공식 가중치를 로드 시점에 NF4로 양자화해 보완</li><li>VAE tiling, 512 px·4 step 고정, 모델 GPU 상주, CUDA OOM 시 캐시 정리 후 503 반환</li><li>생성 중 VRAM 약 6 GB 점유를 확인한 뒤, 서비스 경로는 안정성을 위해 Cloudflare Workers AI로 유지</li></ul></article></div>
         </section>
         <section class="pd-section" id="decisions" aria-labelledby="decisions-title">
-          <h2 id="decisions-title"><span>05</span>기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
+          <h2 id="decisions-title">기술적 의사결정</h2><p class="pd-sec-lead">제약 조건 안에서 어떤 대안을 비교했고 왜 그 선택을 했는지 정리했습니다.</p>
           <article class="pd-decision"><p class="pd-kicker">DECISION 01</p><h3>고품질 모델 하나 대신, 빠른 경량 모델을 기본으로 두고 대체 모델을 순환 (팀 설계)</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>API 라우트 최대 실행 60초. 상위 모델은 혼잡 시 수십 초가 걸리고, 기획 모델(gemini-2.5-flash)은 신규 사용자 차단</dd></div><div class="pd-kv-row is-x"><dt>선택지</dt><dd>A. 상위 품질 모델 단일 호출<br>B. 2초대 응답 lite 모델 기본 + 과부하(503)·시간 초과 시 대체 모델 순환</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd><b>B.</b> 시도당 20초·전체 45초 예산 안에서 최대 8회 모델 순환 재시도 (백오프 500 ms × n, 최대 2.5초), 남은 예산이 3초 미만이면 중단</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>thinkingLevel LOW로 추론 시간을 줄이고, 60초 라우트 한도 안에서 응답 보장</dd></div></dl></article><article class="pd-decision"><p class="pd-kicker">DECISION 02</p><h3>이미지 생성을 로컬 4bit로 서빙할 수 있는지 검증 (본인 구현)</h3><dl class="pd-kv"><div class="pd-kv-row is-x"><dt>상황</dt><dd>8 GB VRAM 노트북 GPU 한 대뿐인 환경</dd></div><div class="pd-kv-row is-choice"><dt>결정</dt><dd>FLUX.2 Klein 4B NF4 가중치 + 텍스트 인코더 로드 시점 NF4 양자화, VAE tiling, 512 px·4 step 고정</dd></div><div class="pd-kv-row is-x"><dt>효과</dt><dd>생성 중 VRAM 약 6 GB로 구동 확인. 시연 안정성을 고려해 서비스 경로는 Cloudflare Workers AI 유지</dd></div></dl></article>
         </section>
         <section class="pd-section" id="troubleshooting" aria-labelledby="troubleshooting-title">
-          <h2 id="troubleshooting-title"><span>06</span>트러블슈팅</h2><p class="pd-sec-lead">팀이 함께 해결한 문제를 문제 → 원인 → 해결 → 결과 순서로 정리했습니다. 구현은 팀원이 맡았고, 제 담당 구현은 04 주요 기능 개발에 있습니다.</p>
+          <h2 id="troubleshooting-title">트러블슈팅</h2><p class="pd-sec-lead">팀이 함께 해결한 문제를 문제 → 원인 → 해결 → 결과 순서로 정리했습니다. 구현은 팀원이 맡았고, 제 담당 구현은 04 주요 기능 개발에 있습니다.</p>
           <article class="pd-issue">
           <h3><span class="pd-num">01</span>이미지 생성 서버가 일시적으로 실패할 때, 재시도가 과금 중복으로 이어질 수 있던 문제</h3>
           <p class="pd-issue-lead">삽화 생성이 실패하면 다시 요청해야 하지만, 무작정 재전송하면 유료 이미지가 중복 생성될 수 있었습니다.</p>
@@ -107,7 +107,7 @@
         </article>
         </section>
         <section class="pd-section" id="retrospective" aria-labelledby="retrospective-title">
-          <h2 id="retrospective-title"><span>07</span>회고 · 개선 방향</h2>
+          <h2 id="retrospective-title">회고 · 개선 방향</h2>
           <div class="pd-retro">
             <div><h3>현재 한계</h3><p>사전 생성 동화 Fallback은 프리셋·특정 키워드 입력에만 적용되어, 그 외 자유 입력은 AI가 전부 실패하면 500을 반환합니다. 생성 전 과정이 60초 동기 요청에 묶여 있습니다.</p></div>
             <div><h3>다음 단계</h3><p>생성 요청을 비동기 작업 큐로 분리하고 작업 ID 기반 SSE로 진행 상태 스트리밍, 동일 입력의 스토리·TTS 결과 캐싱으로 Azure F0 한도(60초당 20건) 대응, 사용자별 이미지 생성 쿼터 적용</p></div>

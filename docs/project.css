@@ -39,7 +39,6 @@
 /* Sections */
 .pd-section{padding:0 0 88px;scroll-margin-top:90px}
 .pd-section>h2{display:flex;align-items:baseline;gap:12px;margin:0 0 8px;font-size:clamp(24px,2.5vw,28px);font-weight:800;letter-spacing:-.03em;color:#1F2933}
-.pd-section>h2 span{font:700 14px var(--display);color:var(--primary)}
 .pd-sec-lead{margin:0;font-size:15px;color:var(--pd-mute)}
 .pd-section>h2+*,.pd-sec-lead+*{margin-top:36px}
 .pd-section>h2+.pd-sec-lead{margin-top:0}
