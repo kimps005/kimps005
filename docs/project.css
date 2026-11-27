@@ -80,14 +80,11 @@
 .pd-page .flow li>span{font-size:11px;margin-bottom:6px;color:var(--pd-mute)}
 .pd-page .flow li em{margin-top:10px;font:700 12px/1.6 "Noto Sans KR",var(--body);letter-spacing:0}
 .pd-page .flow li em::before{content:"";display:inline-block;width:6px;height:6px;margin-right:6px;border-radius:50%;background:currentColor;vertical-align:2px}
-.pd-page .flow li.is-guard{border-top-color:#38A273;background:none}
-.pd-page .flow li.is-bottleneck{border-top-color:#E07A5F;background:none}
-.pd-page .flow li.is-guard>span{color:#1E7A55}
-.pd-page .flow li.is-bottleneck>span{color:#C4573A}
+.pd-page .flow li.is-guard,.pd-page .flow li.is-bottleneck{border-top-color:#D6DEE6;background:none}
+.pd-page .flow li.is-guard em,.pd-page .flow li.is-bottleneck em{color:var(--pd-sub)}
 .pd-legend{display:flex;flex-wrap:wrap;gap:20px;margin:20px 0 0;font-size:13px;color:var(--pd-mute)}
 .pd-legend span::before{content:"";display:inline-block;width:14px;height:2px;margin-right:8px;vertical-align:4px}
-.pd-legend .is-guard::before{background:#38A273}
-.pd-legend .is-bottleneck::before{background:#E07A5F}
+.pd-legend .is-guard::before,.pd-legend .is-bottleneck::before{background:#AAB6C2}
 .pd-points{margin-top:40px!important;counter-reset:pt}
 .pd-points li{position:relative;padding-left:30px;margin-bottom:14px;font-size:16px;line-height:1.85;color:var(--pd-text);counter-increment:pt}
 .pd-points li::before{content:counter(pt);position:absolute;left:0;top:0;font:700 14px/1.85 var(--display);color:var(--primary)}
